@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Table(name = "categoria")
 @Data
@@ -18,4 +20,7 @@ public class Categoria {
 
     @Column (name="descripcion")
     private String descripcion;
+
+    @OneToMany(mappedBy = "categoria_id")
+    private List<Taller> talleres;
 }

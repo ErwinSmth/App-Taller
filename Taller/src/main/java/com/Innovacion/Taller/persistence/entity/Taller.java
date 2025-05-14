@@ -17,10 +17,19 @@ public class Taller {
     @Column(name = "taller_id")
     private Long tallerId;
 
-    @Embedded
-    private TallerPK tallerPK;
+    @ManyToOne
+    @JoinColumn(name = "categoria_id", nullable = false)
+    private Categoria categoriaID;
 
-    @Column(name = "titulo", nullable = false, length = 100,unique = true)
+    @ManyToOne
+    @JoinColumn(name = "organizador_id")
+    private Organizador organizadorId;
+
+    @ManyToOne
+    @JoinColumn(name = "profesor_id")
+    private Profesor profesorId;
+
+    @Column(name = "titulo", nullable = false, length = 100, unique = true)
     private String titulo;
 
     @Column(name = "descripcion", nullable = false)

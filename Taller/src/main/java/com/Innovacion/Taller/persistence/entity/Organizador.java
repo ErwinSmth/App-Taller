@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Entity
 @Table(name="organizador")
 @Data
@@ -31,5 +33,10 @@ public class Organizador {
 
     @Column (name = "direccion_sede")
     private String direccionSede;
+
+    //Con cascade All en dependiendo de que clase decimos que por ejemplo
+    //si se elimina un profesor tambien se elimine sus talleres
+    @OneToMany(mappedBy = "organizadorId", cascade = CascadeType.ALL)
+    private List<Taller> talleres;
 
 }
