@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -13,19 +14,12 @@ import java.util.List;
 public class PersonaDto {
 
 //Datos de la persona
+    private Long personaId;
     private String nombres;
     private String apellidos;
     private String DNI;
     private String telefono;
     private String email;
     private LocalDate fechaNacimiento;
-
-
-    //Datos usuario
-    private String nameUser;
-    private String contraseña;
-
-    //Roles del usuario necesario porque al registrarse necesita regitrarse con su rol
-    private List<Long> roles;
-
+    private LocalDateTime fechaRegistro;
 }

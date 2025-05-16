@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 
 import java.time.LocalDate;
@@ -44,6 +45,7 @@ public class Persona {
 
     // Relación 1:1 con Usuario
     @OneToOne(mappedBy = "persona", cascade = CascadeType.ALL)
+    @ToString.Exclude
     private Usuario usuario;
 
 

@@ -22,14 +22,13 @@ Aplicación backend para el sistema de talleres educativos desarrollado con Spri
                         │   │
                         │   ├── 📁service/               # Lógica de negocio central de la aplicación
                         │   │
-                        │   ├── 📁mapper/                 # Conversores entre entidades y DTOs
                         |
                         ├── 📁persistence/               # Acceso a Datos (implementaciones concretas)
                         │   ├── 📁crud/                  # Interfaces JPA para acceso directo a datos (DAO)
                         │   │
                         │   ├── 📁entity/                # Entidades JPA que representan las tablas de la base de datos
                         │   │
-                        │   │
+                        │   ├── 📁mapper/                 # Conversores entre entidades y DTOs
                         │   ├── 📁repository/            # Implementaciones concretas de los repositorios del dominio
                         │
                         ├── 📁web/                       # Controladores REST (Interfaz API)
