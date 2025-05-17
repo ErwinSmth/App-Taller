@@ -48,5 +48,4 @@ public class Persona {
     @ToString.Exclude
     private Usuario usuario;
 
-
 }

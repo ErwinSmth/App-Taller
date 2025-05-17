@@ -14,7 +14,7 @@ import java.util.Optional;
 public class PersonaRepositoryImpl implements IPersonaRepository {
 
     @Autowired
-    private PersonaCrudRepository personCrud;  //Para acceder a la bd
+    private PersonaCrudRepository personCrud ;  //Para acceder a la bd
     @Autowired
     private PersonaMapper mapper;  //Para convertir Dto a entidad o viceversa
 
