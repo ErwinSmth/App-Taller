@@ -1,8 +1,6 @@
 package com.Innovacion.Taller.persistence.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
 
 
 import java.util.HashSet;
@@ -10,7 +8,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "rol")
-@Data
 public class Rol {
 
     @Id
@@ -28,6 +25,30 @@ public class Rol {
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private Set<Usuario> usuarios = new HashSet<>();
 
+    public Long getRolId() {
+        return rolId;
+    }
+
+    public void setRolId(Long rolId) {
+        this.rolId = rolId;
+    }
+
+    public String getRolName() {
+        return rolName;
+    }
+
+    public void setRolName(String rolName) {
+        this.rolName = rolName;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
     public Set<Usuario> getUsuarios() {
         return usuarios;
     }
@@ -35,5 +56,4 @@ public class Rol {
     public void setUsuarios(Set<Usuario> usuarios) {
         this.usuarios = usuarios;
     }
-
 }

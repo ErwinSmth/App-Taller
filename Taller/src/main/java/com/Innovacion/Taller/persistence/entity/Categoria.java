@@ -2,13 +2,11 @@ package com.Innovacion.Taller.persistence.entity;
 
 import jakarta.persistence.*;
 
-import lombok.Data;
 
 import java.util.List;
 
 @Entity
 @Table(name = "categoria")
-@Data
 public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +21,36 @@ public class Categoria {
 
     @OneToMany(mappedBy = "categoria")
     private List<Taller> talleres;
+
+    public Long getCategoriaId() {
+        return categoriaId;
+    }
+
+    public void setCategoriaId(Long categoriaId) {
+        this.categoriaId = categoriaId;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public List<Taller> getTalleres() {
+        return talleres;
+    }
+
+    public void setTalleres(List<Taller> talleres) {
+        this.talleres = talleres;
+    }
 }

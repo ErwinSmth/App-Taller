@@ -2,13 +2,11 @@ package com.Innovacion.Taller.persistence.entity;
 
 import jakarta.persistence.*;
 
-import lombok.Data;
 
 import java.util.List;
 
 @Entity
 @Table(name="estudiante")
-@Data
 public class Estudiante {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,5 +21,27 @@ public class Estudiante {
     @Column (name = "intereses")
     private String intereses;
 
+    public Long getEstudianteId() {
+        return estudianteId;
+    }
 
+    public void setEstudianteId(Long estudianteId) {
+        this.estudianteId = estudianteId;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getIntereses() {
+        return intereses;
+    }
+
+    public void setIntereses(String intereses) {
+        this.intereses = intereses;
+    }
 }

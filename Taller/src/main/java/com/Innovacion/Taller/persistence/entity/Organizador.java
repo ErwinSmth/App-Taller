@@ -2,13 +2,11 @@ package com.Innovacion.Taller.persistence.entity;
 
 import jakarta.persistence.*;
 
-import lombok.Data;
 
 import java.util.List;
 
 @Entity
 @Table(name="organizador")
-@Data
 
 public class Organizador {
 
@@ -39,4 +37,59 @@ public class Organizador {
     @OneToMany(mappedBy = "organizador", cascade = CascadeType.ALL)
     private List<Taller> talleres;
 
+    public Long getOrganizadorId() {
+        return organizadorId;
+    }
+
+    public void setOrganizadorId(Long organizadorId) {
+        this.organizadorId = organizadorId;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public String getRazonSocial() {
+        return razonSocial;
+    }
+
+    public void setRazonSocial(String razonSocial) {
+        this.razonSocial = razonSocial;
+    }
+
+    public String getRuc() {
+        return ruc;
+    }
+
+    public void setRuc(String ruc) {
+        this.ruc = ruc;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getDireccionSede() {
+        return direccionSede;
+    }
+
+    public void setDireccionSede(String direccionSede) {
+        this.direccionSede = direccionSede;
+    }
+
+    public List<Taller> getTalleres() {
+        return talleres;
+    }
+
+    public void setTalleres(List<Taller> talleres) {
+        this.talleres = talleres;
+    }
 }
