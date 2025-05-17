@@ -16,16 +16,16 @@ public class PersonaRepositoryImpl implements IPersonaRepository {
     @Autowired
     private PersonaCrudRepository personCrud ;  //Para acceder a la bd
     @Autowired
-    private PersonaMapper mapper;  //Para convertir Dto a entidad o viceversa
+    private PersonaMapper personaMapper;  //Para convertir Dto a entidad o viceversa
 
     @Override
     public PersonaDto save(PersonaDto personDto) {
-        Persona persona = mapper.toPersona(personDto);
-        return mapper.toPersonaDto(personCrud.save(persona));
+        Persona persona = personaMapper.toPersona(personDto);
+        return personaMapper.toPersonaDto(personCrud.save(persona));
     }
 
     @Override
     public Optional<PersonaDto> findByEmail(String email) {
-        return personCrud.findByEmail(email).map(Persona -> mapper.toPersonaDto(Persona));
+        return personCrud.findByEmail(email).map(Persona -> personaMapper.toPersonaDto(Persona));
     }
 }

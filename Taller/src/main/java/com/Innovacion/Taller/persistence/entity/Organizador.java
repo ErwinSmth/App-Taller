@@ -36,7 +36,7 @@ public class Organizador {
 
     //Con cascade All en dependiendo de que clase decimos que por ejemplo
     //si se elimina un profesor tambien se elimine sus talleres
-    @OneToMany(mappedBy = "organizadorId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "organizador", cascade = CascadeType.ALL)
     private List<Taller> talleres;
 
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
@@ -17,17 +18,20 @@ public class Taller {
     @Column(name = "taller_id")
     private Long tallerId;
 
+    @Column(name = "categoria_id")
+    private Long idCategoria;
+
     @ManyToOne
-    @JoinColumn(name = "categoria_id", nullable = false)
-    private Categoria categoriaID;
+    @JoinColumn(name = "categoria_id", nullable = false, updatable = false, insertable = false)
+    private Categoria categoria;
 
     @ManyToOne
     @JoinColumn(name = "organizador_id")
-    private Organizador organizadorId;
+    private Organizador organizador;
 
     @ManyToOne
     @JoinColumn(name = "profesor_id")
-    private Profesor profesorId;
+    private Profesor profesor;
 
     @Column(name = "titulo", nullable = false, length = 100, unique = true)
     private String titulo;
@@ -38,15 +42,13 @@ public class Taller {
     @Column(name = "duracion_horas", nullable = false)
     private Integer duracionHoras;
 
-    @Column(name = "precio", nullable = false,precision = 10, scale = 2)
-    private Float precio;
+    @Column(name = "precio", nullable = false, precision = 10, scale = 2)
+    private BigDecimal precio;
 
     @Column(name = "capacidad", nullable = false)
     private Integer capacidad;
 
     @Column(name = "fecha_creacion", insertable = false, updatable = false)
     private LocalDate fechaRegistro;
-
-
 
 }

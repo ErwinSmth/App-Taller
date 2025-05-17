@@ -28,7 +28,7 @@ public class Profesor {
     @Column(name="especialidades")
     private String especialidades;
 
-    @OneToMany(mappedBy = "profesorId", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL)
     private List<Taller> talleres;
     //Con cascade All en dependiendo de que clase decimos que por ejemplo
     //si se elimina un profesor tambien se elimine sus talleres
