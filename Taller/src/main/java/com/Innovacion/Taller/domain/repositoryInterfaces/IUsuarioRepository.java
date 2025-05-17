@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface IUsuarioRepository {
 
-    Usuario save(UsuarioDto user);
+    UsuarioDto save(UsuarioDto user);
     Optional<UsuarioDto> findByNameUser(String nameUser);
 
 }
