@@ -21,9 +21,7 @@ public class Estudiante {
     @Column (name = "intereses")
     private String intereses;
 
-    public Long getEstudianteId() {
-        return estudianteId;
-    }
+    public Long getEstudianteId(){return estudianteId;}
 
     public void setEstudianteId(Long estudianteId) {
         this.estudianteId = estudianteId;
