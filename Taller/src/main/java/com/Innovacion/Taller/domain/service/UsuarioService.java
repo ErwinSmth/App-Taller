@@ -1,5 +1,6 @@
 package com.Innovacion.Taller.domain.service;
 
+import com.Innovacion.Taller.domain.dto.EstudianteDto;
 import com.Innovacion.Taller.domain.dto.PersonaDto;
 import com.Innovacion.Taller.domain.dto.RolesDto;
 import com.Innovacion.Taller.domain.dto.UsuarioDto;
@@ -7,6 +8,7 @@ import com.Innovacion.Taller.domain.repositoryInterfaces.IPersonaRepository;
 import com.Innovacion.Taller.domain.repositoryInterfaces.IRolRepository;
 import com.Innovacion.Taller.domain.repositoryInterfaces.IUsuarioRepository;
 import com.Innovacion.Taller.domain.repositoryInterfaces.IEstudianteRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +31,7 @@ public class UsuarioService {
     @Autowired
     private IEstudianteRepository estudianteRepo;
     
-    
+    @Transactional
     public UsuarioDto registrarUsuario(UsuarioDto userDto){
 
         //Validar datos de entrada
@@ -41,6 +43,9 @@ public class UsuarioService {
         PersonaDto personSave = personRepo.save(userDto.getPersonDto());
         userDto.setPersonDto(personSave);
 
+        //Establecer el usuario como activo
+        userDto.setActivo(true);
+
         //Guardar los datos del usuario
         UsuarioDto userSave = userRepo.save(userDto);
 
@@ -48,15 +53,18 @@ public class UsuarioService {
         List<RolesDto> roles = userDto.getRoles();
         for (RolesDto rol : roles){
             //Validar si el rol existe
-            Optional<RolesDto> rolOptional = rolRepo.findById(rol.getId());
+            Optional<RolesDto> rolOptional = rolRepo.findById(rol.getRolId());
             if(rolOptional.isEmpty()){
                 throw new IllegalArgumentException("El rol no existe");
             }
-            //Guardar el rol
-            rolRepo.save(rol);
-            if(rol.getId() == 1){ //Estudiante
-                estudianteRepo.save(new EstudianteDto(null, null, userSave));
-            } else if (rol.getId() == 2){ //Profesor
+            //Obtener el rol
+            RolesDto rolExistente = rolOptional.get();
+            if(rol.getRolId() == 1){ //Estudiante
+                userSave.getRoles().add(rolExistente);
+                EstudianteDto estudiante = new EstudianteDto();
+                estudiante.setUsuarioDto(userSave);
+                estudianteRepo.save(estudiante);
+            } else if (rol.getRolId() == 2){ //Profesor
                 
             } else { //Organizador
 
@@ -68,6 +76,27 @@ public class UsuarioService {
 
     public Optional<UsuarioDto> buscarPorUName(String userName){
         return userRepo.findByNameUser(userName);
+    }
+
+    public Optional<UsuarioDto> login(String nameUser, String contraseña){
+        //validar datos
+        if (nameUser == null || nameUser.isEmpty() || contraseña == null || contraseña.isEmpty()){
+            throw  new IllegalArgumentException("Nombre de usuario y Contraseña incompletos");
+        }
+
+        System.out.println("Intentando logear con nameUser: " + nameUser + " y contraseña: " + contraseña);
+
+        //Buscar al usuario
+        Optional<UsuarioDto> usuario = userRepo.findByNameUserAndContraseña(nameUser, contraseña);
+
+        System.out.println("Resultado de la búsqueda: " + (usuario.isPresent() ? "Usuario encontrado" : "Usuario no encontrado"));
+
+        //Validar si el usuario existe y esta activo
+        if(usuario.isPresent() && usuario.get().isActivo()){
+            return usuario;
+        } else {
+            throw new IllegalArgumentException("Credenciales invalidas o Usuario inactivo");
+        }
     }
 
 }

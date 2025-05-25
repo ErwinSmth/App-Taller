@@ -9,5 +9,6 @@ public interface IUsuarioRepository {
 
     UsuarioDto save(UsuarioDto user);
     Optional<UsuarioDto> findByNameUser(String nameUser);
+    Optional<UsuarioDto> findByNameUserAndContraseña(String nameUser, String contraseña);
 
 }

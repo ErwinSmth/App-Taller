@@ -38,4 +38,9 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
 
         return userCrud.findByNameUser(name).map(Usuario->mapper.toUsuarioDto(Usuario));
     }
+
+    @Override
+    public Optional<UsuarioDto> findByNameUserAndContraseña(String nameUser, String contraseña) {
+        return userCrud.findByNameUserAndContraseña(nameUser, contraseña). map(usuario -> mapper.toUsuarioDto(usuario));
+    }
 }
