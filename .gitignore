@@ -1,0 +1,55 @@
+# General
+.DS_Store
+Thumbs.db
+
+# Backend (Maven)
+HELP.md
+/Backend/target/
+!/Backend/.mvn/wrapper/maven-wrapper.jar
+!/Backend/src/main/**/target/
+!/Backend/src/test/**/target/
+
+# STS (Spring Tool Suite)
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# IntelliJ IDEA
+.idea
+*.iws
+*.iml
+*.ipr
+
+# NetBeans
+/Backend/nbproject/private/
+/Backend/nbbuild/
+/Backend/dist/
+/Backend/nbdist/
+/Backend/.nb-gradle/
+/Backend/build/
+!/Backend/src/main/**/build/
+!/Backend/src/test/**/build/
+
+# VS Code
+.vscode/
+
+# Android Studio
+/Android/.gradle/
+/Android/build/
+/Android/local.properties
+/Android/.idea/
+/Android/*.iml
+/Android/captures/
+/Android/.cxx/
+/Android/.externalNativeBuild/
+
+# Logs
+*.log
+
+# OS-specific files
+*.swp
+*.swo
