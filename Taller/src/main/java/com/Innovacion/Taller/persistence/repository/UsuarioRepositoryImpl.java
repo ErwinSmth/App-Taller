@@ -19,10 +19,18 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
     private UsuarioMapper mapper;
 
     @Override
-    public UsuarioDto save(UsuarioDto userDto)
+    public UsuarioDto save(UsuarioDto userDto) //Para registrar el usuario
     {
         Usuario usuario=mapper.toUsuario(userDto);
-        return mapper.toUsuarioDto(userCrud.save(usuario));
+
+        //para establecer a que persona pertence el usuario
+        if (usuario.getPersona() != null){
+            usuario.getPersona().setUsuario(usuario);
+        }
+
+        Usuario userSaved = userCrud.save(usuario);
+
+        return mapper.toUsuarioDto(userSaved);
     }
 
     @Override

@@ -23,7 +23,7 @@ public class Usuario {
     @Column(name = "name_user", nullable = false, length = 50, unique = true)
     private String nameUser;
 
-    @Column(nullable = false)
+    @Column(name = "contrasena", nullable = false)
     private String contraseña;
 
     @Column(name = "fecha_registro", insertable = false, updatable = false)

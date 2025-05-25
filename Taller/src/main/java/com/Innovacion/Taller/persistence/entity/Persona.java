@@ -21,10 +21,10 @@ public class Persona {
     @Column(nullable = false, length = 100)
     private String apellidos;
 
-    @Column(unique = true, length = 8)
+    @Column(name = "dni" , unique = true, length = 8, nullable = false)
     private String DNI;
 
-    @Column(length = 15)
+    @Column(length = 15, nullable = false)
     private String telefono;
 
     @Column(unique = true, nullable = false, length = 100)

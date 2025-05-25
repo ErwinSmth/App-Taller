@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController //Esta clase sera controlador Rest y devolvera JSON
-@RequestMapping("/taller/personas")  //Ruta principal para todos los endpoints de la clase
+@RequestMapping("/personas")  //Ruta principal para todos los endpoints de la clase
 public class PersonaController {
 
     @Autowired
@@ -19,7 +19,7 @@ public class PersonaController {
         return new ResponseEntity<>(service.registrarPersona(person), HttpStatus.CREATED);
     }
 
-    @GetMapping("/email") //Ruta: /taller/personas/email
+    @GetMapping("/email") //Ruta: /personas/email
     public ResponseEntity<PersonaDto> buscarEmail(@RequestParam("valor") String email){ //RequestParam porque obtiene el valor del parametro desde la URL
         return service.buscarEmail(email)
                 .map(ResponseEntity::ok)//SI encuentra devuelve Ok
