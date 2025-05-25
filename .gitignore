@@ -31,8 +31,8 @@ HELP.md
 /Backend/nbdist/
 /Backend/.nb-gradle/
 /Backend/build/
-!/Backend/src/main/**/build/
-!/Backend/src/test/**/build/
+!/Backend/src/main/build/
+!/Backend/src/test/build/
 
 # VS Code
 .vscode/
