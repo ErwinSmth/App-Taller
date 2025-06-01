@@ -28,4 +28,19 @@ public class PersonaRepositoryImpl implements IPersonaRepository {
     public Optional<PersonaDto> findByEmail(String email) {
         return personCrud.findByEmail(email).map(Persona -> personaMapper.toPersonaDto(Persona));
     }
+
+    @Override
+    public boolean existsByDNI(String dni) {
+        return personCrud.existsByDNI(dni);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return personCrud.existsByEmail(email);
+    }
+
+    @Override
+    public Optional<PersonaDto> findById(Long id) {
+        return personCrud.findById(id).map( persona -> personaMapper.toPersonaDto(persona));
+    }
 }

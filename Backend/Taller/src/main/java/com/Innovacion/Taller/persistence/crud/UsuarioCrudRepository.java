@@ -1,5 +1,6 @@
 package com.Innovacion.Taller.persistence.crud;
 
+import com.Innovacion.Taller.persistence.entity.Persona;
 import com.Innovacion.Taller.persistence.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 

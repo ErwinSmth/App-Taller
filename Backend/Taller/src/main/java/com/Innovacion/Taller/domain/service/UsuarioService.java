@@ -1,9 +1,6 @@
 package com.Innovacion.Taller.domain.service;
 
-import com.Innovacion.Taller.domain.dto.EstudianteDto;
-import com.Innovacion.Taller.domain.dto.PersonaDto;
-import com.Innovacion.Taller.domain.dto.RolesDto;
-import com.Innovacion.Taller.domain.dto.UsuarioDto;
+import com.Innovacion.Taller.domain.dto.*;
 import com.Innovacion.Taller.domain.repositoryInterfaces.IPersonaRepository;
 import com.Innovacion.Taller.domain.repositoryInterfaces.IRolRepository;
 import com.Innovacion.Taller.domain.repositoryInterfaces.IUsuarioRepository;
@@ -32,22 +29,29 @@ public class UsuarioService {
     private IEstudianteRepository estudianteRepo;
     
     @Transactional
-    public UsuarioDto registrarUsuario(UsuarioDto userDto){
+    public UsuarioDto registrarUsuario(UsuarioRegistroDto userDto){
 
         //Validar datos de entrada
-        if(userDto == null || userDto.getPersonDto() == null || userDto.getRoles() == null || userDto.getRoles().isEmpty()){
+        if(userDto == null || userDto.getPersonaId() == null || userDto.getRoles() == null || userDto.getRoles().isEmpty()){
             throw new IllegalArgumentException("Los datos del usuario Incompletos");
         }
 
-        //Guardar los datos de la persona
-        PersonaDto personSave = personRepo.save(userDto.getPersonDto());
-        userDto.setPersonDto(personSave);
+        //Buscar a la persona por su Id
+        Optional<PersonaDto> personaDto = personRepo.findById(userDto.getPersonaId());
+        if (personaDto.isEmpty()){
+            throw new IllegalArgumentException("La persona no existe");
+        }
 
-        //Establecer el usuario como activo
-        userDto.setActivo(true);
+        // Crear el UsuarioDto
+        UsuarioDto usuario = new UsuarioDto();
+        usuario.setPersonDto(personaDto.get());
+        usuario.setNameUser(userDto.getNameUser());
+        usuario.setContraseña(userDto.getContraseña());
+        usuario.setRoles(userDto.getRoles());
+        usuario.setActivo(true);
 
-        //Guardar los datos del usuario
-        UsuarioDto userSave = userRepo.save(userDto);
+        // Guardar el usuario
+        UsuarioDto userSave = userRepo.save(usuario);
 
         //Asignar roles al usuario
         List<RolesDto> roles = userDto.getRoles();
@@ -65,7 +69,7 @@ public class UsuarioService {
                 estudiante.setUsuarioDto(userSave);
                 estudianteRepo.save(estudiante);
             } else if (rol.getRolId() == 2){ //Profesor
-                
+
             } else { //Organizador
 
             }

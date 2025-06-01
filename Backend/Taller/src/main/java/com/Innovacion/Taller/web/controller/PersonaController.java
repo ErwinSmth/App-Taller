@@ -14,9 +14,10 @@ public class PersonaController {
     @Autowired
     private PersonaService service;
 
-    @PostMapping("/save")
+    @PostMapping("/registrar")
     public ResponseEntity<PersonaDto> registrar(@RequestBody PersonaDto person){ //Indica que los datos vendran en el cuerpo de la solicitud (JSON)
-        return new ResponseEntity<>(service.registrarPersona(person), HttpStatus.CREATED);
+        PersonaDto personSaved = service.registrarPersona(person);
+        return new ResponseEntity<>(personSaved, HttpStatus.CREATED);
     }
 
     @GetMapping("/email") //Ruta: /personas/email

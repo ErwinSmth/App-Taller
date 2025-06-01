@@ -1,6 +1,7 @@
 package com.Innovacion.Taller.web.controller;
 
 import com.Innovacion.Taller.domain.dto.UsuarioDto;
+import com.Innovacion.Taller.domain.dto.UsuarioRegistroDto;
 import com.Innovacion.Taller.domain.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ public class UsuarioController {
         private UsuarioService userService;
 
         @PostMapping("/registrar")
-        public ResponseEntity<UsuarioDto> registrar(@RequestBody UsuarioDto userDto){
+        public ResponseEntity<UsuarioDto> registrar(@RequestBody UsuarioRegistroDto userDto){
             try {
                 UsuarioDto user = userService.registrarUsuario(userDto);
                 return new ResponseEntity<>(user, HttpStatus.CREATED);

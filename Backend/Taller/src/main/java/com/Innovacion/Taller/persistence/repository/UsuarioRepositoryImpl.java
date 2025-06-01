@@ -1,5 +1,6 @@
 package com.Innovacion.Taller.persistence.repository;
 
+import com.Innovacion.Taller.domain.dto.PersonaDto;
 import com.Innovacion.Taller.domain.dto.UsuarioDto;
 import com.Innovacion.Taller.domain.repositoryInterfaces.IUsuarioRepository;
 import com.Innovacion.Taller.persistence.crud.UsuarioCrudRepository;

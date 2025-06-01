@@ -1,5 +1,6 @@
 package com.Innovacion.Taller.domain.repositoryInterfaces;
 
+import com.Innovacion.Taller.domain.dto.PersonaDto;
 import com.Innovacion.Taller.domain.dto.UsuarioDto;
 import com.Innovacion.Taller.persistence.entity.Usuario;
 
