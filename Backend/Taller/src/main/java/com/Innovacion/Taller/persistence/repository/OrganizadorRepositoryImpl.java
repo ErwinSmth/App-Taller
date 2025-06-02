@@ -6,9 +6,11 @@ import com.Innovacion.Taller.persistence.crud.OrganizadorCrudRepository;
 import com.Innovacion.Taller.persistence.entity.Organizador;
 import com.Innovacion.Taller.persistence.mapper.OrganizadorMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public class OrganizadorRepositoryImpl implements IOrganizadorRepository {
 
     @Autowired

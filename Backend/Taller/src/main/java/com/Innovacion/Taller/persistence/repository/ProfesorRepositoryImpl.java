@@ -6,11 +6,13 @@ import com.Innovacion.Taller.persistence.crud.ProfesorCrudRepository;
 import com.Innovacion.Taller.persistence.entity.Profesor;
 import com.Innovacion.Taller.persistence.mapper.ProfesorMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@Repository
 public class ProfesorRepositoryImpl implements IProfesorRepository {
 
     @Autowired
