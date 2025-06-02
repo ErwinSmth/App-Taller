@@ -30,4 +30,14 @@ public class EstudianteRepositoryImpl implements IEstudianteRepository {
     public Optional<EstudianteDto> findById(Long id) {
         return estudCrud.findById(id).map(Estudiante->mapper.toEstudianteDto(Estudiante));
     }
+
+    @Override
+    public Optional<EstudianteDto> findByUsuarioId(Long userId) {
+        return estudCrud.findByUsuarioUserId(userId).map(Estudiante -> mapper.toEstudianteDto(Estudiante));
+    }
+
+    @Override
+    public Optional<EstudianteDto> findByPersonaId(Long personaId) {
+        return estudCrud.findByUsuarioPersonaPersonaId(personaId).map(Estudiante -> mapper.toEstudianteDto(Estudiante));
+    }
 }
