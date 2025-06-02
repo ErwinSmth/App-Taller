@@ -1,10 +1,7 @@
 package com.Innovacion.Taller.domain.service;
 
 import com.Innovacion.Taller.domain.dto.*;
-import com.Innovacion.Taller.domain.repositoryInterfaces.IPersonaRepository;
-import com.Innovacion.Taller.domain.repositoryInterfaces.IRolRepository;
-import com.Innovacion.Taller.domain.repositoryInterfaces.IUsuarioRepository;
-import com.Innovacion.Taller.domain.repositoryInterfaces.IEstudianteRepository;
+import com.Innovacion.Taller.domain.repositoryInterfaces.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +24,17 @@ public class UsuarioService {
 
     @Autowired
     private IEstudianteRepository estudianteRepo;
-    
+
+    @Autowired
+    private IAdministradorRepository adminRepo;
+
+    @Autowired
+    private IProfesorRepository profeRepo;
+
+    @Autowired
+    private IOrganizadorRepository organizadorRepo;
+
+    //Metodo a ser usado solo la primera vez que el usuario se registre
     @Transactional
     public UsuarioDto registrarUsuario(UsuarioRegistroDto userDto){
 
@@ -69,9 +76,19 @@ public class UsuarioService {
                 estudiante.setUsuarioDto(userSave);
                 estudianteRepo.save(estudiante);
             } else if (rol.getRolId() == 2){ //Profesor
+                ProfesorDto profe = new ProfesorDto();
+                profe.setUserDto(userSave);
+                profeRepo.save(profe);
 
-            } else { //Organizador
+            } else if(rol.getRolId() == 3){ //Organizador
+                OrganizadorDto organiz = new OrganizadorDto();
+                organiz.setUserDto(userSave);
+                organizadorRepo.save(organiz);
 
+            } else if(rol.getRolId() == 4){ //Admin
+                AdministradorDto admin = new AdministradorDto();
+                admin.setUserDto(userSave);
+                adminRepo.save(admin);
             }
         }
         return userSave;
