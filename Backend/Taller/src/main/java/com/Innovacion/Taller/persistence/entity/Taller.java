@@ -48,6 +48,9 @@ public class Taller {
     @Column(name = "fecha_creacion", insertable = false, updatable = false)
     private LocalDate fechaRegistro;
 
+    @Column(name = "imagen_url")
+    private String imagenUrl;
+
 
     public Long getTallerId() {
         return tallerId;
@@ -135,5 +138,13 @@ public class Taller {
 
     public void setFechaRegistro(LocalDate fechaRegistro) {
         this.fechaRegistro = fechaRegistro;
+    }
+
+    public String getImagenUrl() {
+        return imagenUrl;
+    }
+
+    public void setImagenUrl(String imagenUrl) {
+        this.imagenUrl = imagenUrl;
     }
 }

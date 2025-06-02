@@ -8,4 +8,6 @@ public interface IEstudianteRepository {
 
     EstudianteDto save(EstudianteDto estudiante);
     Optional<EstudianteDto>findById(Long id);
+    Optional<EstudianteDto> findByUsuarioId(Long userId);
+    Optional<EstudianteDto> findByPersonaId(Long personaId);
 }

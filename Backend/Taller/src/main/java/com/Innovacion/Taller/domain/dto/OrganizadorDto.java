@@ -3,7 +3,7 @@ package com.Innovacion.Taller.domain.dto;
 public class OrganizadorDto {
 
     private Long organizadorId;
-    private UsuarioDto userId;
+    private UsuarioDto userDto;
     private String razonSocial;
     private String ruc;
     private String descripcion;
@@ -17,12 +17,12 @@ public class OrganizadorDto {
         this.organizadorId = organizadorId;
     }
 
-    public UsuarioDto getUserId() {
-        return userId;
+    public UsuarioDto getUserDto() {
+        return userDto;
     }
 
-    public void setUserId(UsuarioDto userId) {
-        this.userId = userId;
+    public void setUserDto(UsuarioDto userDto) {
+        this.userDto = userDto;
     }
 
     public String getRazonSocial() {

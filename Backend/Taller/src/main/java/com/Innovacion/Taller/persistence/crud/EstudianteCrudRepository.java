@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface EstudianteCrudRepository extends JpaRepository <Estudiante, Long> {
 
-
+    Optional<Estudiante> findByUsuarioUserId(Long userId);
+    Optional<Estudiante> findByUsuarioPersonaPersonaId(Long personaId);
 
 }

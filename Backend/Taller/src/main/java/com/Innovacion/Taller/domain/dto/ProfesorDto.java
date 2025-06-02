@@ -3,7 +3,7 @@ package com.Innovacion.Taller.domain.dto;
 public class ProfesorDto {
 
     private Long profesorId;
-    private UsuarioDto userId;
+    private UsuarioDto userDto;
     private String descripcion;
     private String especialidades;
 
@@ -15,12 +15,12 @@ public class ProfesorDto {
         this.profesorId = profesorId;
     }
 
-    public UsuarioDto getUserId() {
-        return userId;
+    public UsuarioDto getUserDto() {
+        return userDto;
     }
 
-    public void setUserId(UsuarioDto userId) {
-        this.userId = userId;
+    public void setUserDto(UsuarioDto userDto) {
+        this.userDto = userDto;
     }
 
     public String getDescripcion() {
