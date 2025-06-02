@@ -8,6 +8,7 @@ import java.util.Optional;
 public interface IOrganizadorRepository {
 
     OrganizadorDto save(OrganizadorDto organizador);
+    Optional<OrganizadorDto> findById(Long id);
     Optional<OrganizadorDto> findByUsuarioId(Long userId);
     Optional<OrganizadorDto> findByRuc(String ruc);
 

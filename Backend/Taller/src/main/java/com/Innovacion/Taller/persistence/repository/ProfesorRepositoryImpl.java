@@ -26,6 +26,11 @@ public class ProfesorRepositoryImpl implements IProfesorRepository {
     }
 
     @Override
+    public Optional<ProfesorDto> findById(Long id) {
+        return profesorCrud.findById(id).map(mapper::toProfesorDto);
+    }
+
+    @Override
     public Optional<ProfesorDto> findByUsuarioId(Long userId) {
         return profesorCrud.findByUsuarioUserId(userId).map(mapper::toProfesorDto);
     }

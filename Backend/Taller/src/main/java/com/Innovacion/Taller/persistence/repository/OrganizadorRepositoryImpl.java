@@ -24,6 +24,11 @@ public class OrganizadorRepositoryImpl implements IOrganizadorRepository {
     }
 
     @Override
+    public Optional<OrganizadorDto> findById(Long id) {
+        return organizadorCrud.findById(id).map(mapper::toOrganizadorDto);
+    }
+
+    @Override
     public Optional<OrganizadorDto> findByUsuarioId(Long userId) {
         return organizadorCrud.findByUsuarioUserId(userId).map(mapper::toOrganizadorDto);
     }
