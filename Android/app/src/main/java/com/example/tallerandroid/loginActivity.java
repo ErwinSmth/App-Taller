@@ -28,7 +28,7 @@ public class loginActivity extends AppCompatActivity {
     private EditText etUserName, etPassword;
     private Button btnLogin;
 
-    private static final String BASE_URL = "http://10.0.2.2:8090/AppTaller/usuario/login";
+    private static final String BASE_URL = "http://192.168.1.42:8090/AppTaller/usuario/login";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,7 +81,7 @@ public class loginActivity extends AppCompatActivity {
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
                 runOnUiThread(() -> {
                     Toast.makeText(loginActivity.this, "Error de conexion", Toast.LENGTH_SHORT).show();
-                    Log.e("loginActivity", "Error: " + e.getMessage());
+                    Log.e("loginActivity", "Error: " + e.getMessage(), e);
                 });
             }
 

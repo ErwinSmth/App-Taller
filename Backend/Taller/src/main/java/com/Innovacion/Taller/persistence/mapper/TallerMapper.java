@@ -17,7 +17,6 @@ public interface TallerMapper {
     @Mapping(source = "categoria.categoriaId", target = "idCategoria")
     Taller toTaller(TallerDto tallerDto);
 
-    //Mapeo del Taller Resumido
     // Mapeo del Taller Resumido
     @Mapping(source = "idCategoria", target = "categoriaId")
     @Mapping(source = "categoria.nombre", target = "categoriaNombre")

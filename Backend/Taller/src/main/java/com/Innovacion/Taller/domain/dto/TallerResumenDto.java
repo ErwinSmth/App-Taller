@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 //Clase pensada a ser usada en una vista donde se muestren todos los talleres
 public class TallerResumenDto {
-
+//Falta el profesor
     private Long tallerId;
     private String titulo;
     private String imagenUrl;
