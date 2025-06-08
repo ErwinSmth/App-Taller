@@ -1,4 +1,4 @@
-package com.example.tallerandroid;
+package com.example.tallerandroid.auth;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.tallerandroid.R;
 import com.google.gson.JsonObject;
 
 import java.io.IOException;
