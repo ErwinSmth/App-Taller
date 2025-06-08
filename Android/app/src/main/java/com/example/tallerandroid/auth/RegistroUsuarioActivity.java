@@ -12,6 +12,9 @@ import com.example.tallerandroid.R;
 
 public class RegistroUsuarioActivity extends AppCompatActivity {
 
+    //id para ser usado para asignar el usuario a la persona que se registro
+    long personaID = getIntent().getLongExtra("personaId", -1);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

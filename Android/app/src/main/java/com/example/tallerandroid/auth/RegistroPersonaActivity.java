@@ -1,6 +1,7 @@
 package com.example.tallerandroid.auth;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -141,6 +142,11 @@ public class RegistroPersonaActivity extends AppCompatActivity {
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                     if (response.isSuccessful()) {
                         Toast.makeText(RegistroPersonaActivity.this, "Persona registrada", Toast.LENGTH_SHORT).show();
+                        JsonObject personJson = response.body();
+                        long idPerson = personJson.get("personaId").getAsLong();
+                        Intent intent = new Intent(RegistroPersonaActivity.this, RegistroUsuarioActivity.class);
+                        intent.putExtra("personaId", idPerson);
+                        startActivity(intent);
                         finish();
                     } else {
                         String errorMsg = "Error al registrar";

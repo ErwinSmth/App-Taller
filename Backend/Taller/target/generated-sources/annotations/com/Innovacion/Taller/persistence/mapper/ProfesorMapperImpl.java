@@ -8,14 +8,16 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2025-06-07T23:56:01-0500",
-    comments = "version: 1.6.3, compiler: Eclipse JDT (IDE) 3.42.0.v20250514-1000, environment: Java 21.0.7 (Eclipse Adoptium)"
+    date = "2025-06-08T16:52:37-0500",
+    comments = "version: 1.6.3, compiler: javac, environment: Java 21.0.5 (Oracle Corporation)"
 )
 @Component
 public class ProfesorMapperImpl implements ProfesorMapper {
 
     @Autowired
     private UsuarioMapper usuarioMapper;
+    @Autowired
+    private EspecialidadMapper especialidadMapper;
 
     @Override
     public ProfesorDto toProfesorDto(Profesor profesor) {
@@ -26,9 +28,8 @@ public class ProfesorMapperImpl implements ProfesorMapper {
         ProfesorDto profesorDto = new ProfesorDto();
 
         profesorDto.setUserDto( usuarioMapper.toUsuarioDto( profesor.getUsuario() ) );
+        profesorDto.setEspecialidades( especialidadMapper.toEspecialidadDtoList( profesor.getEspecialidades() ) );
         profesorDto.setProfesorId( profesor.getProfesorId() );
-        profesorDto.setDescripcion( profesor.getDescripcion() );
-        profesorDto.setEspecialidades( profesor.getEspecialidades() );
 
         return profesorDto;
     }
@@ -42,9 +43,8 @@ public class ProfesorMapperImpl implements ProfesorMapper {
         Profesor profesor = new Profesor();
 
         profesor.setUsuario( usuarioMapper.toUsuario( profesorDto.getUserDto() ) );
+        profesor.setEspecialidades( especialidadMapper.toEspecialidadList( profesorDto.getEspecialidades() ) );
         profesor.setProfesorId( profesorDto.getProfesorId() );
-        profesor.setDescripcion( profesorDto.getDescripcion() );
-        profesor.setEspecialidades( profesorDto.getEspecialidades() );
 
         return profesor;
     }

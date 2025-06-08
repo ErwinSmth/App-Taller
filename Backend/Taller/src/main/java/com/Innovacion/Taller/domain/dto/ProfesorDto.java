@@ -1,19 +1,15 @@
 package com.Innovacion.Taller.domain.dto;
 
+import java.util.List;
+
 public class ProfesorDto {
 
     private Long profesorId;
-<<<<<<< HEAD:Taller/src/main/java/com/Innovacion/Taller/domain/dto/ProfesorDto.java
-    private String descripcion;
-    private String especialidades;
-    private UsuarioDto usuarioDto;
-   //falta lista talleres
-
-=======
     private UsuarioDto userDto;
     private String descripcion;
-    private String especialidades;
->>>>>>> main:Backend/Taller/src/main/java/com/Innovacion/Taller/domain/dto/ProfesorDto.java
+    private List<EspecialidadDto> especialidades;
+    //falta lista talleres
+
 
     public Long getProfesorId() {
         return profesorId;
@@ -23,8 +19,6 @@ public class ProfesorDto {
         this.profesorId = profesorId;
     }
 
-<<<<<<< HEAD:Taller/src/main/java/com/Innovacion/Taller/domain/dto/ProfesorDto.java
-=======
     public UsuarioDto getUserDto() {
         return userDto;
     }
@@ -33,7 +27,6 @@ public class ProfesorDto {
         this.userDto = userDto;
     }
 
->>>>>>> main:Backend/Taller/src/main/java/com/Innovacion/Taller/domain/dto/ProfesorDto.java
     public String getDescripcion() {
         return descripcion;
     }
@@ -42,22 +35,11 @@ public class ProfesorDto {
         this.descripcion = descripcion;
     }
 
-    public String getEspecialidades() {
+    public List<EspecialidadDto> getEspecialidades() {
         return especialidades;
     }
 
-    public void setEspecialidades(String especialidades) {
+    public void setEspecialidades(List<EspecialidadDto> especialidades) {
         this.especialidades = especialidades;
     }
-<<<<<<< HEAD:Taller/src/main/java/com/Innovacion/Taller/domain/dto/ProfesorDto.java
-
-    public UsuarioDto getUsuarioDto() {
-        return usuarioDto;
-    }
-
-    public void setUsuarioDto(UsuarioDto usuarioDto) {
-        this.usuarioDto = usuarioDto;
-    }
-=======
->>>>>>> main:Backend/Taller/src/main/java/com/Innovacion/Taller/domain/dto/ProfesorDto.java
 }

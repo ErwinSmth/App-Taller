@@ -13,14 +13,14 @@ import java.util.List;
 public interface UsuarioMapper {
 
     @Mapping(source = "persona", target = "personDto")
-    @Mapping(source = "roles", target = "rolesDto")
+    @Mapping(source = "roles", target = "roles")
     UsuarioDto toUsuarioDto(Usuario usuario);
 
     List<UsuarioDto> toUsuarioDtoList(List<Usuario> usuarios);
 
     @InheritInverseConfiguration
     @Mapping(source = "personDto", target = "persona")
-    @Mapping(source = "rolesDto", target = "roles")
+    @Mapping(source = "roles", target = "roles")
     Usuario toUsuario(UsuarioDto usuarioDto);
 
     List<Usuario> toUsuarioList(List<UsuarioDto> usuarioDtos);
