@@ -12,5 +12,4 @@ public interface IPersonaRepository {
     boolean existsByDNI(String dni);
     boolean existsByEmail(String email);
     Optional<PersonaDto> findById(Long id);
-
 }

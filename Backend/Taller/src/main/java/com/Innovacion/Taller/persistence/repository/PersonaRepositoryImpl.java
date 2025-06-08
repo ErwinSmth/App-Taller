@@ -43,4 +43,5 @@ public class PersonaRepositoryImpl implements IPersonaRepository {
     public Optional<PersonaDto> findById(Long id) {
         return personCrud.findById(id).map( persona -> personaMapper.toPersonaDto(persona));
     }
+
 }

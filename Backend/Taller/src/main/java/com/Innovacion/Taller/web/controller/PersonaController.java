@@ -27,4 +27,14 @@ public class PersonaController {
                 .orElse(ResponseEntity.notFound().build()); // Si no encuentra devolvera 404 Not Found
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<PersonaDto> editarPersona(@PathVariable long id, @RequestBody PersonaDto persona){
+        try {
+            PersonaDto actualizada = service.editarPersona(id, persona);
+            return ResponseEntity.ok(actualizada);
+        } catch (IllegalArgumentException e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
 }

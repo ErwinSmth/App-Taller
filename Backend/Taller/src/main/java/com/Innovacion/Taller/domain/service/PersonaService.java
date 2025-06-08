@@ -55,4 +55,12 @@ public class PersonaService {
         return personRepo.findByEmail(email);
     }
 
+    @Transactional
+    public PersonaDto editarPersona(Long id, PersonaDto persona){
+        Optional<PersonaDto> existe = personRepo.findById(id);
+        if (existe.isEmpty()) throw new IllegalArgumentException("Persona no encontrada");
+        persona.setPersonaId(id);
+        return personRepo.save(persona);
+    }
+
 }
