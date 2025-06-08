@@ -40,7 +40,7 @@ public class PersonaService {
         if (person.getFechaNacimiento().isAfter(LocalDate.now())) {
             throw new IllegalArgumentException("Fecha de nacimiento no puede ser futura");
         }
-        
+
         if (personRepo.existsByDNI(person.getDNI())) {
             throw new IllegalArgumentException("Ya existe una Persona con ese DNI");
         }

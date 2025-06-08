@@ -50,4 +50,8 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.gson)
 
+    implementation(libs.retrofit2)
+    implementation(libs.retrofit2.gson)
+    implementation(libs.okhttp3.logging)
+
 }

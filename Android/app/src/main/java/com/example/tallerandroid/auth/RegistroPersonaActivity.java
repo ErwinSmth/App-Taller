@@ -2,6 +2,7 @@ package com.example.tallerandroid.auth;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -13,25 +14,27 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tallerandroid.R;
+import com.example.tallerandroid.net.RetrofitCliente;
+import com.example.tallerandroid.net.apis.ApiPersonService;
+import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Calendar;
 
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RegistroPersonaActivity extends AppCompatActivity {
 
     private EditText etNombres, etApellidos, etDNI, etTelefono, etEmail, etNacimiento;
     private Button btnRegistrar;
-    private static final String BASE_URL = "http://10.0.2.2:8090/AppTaller/personas/registrar";
 
 
     @Override
@@ -71,6 +74,9 @@ public class RegistroPersonaActivity extends AppCompatActivity {
     }
 
     private void registrarPersona() {
+
+        ApiPersonService apiPersonService = RetrofitCliente.getCliente().create(ApiPersonService.class);
+
         String nombres = etNombres.getText().toString().trim();
         String apellidos = etApellidos.getText().toString().trim();
         String dni = etDNI.getText().toString().trim();
@@ -116,47 +122,40 @@ public class RegistroPersonaActivity extends AppCompatActivity {
                 Toast.makeText(this, "Formato de fecha inválido (YYYY-MM-DD)", Toast.LENGTH_SHORT).show();
                 return;
             }
-
-            OkHttpClient client = new OkHttpClient();
-            JSONObject json = new JSONObject();
+            JsonObject json = new JsonObject();
             try {
-                json.put("nombres", nombres);
-                json.put("apellidos", apellidos);
-                json.put("dni", dni);
-                json.put("telefono", telefono);
-                json.put("email", email);
-                json.put("fechaNacimiento", fechaNacimiento);
+                json.addProperty("nombres", nombres);
+                json.addProperty("apellidos", apellidos);
+                json.addProperty("dni", dni);
+                json.addProperty("telefono", telefono);
+                json.addProperty("email", email);
+                json.addProperty("fechaNacimiento", fechaNacimiento);
             } catch (Exception e) {
                 Toast.makeText(this, "Error al crear JSON", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            RequestBody body = RequestBody.create(json.toString(), MediaType.parse("application/json"));
-            Request request = new Request.Builder().url(BASE_URL).post(body).build();
-
-            client.newCall(request).enqueue(new Callback() {
+            Call<JsonObject> call = apiPersonService.registro(json);
+            call.enqueue(new Callback<JsonObject>() {
                 @Override
-                public void onFailure(Call call, IOException e) {
-                    runOnUiThread(() -> Toast.makeText(RegistroPersonaActivity.this, "Error de red", Toast.LENGTH_SHORT).show());
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(RegistroPersonaActivity.this, "Persona registrada", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        String errorMsg = "Error al registrar";
+                        try {
+                            errorMsg = response.errorBody() != null ? response.errorBody().string() : errorMsg;
+                        } catch (Exception ignored) {}
+                        Toast.makeText(RegistroPersonaActivity.this, errorMsg, Toast.LENGTH_LONG).show();
+                    }
                 }
-
                 @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    runOnUiThread(() -> {
-                        if (response.isSuccessful()) {
-                            Toast.makeText(RegistroPersonaActivity.this, "Persona registrada", Toast.LENGTH_SHORT).show();
-                            finish();
-                        } else {
-                            String errorMsg = "Error al registrar";
-                            try {
-                                errorMsg = response.body().string();
-                            } catch (Exception ignored) {
-                            }
-                            Toast.makeText(RegistroPersonaActivity.this, errorMsg, Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Toast.makeText(RegistroPersonaActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
                 }
             });
+
         }
 
     }
