@@ -10,5 +10,5 @@ public interface PersonaCrudRepository extends JpaRepository<Persona, Long> {
     Optional<Persona> findByEmail(String email);
     boolean existsByDNI(String Dni);
     boolean existsByEmail(String email);
-
+    Optional<Persona> findByDNI(String dni);
 }

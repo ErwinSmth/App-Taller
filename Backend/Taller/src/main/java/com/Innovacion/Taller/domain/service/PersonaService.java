@@ -57,8 +57,21 @@ public class PersonaService {
 
     @Transactional
     public PersonaDto editarPersona(Long id, PersonaDto persona){
-        Optional<PersonaDto> existe = personRepo.findById(id);
-        if (existe.isEmpty()) throw new IllegalArgumentException("Persona no encontrada");
+        Optional<PersonaDto> existente = personRepo.findById(id);
+        if (existente.isEmpty()) throw new IllegalArgumentException("Persona no encontrada");
+
+        // Validar DNI
+        Optional<PersonaDto> personaConDni = personRepo.findByDNI(persona.getDNI());
+        if (personaConDni.isPresent() && !personaConDni.get().getPersonaId().equals(id)) {
+            throw new IllegalArgumentException("Ya existe una Persona con ese DNI");
+        }
+
+        // Validar Email
+        Optional<PersonaDto> personaConEmail = personRepo.findByEmail(persona.getEmail());
+        if (personaConEmail.isPresent() && !personaConEmail.get().getPersonaId().equals(id)) {
+            throw new IllegalArgumentException("Ya existe una Persona con ese Email");
+        }
+
         persona.setPersonaId(id);
         return personRepo.save(persona);
     }

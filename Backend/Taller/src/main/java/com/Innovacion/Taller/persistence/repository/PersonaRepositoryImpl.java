@@ -44,4 +44,9 @@ public class PersonaRepositoryImpl implements IPersonaRepository {
         return personCrud.findById(id).map( persona -> personaMapper.toPersonaDto(persona));
     }
 
+    @Override
+    public Optional<PersonaDto> findByDNI(String dni) {
+        return personCrud.findByDNI(dni).map(persona -> personaMapper.toPersonaDto(persona));
+    }
+
 }
