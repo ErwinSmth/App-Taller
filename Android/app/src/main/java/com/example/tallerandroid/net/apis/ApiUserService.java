@@ -11,4 +11,7 @@ public interface ApiUserService {
     @POST("/AppTaller/usuario/login")
     Call<JsonObject> login(@Body JsonObject body);
 
+    @POST("/AppTaller/usuario/registrar")
+    Call<JsonObject> registrarUsuario(@Body JsonObject body);
+
 }
