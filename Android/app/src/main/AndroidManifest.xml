@@ -16,6 +16,9 @@
         android:theme="@style/Theme.TallerAndroid"
         tools:targetApi="31">
         <activity
+            android:name=".profesor.ProfesorEspecialidadActivity"
+            android:exported="false" />
+        <activity
             android:name=".utilities.RolRegistroActivity"
             android:exported="false" />
         <activity

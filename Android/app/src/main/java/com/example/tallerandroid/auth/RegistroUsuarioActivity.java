@@ -29,6 +29,8 @@ public class RegistroUsuarioActivity extends AppCompatActivity {
 
     private String rol;
 
+    private Long userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +89,7 @@ public class RegistroUsuarioActivity extends AppCompatActivity {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(RegistroUsuarioActivity.this, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
-                    finish(); // O navega a login o main
+
                 } else {
                     Toast.makeText(RegistroUsuarioActivity.this, "Error al registrar usuario", Toast.LENGTH_SHORT).show();
                 }
