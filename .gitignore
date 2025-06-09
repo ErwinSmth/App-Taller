@@ -53,3 +53,7 @@ HELP.md
 # OS-specific files
 *.swp
 *.swo
+
+# Ignorar archivos generados por MapStruct y otros procesadores de anotaciones
+/Backend/Taller/target/generated-sources/annotations/
+/Backend/Taller/target
