@@ -39,6 +39,7 @@ public class RegistroPersonaActivity extends AppCompatActivity {
 
     private EditText etNombres, etApellidos, etDNI, etTelefono, etEmail, etNacimiento;
     private Button btnRegistrar;
+    private Long personaId = null;
 
     private ActivityResultLauncher<Intent> registroUsuarioLauncher;
 
@@ -55,11 +56,29 @@ public class RegistroPersonaActivity extends AppCompatActivity {
         etNacimiento = findViewById(R.id.etFechaNacimiento);
         btnRegistrar = findViewById(R.id.btnRegistrar);
 
+        // Recuperar datos si existen (al volver atrás)
+        Intent intent = getIntent();
+        if (intent != null) {
+            personaId = intent.hasExtra("personaId") ? intent.getLongExtra("personaId", -1) : null;
+            if (personaId != null && personaId == -1) personaId = null;
+            etNombres.setText(intent.getStringExtra("nombres"));
+            etApellidos.setText(intent.getStringExtra("apellidos"));
+            etDNI.setText(intent.getStringExtra("dni"));
+            etTelefono.setText(intent.getStringExtra("telefono"));
+            etEmail.setText(intent.getStringExtra("email"));
+            etNacimiento.setText(intent.getStringExtra("fechaNacimiento"));
+        }
+
+        etNacimiento.setFocusable(false);
+        etNacimiento.setOnClickListener(v -> showDatePicker());
+
         registroUsuarioLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Intent data = result.getData();
+                        personaId = data.hasExtra("personaId") ? data.getLongExtra("personaId", -1) : null;
+                        if (personaId != null && personaId == -1) personaId = null;
                         etNombres.setText(data.getStringExtra("nombres"));
                         etApellidos.setText(data.getStringExtra("apellidos"));
                         etDNI.setText(data.getStringExtra("dni"));
@@ -70,20 +89,15 @@ public class RegistroPersonaActivity extends AppCompatActivity {
                 }
         );
 
-        // Si hay datos en el intent, rellena los campos
-        if (getIntent() != null) {
-            etNombres.setText(getIntent().getStringExtra("nombres"));
-            etApellidos.setText(getIntent().getStringExtra("apellidos"));
-            etDNI.setText(getIntent().getStringExtra("dni"));
-            etTelefono.setText(getIntent().getStringExtra("telefono"));
-            etEmail.setText(getIntent().getStringExtra("email"));
-            etNacimiento.setText(getIntent().getStringExtra("fechaNacimiento"));
-        }
-
-        etNacimiento.setFocusable(false);
-        etNacimiento.setOnClickListener(v -> showDatePicker());
-
-        btnRegistrar.setOnClickListener(v -> registrarPersona());
+        btnRegistrar.setOnClickListener(v -> {
+            if (validarCampos()) {
+                if (personaId == null) {
+                    registrarPersona();
+                } else {
+                    editarPersona();
+                }
+            }
+        });
     }
 
     private void showDatePicker() {
@@ -101,9 +115,7 @@ public class RegistroPersonaActivity extends AppCompatActivity {
         datePickerDialog.show();
     }
 
-    private void registrarPersona() {
-        ApiPersonService apiPersonService = RetrofitCliente.getCliente().create(ApiPersonService.class);
-
+    private boolean validarCampos() {
         String nombres = etNombres.getText().toString().trim();
         String apellidos = etApellidos.getText().toString().trim();
         String dni = etDNI.getText().toString().trim();
@@ -111,30 +123,29 @@ public class RegistroPersonaActivity extends AppCompatActivity {
         String email = etEmail.getText().toString().trim();
         String fechaNacimiento = etNacimiento.getText().toString().trim();
 
-        // Validaciones
         if (nombres.isEmpty() || nombres.length() > 100) {
             Toast.makeText(this, "Ingrese nombres (máx 100 caracteres)", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
         if (apellidos.isEmpty() || apellidos.length() > 100) {
             Toast.makeText(this, "Ingrese apellidos (máx 100 caracteres)", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
         if (!dni.matches("\\d{8}")) {
             Toast.makeText(this, "DNI debe tener exactamente 8 dígitos", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
         if (!telefono.matches("\\d{7,15}")) {
             Toast.makeText(this, "Teléfono debe tener entre 7 y 15 dígitos", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
         if (!email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
             Toast.makeText(this, "Ingrese un email válido", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
         if (fechaNacimiento.isEmpty()) {
             Toast.makeText(this, "Seleccione la fecha de nacimiento", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             java.time.LocalDate fecha;
@@ -142,26 +153,30 @@ public class RegistroPersonaActivity extends AppCompatActivity {
                 fecha = java.time.LocalDate.parse(fechaNacimiento);
                 if (fecha.isAfter(java.time.LocalDate.now())) {
                     Toast.makeText(this, "La fecha de nacimiento no puede ser futura", Toast.LENGTH_SHORT).show();
-                    return;
+                    return false;
                 }
             } catch (Exception e) {
                 Toast.makeText(this, "Formato de fecha inválido (YYYY-MM-DD)", Toast.LENGTH_SHORT).show();
-                return;
+                return false;
             }
         }
+        return true;
+    }
 
+    private JsonObject obtenerJsonPersona() {
         JsonObject json = new JsonObject();
-        try {
-            json.addProperty("nombres", nombres);
-            json.addProperty("apellidos", apellidos);
-            json.addProperty("dni", dni);
-            json.addProperty("telefono", telefono);
-            json.addProperty("email", email);
-            json.addProperty("fechaNacimiento", fechaNacimiento);
-        } catch (Exception e) {
-            Toast.makeText(this, "Error al crear JSON", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        json.addProperty("nombres", etNombres.getText().toString().trim());
+        json.addProperty("apellidos", etApellidos.getText().toString().trim());
+        json.addProperty("dni", etDNI.getText().toString().trim());
+        json.addProperty("telefono", etTelefono.getText().toString().trim());
+        json.addProperty("email", etEmail.getText().toString().trim());
+        json.addProperty("fechaNacimiento", etNacimiento.getText().toString().trim());
+        return json;
+    }
+
+    private void registrarPersona() {
+        ApiPersonService apiPersonService = RetrofitCliente.getCliente().create(ApiPersonService.class);
+        JsonObject json = obtenerJsonPersona();
 
         Call<JsonObject> call = apiPersonService.registro(json);
         call.enqueue(new Callback<JsonObject>() {
@@ -170,16 +185,8 @@ public class RegistroPersonaActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Toast.makeText(RegistroPersonaActivity.this, "Persona registrada", Toast.LENGTH_SHORT).show();
                     JsonObject personJson = response.body();
-                    long idPerson = personJson.get("personaId").getAsLong();
-                    Intent intent = new Intent(RegistroPersonaActivity.this, RegistroUsuarioActivity.class);
-                    intent.putExtra("personaId", idPerson);
-                    intent.putExtra("nombres", nombres);
-                    intent.putExtra("apellidos", apellidos);
-                    intent.putExtra("dni", dni);
-                    intent.putExtra("telefono", telefono);
-                    intent.putExtra("email", email);
-                    intent.putExtra("fechaNacimiento", fechaNacimiento);
-                    registroUsuarioLauncher.launch(intent);
+                    personaId = personJson.get("personaId").getAsLong();
+                    irARegistroUsuario(personaId);
                 } else {
                     String errorMsg = "Error al registrar";
                     try {
@@ -188,11 +195,48 @@ public class RegistroPersonaActivity extends AppCompatActivity {
                     Toast.makeText(RegistroPersonaActivity.this, errorMsg, Toast.LENGTH_LONG).show();
                 }
             }
-
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 Toast.makeText(RegistroPersonaActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void editarPersona() {
+        ApiPersonService apiPersonService = RetrofitCliente.getCliente().create(ApiPersonService.class);
+        JsonObject json = obtenerJsonPersona();
+
+        Call<JsonObject> call = apiPersonService.editarPersona(personaId, json);
+        call.enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(RegistroPersonaActivity.this, "Datos actualizados", Toast.LENGTH_SHORT).show();
+                    irARegistroUsuario(personaId);
+                } else {
+                    String errorMsg = "Error al editar";
+                    try {
+                        errorMsg = response.errorBody() != null ? response.errorBody().string() : errorMsg;
+                    } catch (Exception ignored) {}
+                    Toast.makeText(RegistroPersonaActivity.this, errorMsg, Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(RegistroPersonaActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void irARegistroUsuario(Long personaId) {
+        Intent intent = new Intent(RegistroPersonaActivity.this, RegistroUsuarioActivity.class);
+        intent.putExtra("personaId", personaId);
+        intent.putExtra("nombres", etNombres.getText().toString().trim());
+        intent.putExtra("apellidos", etApellidos.getText().toString().trim());
+        intent.putExtra("dni", etDNI.getText().toString().trim());
+        intent.putExtra("telefono", etTelefono.getText().toString().trim());
+        intent.putExtra("email", etEmail.getText().toString().trim());
+        intent.putExtra("fechaNacimiento", etNacimiento.getText().toString().trim());
+        registroUsuarioLauncher.launch(intent);
     }
 }
