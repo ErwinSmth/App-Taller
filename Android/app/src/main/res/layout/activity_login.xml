@@ -37,6 +37,14 @@
             android:padding="12dp"
             android:layout_marginTop="16dp" />
 
+        <TextView
+            android:id="@+id/tv_no_cuenta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="¿No tienes cuenta? Regístrate"
+            android:textColor="@android:color/holo_blue_dark"
+            android:paddingTop="24dp" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

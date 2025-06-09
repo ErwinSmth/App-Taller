@@ -27,16 +27,14 @@ public class RegistroUsuarioActivity extends AppCompatActivity {
     private EditText etUserName, etPassword;
     private Button btnRegistrarUsuario, btnVolverPersona;
 
+    private String rol;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_registro_usuario);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+
+        rol = getIntent().getStringExtra("rol");
 
         etUserName = findViewById(R.id.etUserName);
         etPassword = findViewById(R.id.etPassword);
@@ -67,12 +65,19 @@ public class RegistroUsuarioActivity extends AppCompatActivity {
         json.addProperty("nameUser", userName);
         json.addProperty("contraseña", password);
 
-        // Rol estudiante por defecto
         JsonArray roles = new JsonArray();
-        JsonObject rolEstudiante = new JsonObject();
-        rolEstudiante.addProperty("rolId", 1); // 1 = estudiante
-        rolEstudiante.addProperty("rolName", "ESTUDIANTE");
-        roles.add(rolEstudiante);
+        JsonObject rolObj = new JsonObject();
+        if ("ESTUDIANTE".equals(rol)) {
+            rolObj.addProperty("rolId", 1);
+            rolObj.addProperty("rolName", "ESTUDIANTE");
+        } else if ("PROFESOR".equals(rol)) {
+            rolObj.addProperty("rolId", 2);
+            rolObj.addProperty("rolName", "PROFESOR");
+        } else if ("ORGANIZADOR".equals(rol)) {
+            rolObj.addProperty("rolId", 3);
+            rolObj.addProperty("rolName", "ORGANIZADOR");
+        }
+        roles.add(rolObj);
         json.add("roles", roles);
 
         ApiUserService apiUserService = RetrofitCliente.getCliente().create(ApiUserService.class);
@@ -99,6 +104,7 @@ public class RegistroUsuarioActivity extends AppCompatActivity {
         Intent intent = new Intent();
         // Devuelve los datos de persona al activity anterior
         intent.putExtra("personaId", getIntent().getLongExtra("personaId", -1));
+        intent.putExtra("rol", getIntent().getStringExtra("rol"));
         intent.putExtra("nombres", getIntent().getStringExtra("nombres"));
         intent.putExtra("apellidos", getIntent().getStringExtra("apellidos"));
         intent.putExtra("dni", getIntent().getStringExtra("dni"));

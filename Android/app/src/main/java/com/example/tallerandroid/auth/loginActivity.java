@@ -1,10 +1,12 @@
 package com.example.tallerandroid.auth;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -13,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.tallerandroid.R;
 import com.example.tallerandroid.net.apis.ApiUserService;
 import com.example.tallerandroid.net.RetrofitCliente;
+import com.example.tallerandroid.utilities.RolRegistroActivity;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -22,6 +25,7 @@ import retrofit2.Response;
 public class loginActivity extends AppCompatActivity {
 
     private EditText etUserName, etPassword;
+    private TextView tvNoCuenta;
     private Button btnLogin;
 
     @Override
@@ -33,6 +37,7 @@ public class loginActivity extends AppCompatActivity {
         etUserName = findViewById(R.id.et_username);
         etPassword = findViewById(R.id.et_password);
         btnLogin = findViewById(R.id.btn_login);
+        tvNoCuenta = findViewById(R.id.tv_no_cuenta);
 
         //Configurar el boton de login
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -47,6 +52,10 @@ public class loginActivity extends AppCompatActivity {
                     login(userName, password);
                 }
             }
+        });
+
+        tvNoCuenta.setOnClickListener(v -> {
+            startActivity(new Intent(this, RolRegistroActivity.class));
         });
     }
     private void login(String username, String password){

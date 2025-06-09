@@ -41,6 +41,8 @@ public class RegistroPersonaActivity extends AppCompatActivity {
     private Button btnRegistrar;
     private Long personaId = null;
 
+    private String rol;
+
     private ActivityResultLauncher<Intent> registroUsuarioLauncher;
 
     @Override
@@ -55,6 +57,8 @@ public class RegistroPersonaActivity extends AppCompatActivity {
         etEmail = findViewById(R.id.etEmail);
         etNacimiento = findViewById(R.id.etFechaNacimiento);
         btnRegistrar = findViewById(R.id.btnRegistrar);
+
+        rol = getIntent().getStringExtra("rol");
 
         // Recuperar datos si existen (al volver atrás)
         Intent intent = getIntent();
@@ -231,6 +235,7 @@ public class RegistroPersonaActivity extends AppCompatActivity {
     private void irARegistroUsuario(Long personaId) {
         Intent intent = new Intent(RegistroPersonaActivity.this, RegistroUsuarioActivity.class);
         intent.putExtra("personaId", personaId);
+        intent.putExtra("rol", rol);
         intent.putExtra("nombres", etNombres.getText().toString().trim());
         intent.putExtra("apellidos", etApellidos.getText().toString().trim());
         intent.putExtra("dni", etDNI.getText().toString().trim());
