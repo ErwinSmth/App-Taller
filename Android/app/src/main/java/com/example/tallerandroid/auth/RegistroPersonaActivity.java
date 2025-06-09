@@ -59,8 +59,8 @@ public class RegistroPersonaActivity extends AppCompatActivity {
         // Recuperar datos si existen (al volver atrás)
         Intent intent = getIntent();
         if (intent != null) {
-            personaId = intent.hasExtra("personaId") ? intent.getLongExtra("personaId", -1) : null;
-            if (personaId != null && personaId == -1) personaId = null;
+            long id = intent.getLongExtra("personaId", -1);
+            personaId = (id != -1) ? id : null;
             etNombres.setText(intent.getStringExtra("nombres"));
             etApellidos.setText(intent.getStringExtra("apellidos"));
             etDNI.setText(intent.getStringExtra("dni"));
@@ -77,8 +77,8 @@ public class RegistroPersonaActivity extends AppCompatActivity {
                 result -> {
                     if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                         Intent data = result.getData();
-                        personaId = data.hasExtra("personaId") ? data.getLongExtra("personaId", -1) : null;
-                        if (personaId != null && personaId == -1) personaId = null;
+                        long id = data.getLongExtra("personaId", -1);
+                        personaId = (id != -1) ? id : null;
                         etNombres.setText(data.getStringExtra("nombres"));
                         etApellidos.setText(data.getStringExtra("apellidos"));
                         etDNI.setText(data.getStringExtra("dni"));

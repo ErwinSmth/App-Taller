@@ -98,6 +98,7 @@ public class RegistroUsuarioActivity extends AppCompatActivity {
     private void volverARegistroPersona() {
         Intent intent = new Intent();
         // Devuelve los datos de persona al activity anterior
+        intent.putExtra("personaId", getIntent().getLongExtra("personaId", -1));
         intent.putExtra("nombres", getIntent().getStringExtra("nombres"));
         intent.putExtra("apellidos", getIntent().getStringExtra("apellidos"));
         intent.putExtra("dni", getIntent().getStringExtra("dni"));
