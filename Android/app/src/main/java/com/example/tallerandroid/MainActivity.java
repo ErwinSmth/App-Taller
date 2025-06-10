@@ -18,28 +18,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
-        Button btnLogin = findViewById(R.id.btnLogin);
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, loginActivity.class);
-                startActivity(intent);
-            }
-        });
-        Button btnRegistro = findViewById(R.id.btnRegistroPersona);
-        btnRegistro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, com.example.tallerandroid.auth.RegistroPersonaActivity.class);
-                startActivity(intent);
-            }
+
+        // MainActivity.java
+        Button btnIniciar = findViewById(R.id.btnIniciar);
+        btnIniciar.setOnClickListener(v -> {
+            startActivity(new Intent(this, loginActivity.class));
         });
     }
 }

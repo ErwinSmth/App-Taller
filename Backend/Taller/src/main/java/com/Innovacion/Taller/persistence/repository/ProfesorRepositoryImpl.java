@@ -38,7 +38,6 @@ public class ProfesorRepositoryImpl implements IProfesorRepository {
 
     @Override
     public List<ProfesorDto> findByEspecialidad(String especialidad) {
-        // Este método requiere una consulta personalizada si quieres buscar por nombre de especialidad
         return profeCrud.findAll().stream()
                 .filter(p -> p.getEspecialidades().stream()
                         .anyMatch(e -> e.getNombre().equalsIgnoreCase(especialidad)))
