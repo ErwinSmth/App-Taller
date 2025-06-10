@@ -9,7 +9,7 @@ import retrofit2.http.GET;
 
 public interface ApiEspecialidadService {
 
-    @GET("/especialidad/listar")
+    @GET("/AppTaller/especialidad/listar")
     Call<List<Especialidad>> listarEspecialidades();
 
 }

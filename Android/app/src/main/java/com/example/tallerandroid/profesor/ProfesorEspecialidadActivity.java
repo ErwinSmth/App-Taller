@@ -1,6 +1,7 @@
 package com.example.tallerandroid.profesor;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -36,6 +37,8 @@ public class ProfesorEspecialidadActivity extends AppCompatActivity {
     private List<Especialidad> especialidadesSeleccionadas = new ArrayList<>();
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +61,12 @@ public class ProfesorEspecialidadActivity extends AppCompatActivity {
         adapter = new EspecialidadAdapter(new ArrayList<>());
         rvEspecialidades.setAdapter(adapter);
 
+        Long userId = getIntent().getLongExtra("userId", -1);
+        if(userId != 1){
+            obtenerDatosUsuario(userId);
+        }
+
+
         // Llama al backend para obtener especialidades
         cargarEspecialidades();
 
@@ -72,17 +81,21 @@ public class ProfesorEspecialidadActivity extends AppCompatActivity {
             public void onResponse(Call<List<Especialidad>> call, Response<List<Especialidad>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     adapter.setEspecialidades(response.body());
-                    // Si vuelves atrás y tienes seleccionadas, márcalas
-                    //if (!especialidadesSeleccionadas.isEmpty()) {
-                    //    adapter.setSeleccionadas(especialidadesSeleccionadas);
-                    //}
                 } else {
-                    Toast.makeText(ProfesorEspecialidadActivity.this, "Error al cargar especialidades", Toast.LENGTH_SHORT).show();
+                    String errorMsg = "";
+                    try {
+                        errorMsg = response.errorBody() != null ? response.errorBody().string() : "Sin errorBody";
+                    } catch (Exception e) {
+                        Log.e("Especialidad", "Error leyendo errorBody", e);
+                    }
+                    Log.e("Especialidad", "Error al cargar especialidades: " + errorMsg);
+                    Toast.makeText(ProfesorEspecialidadActivity.this, "Error al cargar especialidades: " + errorMsg, Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<Especialidad>> call, Throwable t) {
+                Log.e("Especialidad", "Fallo de red al cargar especialidades", t);
                 Toast.makeText(ProfesorEspecialidadActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
 
             }
@@ -115,12 +128,12 @@ public class ProfesorEspecialidadActivity extends AppCompatActivity {
 
         // Llama al endpoint del backend
         ApiProfesorService apiProfesor = RetrofitCliente.getCliente().create(ApiProfesorService.class);
-        apiProfesor.actualizarEspecialidadesyDescripcion(json).enqueue(new retrofit2.Callback<Void>() {
+        apiProfesor.actualizarEspecialidadesyDescripcion(json).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(ProfesorEspecialidadActivity.this, "Datos guardados correctamente", Toast.LENGTH_SHORT).show();
-                    // Aquí puedes navegar a la siguiente pantalla o finalizar
+                    // Navegar a la siguiente pestaña
                     finish();
                 } else {
                     Toast.makeText(ProfesorEspecialidadActivity.this, "Error al guardar datos", Toast.LENGTH_SHORT).show();
@@ -130,6 +143,32 @@ public class ProfesorEspecialidadActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 Toast.makeText(ProfesorEspecialidadActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void obtenerDatosUsuario(Long userId) {
+        ApiProfesorService api = RetrofitCliente.getCliente().create(ApiProfesorService.class);
+        api.obtenerUsuario(userId).enqueue(new Callback<JsonObject>() {
+            @Override
+            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    JsonObject usuario = response.body();
+                    // Si el usuario ya tiene profesor, puedes obtener el profesorId aquí
+                    if (usuario.has("profesor") && !usuario.get("profesor").isJsonNull()) {
+                        JsonObject profesor = usuario.getAsJsonObject("profesor");
+                        profesorId = profesor.get("profesorId").getAsLong();
+                        // Si ya tiene descripción, puedes mostrarla
+                        if (profesor.has("descripcion")) {
+                            etDescripcion.setText(profesor.get("descripcion").getAsString());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<JsonObject> call, Throwable t) {
+                Toast.makeText(ProfesorEspecialidadActivity.this, "Error al obtener usuario", Toast.LENGTH_SHORT).show();
             }
         });
     }

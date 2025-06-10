@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/profesor")
 public class ProfesorController {
@@ -26,5 +28,13 @@ public class ProfesorController {
         profesorService.actualizarEspecialidadesYDescripcion(dto);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/crear")
+    public ResponseEntity<ProfesorDto> crearProfesor(@RequestBody Map<String, Long> body){
+        Long userId = body.get("userId");
+        ProfesorDto profesor = profesorService.crearProfesor(userId);
+        return ResponseEntity.ok(profesor);
+    }
+
 
 }

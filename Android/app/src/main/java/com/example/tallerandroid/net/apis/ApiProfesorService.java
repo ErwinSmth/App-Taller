@@ -10,10 +10,13 @@ import retrofit2.http.Path;
 
 public interface ApiProfesorService {
 
-    @POST("/profesor/especialidades")
+    @POST("/AppTaller/profesor/especialidades")
     Call<Void> actualizarEspecialidadesyDescripcion(@Body JsonObject body);
 
-    @GET("/profesor/usuario/{userId}")
-    Call<Void> obtenerUsuario(@Path());
+    @GET("/AppTaller/profesor/usuario/{userId}")
+    Call<JsonObject> obtenerUsuario(@Path("userId") Long userId);
+
+    @POST("/AppTaller/profesor/crear")
+    Call<JsonObject> crearProfesor(@Body JsonObject body);
 
 }

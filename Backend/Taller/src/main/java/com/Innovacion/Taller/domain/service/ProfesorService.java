@@ -3,8 +3,10 @@ package com.Innovacion.Taller.domain.service;
 import com.Innovacion.Taller.domain.dto.EspecialidadDto;
 import com.Innovacion.Taller.domain.dto.ProfesorDto;
 import com.Innovacion.Taller.domain.dto.ProfesorEspecialidadRequestDto;
+import com.Innovacion.Taller.domain.dto.UsuarioDto;
 import com.Innovacion.Taller.domain.repositoryInterfaces.IEspecialidadRepository;
 import com.Innovacion.Taller.domain.repositoryInterfaces.IProfesorRepository;
+import com.Innovacion.Taller.domain.repositoryInterfaces.IUsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,9 @@ public class ProfesorService {
 
     @Autowired
     private IEspecialidadRepository especialidadRepo;
+
+    @Autowired
+    private IUsuarioRepository userRepo;
 
     public Optional<ProfesorDto> buscarPorUsuarioId(Long userId) {
         if (userId == null) throw new IllegalArgumentException("Id de usuario inválido");
@@ -45,6 +50,17 @@ public class ProfesorService {
         }
 
         profesorRepo.save(profesor);
+    }
+
+    public ProfesorDto crearProfesor(Long userId){
+        if (profesorRepo.findByUsuarioId(userId).isPresent()) {
+            throw new IllegalArgumentException("Ya existe un profesor para este usuario");
+        }
+        UsuarioDto userDto = userRepo.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+        ProfesorDto profesor = new ProfesorDto();
+        profesor.setUserDto(userDto);
+        return profesorRepo.save(profesor);
     }
 
 }

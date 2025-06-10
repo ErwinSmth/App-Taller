@@ -14,7 +14,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tallerandroid.R;
 import com.example.tallerandroid.net.RetrofitCliente;
+import com.example.tallerandroid.net.apis.ApiProfesorService;
 import com.example.tallerandroid.net.apis.ApiUserService;
+import com.example.tallerandroid.profesor.ProfesorEspecialidadActivity;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -87,9 +89,36 @@ public class RegistroUsuarioActivity extends AppCompatActivity {
         call.enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(RegistroUsuarioActivity.this, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
-
+                if (response.isSuccessful() && response.body() != null) {
+                    Long userId = response.body().get("userId").getAsLong();
+                    if ("PROFESOR".equals(rol)) {
+                        // Llama al endpoint para crear el profesor
+                        ApiProfesorService apiProfesor = RetrofitCliente.getCliente().create(ApiProfesorService.class);
+                        JsonObject json = new JsonObject();
+                        json.addProperty("userId", userId);
+                        apiProfesor.crearProfesor(json).enqueue(new Callback<JsonObject>() {
+                            @Override
+                            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                                if (response.isSuccessful() && response.body() != null) {
+                                    Long profesorId = response.body().get("profesorId").getAsLong();
+                                    Intent intent = new Intent(RegistroUsuarioActivity.this, ProfesorEspecialidadActivity.class);
+                                    intent.putExtra("userId", userId);
+                                    intent.putExtra("profesorId", profesorId);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(RegistroUsuarioActivity.this, "Error al crear profesor", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            @Override
+                            public void onFailure(Call<JsonObject> call, Throwable t) {
+                                Toast.makeText(RegistroUsuarioActivity.this, "Error de red al crear profesor", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }else {
+                        Toast.makeText(RegistroUsuarioActivity.this, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
+                        //Caso de estudiante pasaria a el menu principal
+                        finish();
+                    }
                 } else {
                     Toast.makeText(RegistroUsuarioActivity.this, "Error al registrar usuario", Toast.LENGTH_SHORT).show();
                 }
