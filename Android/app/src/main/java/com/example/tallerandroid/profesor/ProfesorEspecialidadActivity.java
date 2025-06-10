@@ -115,7 +115,6 @@ public class ProfesorEspecialidadActivity extends AppCompatActivity {
             return;
         }
 
-        // Construye el JSON para enviar
         JsonObject json = new JsonObject();
         json.addProperty("profesorId", profesorId);
         json.addProperty("descripcion", descripcion);
@@ -126,14 +125,15 @@ public class ProfesorEspecialidadActivity extends AppCompatActivity {
         }
         json.add("especialidades", especialidadesArray);
 
-        // Llama al endpoint del backend
+        // Log para depuración
+        Log.d("ProfesorEspecialidad", "JSON enviado: " + json.toString());
+
         ApiProfesorService apiProfesor = RetrofitCliente.getCliente().create(ApiProfesorService.class);
         apiProfesor.actualizarEspecialidadesyDescripcion(json).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(ProfesorEspecialidadActivity.this, "Datos guardados correctamente", Toast.LENGTH_SHORT).show();
-                    // Navegar a la siguiente pestaña
                     finish();
                 } else {
                     Toast.makeText(ProfesorEspecialidadActivity.this, "Error al guardar datos", Toast.LENGTH_SHORT).show();

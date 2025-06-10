@@ -92,45 +92,57 @@ public class RegistroUsuarioActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     Long userId = response.body().get("userId").getAsLong();
                     if ("PROFESOR".equals(rol)) {
-                        // Llama al endpoint para crear el profesor
                         ApiProfesorService apiProfesor = RetrofitCliente.getCliente().create(ApiProfesorService.class);
-                        JsonObject json = new JsonObject();
-                        json.addProperty("userId", userId);
-                        apiProfesor.crearProfesor(json).enqueue(new Callback<JsonObject>() {
+                        // Verifica si ya existe profesor para este usuario
+                        apiProfesor.obtenerUsuario(userId).enqueue(new Callback<JsonObject>() {
                             @Override
                             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                                if (response.isSuccessful() && response.body() != null) {
+                                if (response.isSuccessful() && response.body() != null && response.body().has("profesorId")) {
+                                    // Ya existe profesor, continúa el flujo
                                     Long profesorId = response.body().get("profesorId").getAsLong();
-                                    Intent intent = new Intent(RegistroUsuarioActivity.this, ProfesorEspecialidadActivity.class);
-                                    intent.putExtra("userId", userId);
-                                    intent.putExtra("profesorId", profesorId);
-                                    startActivity(intent);
+                                    irAEspecialidad(userId, profesorId);
                                 } else {
-                                    Toast.makeText(RegistroUsuarioActivity.this, "Error al crear profesor", Toast.LENGTH_SHORT).show();
+                                    // No existe, intenta crearlo
+                                    JsonObject json = new JsonObject();
+                                    json.addProperty("userId", userId);
+                                    apiProfesor.crearProfesor(json).enqueue(new Callback<JsonObject>() {
+                                        @Override
+                                        public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                                            if (response.isSuccessful() && response.body() != null) {
+                                                Long profesorId = response.body().get("profesorId").getAsLong();
+                                                irAEspecialidad(userId, profesorId);
+                                            } else if (response.code() == 409) { // 409 Conflict por duplicidad
+                                                Toast.makeText(RegistroUsuarioActivity.this, "El profesor ya existe para este usuario.", Toast.LENGTH_SHORT).show();
+                                            } else {
+                                                Toast.makeText(RegistroUsuarioActivity.this, "Error al crear profesor", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                        @Override
+                                        public void onFailure(Call<JsonObject> call, Throwable t) {
+                                            Toast.makeText(RegistroUsuarioActivity.this, "Error de red al crear profesor", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
                                 }
                             }
                             @Override
                             public void onFailure(Call<JsonObject> call, Throwable t) {
-                                Toast.makeText(RegistroUsuarioActivity.this, "Error de red al crear profesor", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegistroUsuarioActivity.this, "Error de red al verificar profesor", Toast.LENGTH_SHORT).show();
                             }
                         });
-                    }else {
+                    } else {
                         Toast.makeText(RegistroUsuarioActivity.this, "Usuario registrado correctamente", Toast.LENGTH_SHORT).show();
-                        //Caso de estudiante pasaria a el menu principal
                         finish();
                     }
                 } else {
                     Toast.makeText(RegistroUsuarioActivity.this, "Error al registrar usuario", Toast.LENGTH_SHORT).show();
                 }
             }
-
             @Override
             public void onFailure(Call<JsonObject> call, Throwable t) {
                 Toast.makeText(RegistroUsuarioActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
             }
         });
     }
-
     private void volverARegistroPersona() {
         Intent intent = new Intent();
         // Devuelve los datos de persona al activity anterior
@@ -144,5 +156,12 @@ public class RegistroUsuarioActivity extends AppCompatActivity {
         intent.putExtra("fechaNacimiento", getIntent().getStringExtra("fechaNacimiento"));
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    private void irAEspecialidad(Long userId, Long profesorId) {
+        Intent intent = new Intent(RegistroUsuarioActivity.this, ProfesorEspecialidadActivity.class);
+        intent.putExtra("userId", userId);
+        intent.putExtra("profesorId", profesorId);
+        startActivity(intent);
     }
 }

@@ -8,6 +8,8 @@ import com.Innovacion.Taller.domain.repositoryInterfaces.IEspecialidadRepository
 import com.Innovacion.Taller.domain.repositoryInterfaces.IProfesorRepository;
 import com.Innovacion.Taller.domain.repositoryInterfaces.IUsuarioRepository;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,8 @@ public class ProfesorService {
 
     @Autowired
     private IUsuarioRepository userRepo;
+
+    private static final Logger logger = LoggerFactory.getLogger(ProfesorService.class);
 
     public Optional<ProfesorDto> buscarPorUsuarioId(Long userId) {
         if (userId == null) throw new IllegalArgumentException("Id de usuario inválido");

@@ -21,6 +21,9 @@ public class Profesor {
     @JoinColumn(name="user_id",nullable = false, unique = true )
     private Usuario usuario;
 
+    @Column(name = "descripcion", length = 500)
+    private String descripcion;
+
     @OneToMany(mappedBy = "profesor", cascade = CascadeType.ALL)
     private List<Taller> talleres;
     //Con cascade All en dependiendo de que clase decimos que por ejemplo
@@ -48,6 +51,14 @@ public class Profesor {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public List<Taller> getTalleres() {
