@@ -12,7 +12,7 @@ public class RetrofitCliente {
 
 
     // Ruta para pruebas desde un dispositivo físico en la misma red WiFi
-    //private static final String BASE_URL = "http://192.168.1.42:8090/";
+    //private static final String BASE_URL = "http://192.168.100.65:8090/";
 
     private static Retrofit retrofit = null;
 
