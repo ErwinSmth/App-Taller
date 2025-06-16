@@ -2,9 +2,12 @@ package com.Innovacion.Taller.persistence.repository;
 
 import com.Innovacion.Taller.domain.dto.ProfesorDto;
 import com.Innovacion.Taller.domain.repositoryInterfaces.IProfesorRepository;
+import com.Innovacion.Taller.domain.service.ProfesorService;
 import com.Innovacion.Taller.persistence.crud.ProfesorCrudRepository;
 import com.Innovacion.Taller.persistence.entity.Profesor;
 import com.Innovacion.Taller.persistence.mapper.ProfesorMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 

@@ -34,6 +34,9 @@ public class UsuarioService {
     @Autowired
     private IOrganizadorRepository organizadorRepo;
 
+    @Autowired
+    private IPermisoRepository permisoRepo;
+
     //Metodo a ser usado solo la primera vez que el usuario se registre
     @Transactional
     public UsuarioDto registrarUsuario(UsuarioRegistroDto userDto){
@@ -114,9 +117,18 @@ public class UsuarioService {
 
         //Validar si el usuario existe y esta activo
         if(usuario.isPresent() && usuario.get().isActivo()){
-            return usuario;
+            UsuarioDto user = usuario.get();
+            //Obtener los IDs de los roles
+            List<Long> rolIds = user.getRoles().stream()
+                    .map(r -> r.getRolId())
+                    .toList();
+            //Consultar los permisos asociados a los roles
+            List<PermisoDto> permisos = permisoRepo.findByRoles_RolIdIn(rolIds);
+            //Asignar los permisos al DTO
+            user.setPermisos(permisos);
+            return Optional.of(user);
         } else {
-            throw new IllegalArgumentException("Credenciales invalidas o Usuario inactivo");
+            throw new IllegalArgumentException("Credenciales invalidas o Usuario Inactivo");
         }
     }
 

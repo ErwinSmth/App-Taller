@@ -13,9 +13,11 @@ import java.util.List;
 public interface ProfesorMapper {
     @Mapping(source = "usuario", target = "userDto")
     @Mapping(source = "especialidades", target = "especialidades")
+    @Mapping(source = "descripcion", target = "descripcion")
     ProfesorDto toProfesorDto(Profesor profesor);
 
     @InheritInverseConfiguration
+    @Mapping(source = "descripcion", target = "descripcion")
     Profesor toProfesor(ProfesorDto profesorDto);
 
 }

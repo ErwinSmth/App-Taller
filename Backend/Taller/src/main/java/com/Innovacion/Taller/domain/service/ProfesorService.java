@@ -29,8 +29,6 @@ public class ProfesorService {
     @Autowired
     private IUsuarioRepository userRepo;
 
-    private static final Logger logger = LoggerFactory.getLogger(ProfesorService.class);
-
     public Optional<ProfesorDto> buscarPorUsuarioId(Long userId) {
         if (userId == null) throw new IllegalArgumentException("Id de usuario inválido");
         return profesorRepo.findByUsuarioId(userId);
@@ -38,6 +36,7 @@ public class ProfesorService {
 
     @Transactional
     public void actualizarEspecialidadesYDescripcion(ProfesorEspecialidadRequestDto dto) {
+
         ProfesorDto profesor = profesorRepo.findById(dto.getProfesorId())
                 .orElseThrow(() -> new IllegalArgumentException("Profesor no encontrado"));
 
@@ -52,7 +51,6 @@ public class ProfesorService {
                     .collect(Collectors.toList());
             profesor.setEspecialidades(especialidades);
         }
-
         profesorRepo.save(profesor);
     }
 

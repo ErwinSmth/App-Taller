@@ -14,6 +14,7 @@ public interface UsuarioMapper {
 
     @Mapping(source = "persona", target = "personDto")
     @Mapping(source = "roles", target = "roles")
+    @Mapping(target = "permisos", ignore = true)
     UsuarioDto toUsuarioDto(Usuario usuario);
 
     List<UsuarioDto> toUsuarioDtoList(List<Usuario> usuarios);

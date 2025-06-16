@@ -25,6 +25,14 @@ public class Rol {
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
     private Set<Usuario> usuarios = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "rolpermiso",
+            joinColumns = @JoinColumn(name = "rol_id"),
+            inverseJoinColumns = @JoinColumn(name = "permiso_id")
+    )
+    private Set<Permiso> permisos = new HashSet<>();
+
     public Long getRolId() {
         return rolId;
     }
@@ -55,5 +63,13 @@ public class Rol {
 
     public void setUsuarios(Set<Usuario> usuarios) {
         this.usuarios = usuarios;
+    }
+
+    public Set<Permiso> getPermisos() {
+        return permisos;
+    }
+
+    public void setPermisos(Set<Permiso> permisos) {
+        this.permisos = permisos;
     }
 }

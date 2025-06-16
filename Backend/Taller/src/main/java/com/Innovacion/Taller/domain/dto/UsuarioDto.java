@@ -13,6 +13,7 @@ public class UsuarioDto {
     private boolean activo;
     private PersonaDto personDto;
     private List<RolesDto> roles;
+    private List<PermisoDto> permisos; // <- para ver los permisos de un usuario segun su rol
 
     public Long getUserId() {
         return userId;
@@ -68,5 +69,13 @@ public class UsuarioDto {
 
     public void setRoles(List<RolesDto> roles) {
         this.roles = roles;
+    }
+
+    public List<PermisoDto> getPermisos() {
+        return permisos;
+    }
+
+    public void setPermisos(List<PermisoDto> permisos) {
+        this.permisos = permisos;
     }
 }

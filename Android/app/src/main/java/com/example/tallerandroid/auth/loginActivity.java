@@ -1,6 +1,7 @@
 package com.example.tallerandroid.auth;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,6 +18,7 @@ import com.example.tallerandroid.R;
 import com.example.tallerandroid.net.apis.ApiUserService;
 import com.example.tallerandroid.net.RetrofitCliente;
 import com.example.tallerandroid.utilities.RolRegistroActivity;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -70,8 +73,32 @@ public class loginActivity extends AppCompatActivity {
         Call<JsonObject> call = apiUserService.login(json);
         call.enqueue(new Callback<JsonObject>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            public void onResponse(@NonNull Call<JsonObject> call, @NonNull Response<JsonObject> response) {
                 if (response.isSuccessful()) {
+
+                    JsonObject body = response.body();
+
+                    //SharedPreferences para mantener siempre toda la informacion del usuario
+                    SharedPreferences prefs = getSharedPreferences("user_sessiom", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+
+                    editor.putLong("userId", body.get("userId").getAsLong());
+                    editor.putString("nameUser", body.get("nameUser").getAsString());
+
+                    //Guardar roles y permisos como JSON string
+                    editor.putString("roles", body.get("roles").toString());
+                    editor.putString("permisos", body.get("permisos").toString());
+
+                    editor.apply();
+
+                    String rolesJson = body.get("roles").toString();
+                    JsonArray rolesArray = body.getAsJsonArray("roles");
+
+                    if (rolesArray.size() == 1) {
+                        //Solo un rol
+                        JsonObject rol = rolesArray.get(0).getAsJsonObject();
+                    }
+
                     Toast.makeText(loginActivity.this, "Inicio de Sesión Exitoso", Toast.LENGTH_SHORT).show();
                     Log.d("loginActivity", "Respuesta: " + response.body());
                     // Aquí puedes navegar a otra pantalla
