@@ -1,5 +1,6 @@
 package com.example.tallerandroid.rol;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tallerandroid.MenuActivity;
 import com.example.tallerandroid.R;
 import com.example.tallerandroid.rol.adapters.SeleccionRolAdapter;
 import com.google.gson.JsonArray;
@@ -59,8 +61,8 @@ public class SeleccionRolActivity extends AppCompatActivity {
             editor.putLong("rolActualId", rol.get("rolId").getAsLong());
             editor.putString("rolActualName", rol.get("rolName").getAsString());
             editor.apply();
-
-            //Ir al menu Principal
+            startActivity(new Intent(this, MenuActivity.class));
+            finish();
         });
 
     }

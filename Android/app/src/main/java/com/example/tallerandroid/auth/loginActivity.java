@@ -14,9 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.tallerandroid.MenuActivity;
 import com.example.tallerandroid.R;
 import com.example.tallerandroid.net.apis.ApiUserService;
 import com.example.tallerandroid.net.RetrofitCliente;
+import com.example.tallerandroid.rol.SeleccionRolActivity;
 import com.example.tallerandroid.utilities.RolRegistroActivity;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -79,7 +81,7 @@ public class loginActivity extends AppCompatActivity {
                     JsonObject body = response.body();
 
                     //SharedPreferences para mantener siempre toda la informacion del usuario
-                    SharedPreferences prefs = getSharedPreferences("user_sessiom", MODE_PRIVATE);
+                    SharedPreferences prefs = getSharedPreferences("user_session", MODE_PRIVATE);
                     SharedPreferences.Editor editor = prefs.edit();
 
                     editor.putLong("userId", body.get("userId").getAsLong());
@@ -97,11 +99,17 @@ public class loginActivity extends AppCompatActivity {
                     if (rolesArray.size() == 1) {
                         //Solo un rol
                         JsonObject rol = rolesArray.get(0).getAsJsonObject();
+                        editor.putLong("rolActualId", rol.get("rolId").getAsLong());
+                        editor.putString("rolActualName", rol.get("rolName").getAsString());
+                        editor.apply();
+                        startActivity(new Intent(loginActivity.this, MenuActivity.class));
+                        Toast.makeText(loginActivity.this, "Inicio de Sesión Exitoso", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        startActivity(new Intent(loginActivity.this, SeleccionRolActivity.class));
+                        Toast.makeText(loginActivity.this, "Inicio de Sesión Exitoso", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
-
-                    Toast.makeText(loginActivity.this, "Inicio de Sesión Exitoso", Toast.LENGTH_SHORT).show();
-                    Log.d("loginActivity", "Respuesta: " + response.body());
-                    // Aquí puedes navegar a otra pantalla
                 } else {
                     Toast.makeText(loginActivity.this, "Credenciales Incorrectas", Toast.LENGTH_SHORT).show();
                     Log.e("loginActivity", "Error: " + response.code());
