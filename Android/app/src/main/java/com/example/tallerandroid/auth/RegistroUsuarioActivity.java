@@ -134,6 +134,13 @@ public class RegistroUsuarioActivity extends AppCompatActivity {
                         finish();
                     }
                 } else {
+                    String errorMsg = "";
+                    try {
+                        errorMsg = response.errorBody() != null ? response.errorBody().string() : "Sin errorBody";
+                    } catch (Exception e) {
+                        errorMsg = "Excepción al leer errorBody: " + e.getMessage();
+                    }
+                    android.util.Log.e("RegistroUsuario", "Error al registrar usuario. Código: " + response.code() + ", errorBody: " + errorMsg);
                     Toast.makeText(RegistroUsuarioActivity.this, "Error al registrar usuario", Toast.LENGTH_SHORT).show();
                 }
             }
