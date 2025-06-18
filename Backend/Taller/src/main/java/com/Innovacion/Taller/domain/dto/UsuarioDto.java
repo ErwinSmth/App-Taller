@@ -3,6 +3,7 @@ package com.Innovacion.Taller.domain.dto;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public class UsuarioDto {
 
@@ -13,7 +14,7 @@ public class UsuarioDto {
     private boolean activo;
     private PersonaDto personDto;
     private List<RolesDto> roles;
-    private List<PermisoDto> permisos; // <- para ver los permisos de un usuario segun su rol
+    private Map<Long, List<PermisoDto>>  permisos; // <- para ver los permisos de un usuario segun su rol
 
     public Long getUserId() {
         return userId;
@@ -71,11 +72,11 @@ public class UsuarioDto {
         this.roles = roles;
     }
 
-    public List<PermisoDto> getPermisos() {
+    public Map<Long, List<PermisoDto>> getPermisos() {
         return permisos;
     }
 
-    public void setPermisos(List<PermisoDto> permisos) {
+    public void setPermisos(Map<Long, List<PermisoDto>> permisos) {
         this.permisos = permisos;
     }
 }

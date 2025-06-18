@@ -6,9 +6,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UsuarioService {
@@ -118,14 +116,14 @@ public class UsuarioService {
         //Validar si el usuario existe y esta activo
         if(usuario.isPresent() && usuario.get().isActivo()){
             UsuarioDto user = usuario.get();
-            //Obtener los IDs de los roles
-            List<Long> rolIds = user.getRoles().stream()
-                    .map(r -> r.getRolId())
-                    .toList();
-            //Consultar los permisos asociados a los roles
-            List<PermisoDto> permisos = permisoRepo.findByRoles_RolIdIn(rolIds);
+            Map<Long, List<PermisoDto>> permisosPorRol = new HashMap<>();
+            for (RolesDto rol : user.getRoles()) {
+                List<Long> rolIdList = List.of(rol.getRolId());
+                List<PermisoDto> permisos = permisoRepo.findByRoles_RolIdIn(rolIdList);
+                permisosPorRol.put(rol.getRolId(), permisos);
+            }
             //Asignar los permisos al DTO
-            user.setPermisos(permisos);
+            user.setPermisos(permisosPorRol);
             return Optional.of(user);
         } else {
             throw new IllegalArgumentException("Credenciales invalidas o Usuario Inactivo");
