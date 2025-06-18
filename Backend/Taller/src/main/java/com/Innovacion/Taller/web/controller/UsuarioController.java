@@ -1,7 +1,7 @@
 package com.Innovacion.Taller.web.controller;
 
-import com.Innovacion.Taller.domain.dto.UsuarioDto;
-import com.Innovacion.Taller.domain.dto.UsuarioRegistroDto;
+import com.Innovacion.Taller.domain.dto.usuario.UsuarioDto;
+import com.Innovacion.Taller.domain.dto.usuario.UsuarioRegistroDto;
 import com.Innovacion.Taller.domain.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

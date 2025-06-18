@@ -1,5 +1,6 @@
 package com.Innovacion.Taller.persistence.entity;
 
+import com.Innovacion.Taller.persistence.entity.persona.Profesor;
 import jakarta.persistence.*;
 
 import java.util.List;

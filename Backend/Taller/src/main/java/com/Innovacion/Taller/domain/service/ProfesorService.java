@@ -1,15 +1,13 @@
 package com.Innovacion.Taller.domain.service;
 
 import com.Innovacion.Taller.domain.dto.EspecialidadDto;
-import com.Innovacion.Taller.domain.dto.ProfesorDto;
-import com.Innovacion.Taller.domain.dto.ProfesorEspecialidadRequestDto;
-import com.Innovacion.Taller.domain.dto.UsuarioDto;
+import com.Innovacion.Taller.domain.dto.persona.ProfesorDto;
+import com.Innovacion.Taller.domain.dto.persona.ProfesorEspecialidadRequestDto;
+import com.Innovacion.Taller.domain.dto.usuario.UsuarioDto;
 import com.Innovacion.Taller.domain.repositoryInterfaces.IEspecialidadRepository;
-import com.Innovacion.Taller.domain.repositoryInterfaces.IProfesorRepository;
-import com.Innovacion.Taller.domain.repositoryInterfaces.IUsuarioRepository;
+import com.Innovacion.Taller.domain.repositoryInterfaces.persona.IProfesorRepository;
+import com.Innovacion.Taller.domain.repositoryInterfaces.usuario.IUsuarioRepository;
 import jakarta.transaction.Transactional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

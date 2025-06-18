@@ -1,13 +1,11 @@
 package com.Innovacion.Taller.web.controller;
 
-import com.Innovacion.Taller.domain.dto.TallerDto;
-import com.Innovacion.Taller.domain.dto.TallerResumenDto;
+import com.Innovacion.Taller.domain.dto.taller.TallerDto;
+import com.Innovacion.Taller.domain.dto.taller.TallerResumenDto;
 import com.Innovacion.Taller.domain.service.TallerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

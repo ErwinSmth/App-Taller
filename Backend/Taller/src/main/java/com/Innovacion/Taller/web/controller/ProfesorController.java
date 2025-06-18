@@ -1,7 +1,7 @@
 package com.Innovacion.Taller.web.controller;
 
-import com.Innovacion.Taller.domain.dto.ProfesorDto;
-import com.Innovacion.Taller.domain.dto.ProfesorEspecialidadRequestDto;
+import com.Innovacion.Taller.domain.dto.persona.ProfesorDto;
+import com.Innovacion.Taller.domain.dto.persona.ProfesorEspecialidadRequestDto;
 import com.Innovacion.Taller.domain.service.ProfesorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

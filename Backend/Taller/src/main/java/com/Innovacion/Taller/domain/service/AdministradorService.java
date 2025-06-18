@@ -1,8 +1,7 @@
 package com.Innovacion.Taller.domain.service;
 
-import com.Innovacion.Taller.domain.dto.AdministradorDto;
-import com.Innovacion.Taller.domain.repositoryInterfaces.IAdministradorRepository;
-import com.Innovacion.Taller.domain.repositoryInterfaces.IUsuarioRepository;
+import com.Innovacion.Taller.domain.dto.persona.AdministradorDto;
+import com.Innovacion.Taller.domain.repositoryInterfaces.persona.IAdministradorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

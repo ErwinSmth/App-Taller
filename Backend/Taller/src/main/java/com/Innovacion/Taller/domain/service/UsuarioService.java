@@ -1,7 +1,14 @@
 package com.Innovacion.Taller.domain.service;
 
-import com.Innovacion.Taller.domain.dto.*;
-import com.Innovacion.Taller.domain.repositoryInterfaces.*;
+import com.Innovacion.Taller.domain.dto.persona.*;
+import com.Innovacion.Taller.domain.dto.usuario.PermisoDto;
+import com.Innovacion.Taller.domain.dto.usuario.RolesDto;
+import com.Innovacion.Taller.domain.dto.usuario.UsuarioDto;
+import com.Innovacion.Taller.domain.dto.usuario.UsuarioRegistroDto;
+import com.Innovacion.Taller.domain.repositoryInterfaces.persona.*;
+import com.Innovacion.Taller.domain.repositoryInterfaces.usuario.IPermisoRepository;
+import com.Innovacion.Taller.domain.repositoryInterfaces.usuario.IRolRepository;
+import com.Innovacion.Taller.domain.repositoryInterfaces.usuario.IUsuarioRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

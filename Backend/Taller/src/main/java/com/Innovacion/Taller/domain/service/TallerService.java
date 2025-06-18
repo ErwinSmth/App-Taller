@@ -1,11 +1,11 @@
 package com.Innovacion.Taller.domain.service;
 
-import com.Innovacion.Taller.domain.dto.TallerDto;
-import com.Innovacion.Taller.domain.dto.TallerResumenDto;
-import com.Innovacion.Taller.domain.repositoryInterfaces.ICategoriaRepository;
-import com.Innovacion.Taller.domain.repositoryInterfaces.IOrganizadorRepository;
-import com.Innovacion.Taller.domain.repositoryInterfaces.IProfesorRepository;
-import com.Innovacion.Taller.domain.repositoryInterfaces.ITallerRepository;
+import com.Innovacion.Taller.domain.dto.taller.TallerDto;
+import com.Innovacion.Taller.domain.dto.taller.TallerResumenDto;
+import com.Innovacion.Taller.domain.repositoryInterfaces.taller.ICategoriaRepository;
+import com.Innovacion.Taller.domain.repositoryInterfaces.persona.IOrganizadorRepository;
+import com.Innovacion.Taller.domain.repositoryInterfaces.persona.IProfesorRepository;
+import com.Innovacion.Taller.domain.repositoryInterfaces.taller.ITallerRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

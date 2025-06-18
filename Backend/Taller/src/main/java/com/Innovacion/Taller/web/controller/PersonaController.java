@@ -1,7 +1,8 @@
 package com.Innovacion.Taller.web.controller;
 
-import com.Innovacion.Taller.domain.dto.PersonaDto;
+import com.Innovacion.Taller.domain.dto.persona.PersonaDto;
 import com.Innovacion.Taller.domain.service.PersonaService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ public class PersonaController {
     private PersonaService service;
 
     @PostMapping("/registrar")
-    public ResponseEntity<PersonaDto> registrar(@RequestBody PersonaDto person){ //Indica que los datos vendran en el cuerpo de la solicitud (JSON)
+    public ResponseEntity<PersonaDto> registrar(@Valid @RequestBody PersonaDto person){ //Indica que los datos vendran en el cuerpo de la solicitud (JSON)
         PersonaDto personSaved = service.registrarPersona(person);
         return new ResponseEntity<>(personSaved, HttpStatus.CREATED);
     }
