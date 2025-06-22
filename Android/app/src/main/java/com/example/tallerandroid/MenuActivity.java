@@ -7,76 +7,88 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
+
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+
 public class MenuActivity extends AppCompatActivity {
+
+    private DrawerLayout drawerLayout;
+    private NavigationView navView;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
 
-        SharedPreferences prefs = getSharedPreferences("user_session", MODE_PRIVATE);
-
-        long userId = prefs.getLong("userId", -1);
-        String nameUser = prefs.getString("nameUser", "N/A");
-        String rolesJson = prefs.getString("roles", "[]");
-        String permisosJson = prefs.getString("permisos", "[]");
-        String rolActualName = prefs.getString("rolActualName", "N/A");
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-
-        //Personalizar el header
-        View header = navigationView.getHeaderView(0);
-        TextView tvNameUser = header.findViewById(R.id.tvNombreUsuario);
-        TextView tvRolActual = header.findViewById(R.id.tvRolActual);
-        tvNameUser.setText(nameUser);
-        tvRolActual.setText(rolActualName);
-
-        //Generar las opciones del menu
-
-        Menu menu = navigationView.getMenu();
+        navView = findViewById(R.id.nav_view);
+        Menu menu = navView.getMenu();
         menu.clear();
 
-        //Cargar los permisos y agregar opciones
+        SharedPreferences prefs = getSharedPreferences("user_session", MODE_PRIVATE);
+        String nombreUsuario = prefs.getString("nameUser", "Usuario");
+        String permisosJson = prefs.getString("permisos", "{}");
+        long rolActualId = prefs.getLong("rolActualId", -1);
+        String rolActual = prefs.getString("rolActualName", "Rol");
+
+        Log.d("Id del rol actual", String.valueOf(rolActualId));
 
         try {
+            JsonObject permisosObj = JsonParser.parseString(permisosJson).getAsJsonObject();
+            String rolKey = String.valueOf(rolActualId);
+            if (permisosObj.has(rolKey)) {
+                JsonArray permisosRol = permisosObj.getAsJsonArray(rolKey);
+                for(JsonElement permisoEl : permisosRol){
+                    JsonObject permisoObj = permisoEl.getAsJsonObject();
+                    String nombrePermiso = permisoObj.get("nombre").getAsString();
+                    String referencia = permisoObj.get("referencia").getAsString(); // Lo puedes usar después para navegación
 
-            JsonArray permisos = JsonParser.parseString(permisosJson).getAsJsonArray();
-            for (int i = 0; i < permisos.size(); i++){
-                JsonObject permiso = permisos.get(i).getAsJsonObject();
-                String referencia = permiso.get("referencia").getAsString();
-                String nombre = permiso.get("nombre").getAsString();
-                menu.add(Menu.NONE, referencia.hashCode(), Menu.NONE, nombre);
+                    // Agrega el item al menú
+                    menu.add(Menu.NONE, View.generateViewId(), Menu.NONE, nombrePermiso);
+                    Log.e("MenuActivity", "Permisos" + permisoEl.toString());
+                }
+            } else {
+                // No hay permisos para este rol
             }
+        } catch (Exception e) {
+            Log.e("MenuActivity", "Error al parsear permisos: " + e.getMessage());
+        }
 
-        } catch (Exception ignore) { }
+        View headerView = navView.getHeaderView(0);
+        TextView tvNombreUsuario = headerView.findViewById(R.id.tvNombreUsuario);
+        TextView tvRolActual = headerView.findViewById(R.id.tvRolActual);
 
-        //Si tiene mas de un rol, agregar opcion de cambiar de rol
-        try {
-            JsonArray rolesArray = JsonParser.parseString(rolesJson).getAsJsonArray();
-            if (rolesArray.size() > 1){
-                menu.add(Menu.NONE, "Cambiar_rol".hashCode(), Menu.NONE, "Cambiar de rol");
-            }
-        } catch (Exception ignore) { }
+        tvNombreUsuario.setText(nombreUsuario);
+        tvRolActual.setText(rolActual);
 
-        //Listener para manejar seleccion de menu
-        navigationView.setNavigationItemSelectedListener(item -> {
-            if (item.getItemId() == "cambiar_rol".hashCode()){
-                //Se recargaria la pagina y se cambiaria de opciones
-            }
-            //Aqui se podria abrir el fragment correspondiente segun el permiso
-            return true;
-        });
+        // Configuración de la Toolbar
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
+        // Configuración del Drawer
+        drawerLayout = findViewById(R.id.drawer_layout);
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close
+        );
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        // Aquí puedes agregar listeners para los ítems del menú si lo necesitas
+        // navView.setNavigationItemSelectedListener(...);
     }
 }
