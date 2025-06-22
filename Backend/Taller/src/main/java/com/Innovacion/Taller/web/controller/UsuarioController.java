@@ -38,5 +38,15 @@ public class UsuarioController {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UsuarioDto> editarUsuario(@PathVariable Long id, @RequestBody UsuarioRegistroDto userDto) {
+        try {
+            UsuarioDto actualizado = userService.editarUsuario(id, userDto);
+            return ResponseEntity.ok(actualizado);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }
 

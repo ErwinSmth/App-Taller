@@ -19,7 +19,6 @@ import com.example.tallerandroid.R;
 import com.example.tallerandroid.net.apis.ApiUserService;
 import com.example.tallerandroid.net.RetrofitCliente;
 import com.example.tallerandroid.rol.SeleccionRolActivity;
-import com.example.tallerandroid.utilities.RolRegistroActivity;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 

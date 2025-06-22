@@ -9,5 +9,6 @@ public interface UsuarioCrudRepository extends JpaRepository<Usuario, Long> {
 
     Optional<Usuario> findByNameUser(String nameUser);
     Optional<Usuario> findByNameUserAndContraseña(String nameUser, String contraseña);
+    Optional<Usuario> findByPersona_PersonaId(Long personaId);
 
 }

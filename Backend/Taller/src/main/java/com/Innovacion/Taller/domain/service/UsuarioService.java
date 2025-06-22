@@ -137,4 +137,41 @@ public class UsuarioService {
         }
     }
 
+    @Transactional
+    public UsuarioDto editarUsuario(Long id, UsuarioRegistroDto userDto) {
+        Optional<UsuarioDto> existente = userRepo.findById(id);
+        if (existente.isEmpty()) throw new IllegalArgumentException("Usuario no encontrado");
+
+        // Validar que el nuevo nombre de usuario no esté en uso por otro usuario
+        Optional<UsuarioDto> usuarioConName = userRepo.findByNameUser(userDto.getNameUser());
+        if (usuarioConName.isPresent() && !usuarioConName.get().getUserId().equals(id)) {
+            throw new IllegalArgumentException("Ya existe un usuario con ese nombre de usuario");
+        }
+
+        // Validar que la persona no esté asociada a otro usuario
+        Optional<UsuarioDto> usuarioConPersona = userRepo.findByPersonaId(userDto.getPersonaId());
+        if (usuarioConPersona.isPresent() && !usuarioConPersona.get().getUserId().equals(id)) {
+            throw new IllegalArgumentException("Ya existe un usuario para esa persona");
+        }
+
+        UsuarioDto usuario = existente.get();
+        usuario.setNameUser(userDto.getNameUser());
+        usuario.setContraseña(userDto.getContraseña());
+
+        // Completa los roles con su rolId si solo llega el nombre
+        List<RolesDto> rolesCompletos = new ArrayList<>();
+        for (RolesDto rol : userDto.getRoles()) {
+            if (rol.getRolId() == null && rol.getRolName() != null) {
+                rolRepo.findAll().stream()
+                        .filter(r -> r.getRolName().equals(rol.getRolName()))
+                        .findFirst()
+                        .ifPresent(r -> rol.setRolId(r.getRolId()));
+            }
+            rolesCompletos.add(rol);
+        }
+        usuario.setRoles(rolesCompletos);
+
+        return userRepo.save(usuario);
+    }
+
 }

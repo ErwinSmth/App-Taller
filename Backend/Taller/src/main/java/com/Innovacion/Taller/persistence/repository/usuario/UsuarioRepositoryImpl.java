@@ -48,4 +48,10 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
     public Optional<UsuarioDto> findById(Long id) {
         return userCrud.findById(id).map(usuario -> mapper.toUsuarioDto(usuario));
     }
+
+    @Override
+    public Optional<UsuarioDto> findByPersonaId(Long personaId) {
+        return userCrud.findByPersona_PersonaId(personaId).map(mapper::toUsuarioDto);
+    }
+
 }

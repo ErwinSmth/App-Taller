@@ -1,17 +1,15 @@
-package com.example.tallerandroid.utilities;
+package com.example.tallerandroid.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tallerandroid.R;
-import com.example.tallerandroid.auth.RegistroPersonaActivity;
+import com.example.tallerandroid.event.RolSeleccionadoEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 public class RolRegistroActivity extends AppCompatActivity {
 
@@ -25,20 +23,17 @@ public class RolRegistroActivity extends AppCompatActivity {
         Button btnOrganizador = findViewById(R.id.btnOrganizador);
 
         btnEstudiante.setOnClickListener(v -> {
-            Intent intent = new Intent(this, RegistroPersonaActivity.class);
-            intent.putExtra("rol", "ESTUDIANTE");
-            startActivity(intent);
+            EventBus.getDefault().postSticky(new RolSeleccionadoEvent("ESTUDIANTE"));
+            startActivity(new Intent(this, RegistroPersonaActivity.class));
         });
         btnProfesor.setOnClickListener(v -> {
-            Intent intent = new Intent(this, RegistroPersonaActivity.class);
-            intent.putExtra("rol", "PROFESOR");
-            startActivity(intent);
+            EventBus.getDefault().postSticky(new RolSeleccionadoEvent("PROFESOR"));
+            startActivity(new Intent(this, RegistroPersonaActivity.class));
         });
 
         //btnOrganizador.setOnClickListener(v -> {
-        //    Intent intent = new Intent(this, RegistroOrganizadorActivity.class);
-         //   intent.putExtra("rol", "ORGANIZADOR");
-          //  startActivity(intent);
+        //    EventBus.getDefault().postSticky(new RolSeleccionadoEvent("ORGANIZADOR"));
+        //    startActivity(new Intent(this, RegistroPersonaActivity.class));
         //});
 
     }

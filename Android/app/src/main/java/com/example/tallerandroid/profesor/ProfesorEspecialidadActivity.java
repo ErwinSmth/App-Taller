@@ -1,5 +1,6 @@
 package com.example.tallerandroid.profesor;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tallerandroid.R;
+import com.example.tallerandroid.auth.loginActivity;
 import com.example.tallerandroid.model.Especialidad;
 import com.example.tallerandroid.net.RetrofitCliente;
 import com.example.tallerandroid.net.apis.ApiEspecialidadService;
@@ -133,6 +135,9 @@ public class ProfesorEspecialidadActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
+                    Intent intent = new Intent(ProfesorEspecialidadActivity.this, loginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                     Toast.makeText(ProfesorEspecialidadActivity.this, "Datos guardados correctamente", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {

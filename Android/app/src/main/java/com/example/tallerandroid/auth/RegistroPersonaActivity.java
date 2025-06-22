@@ -18,10 +18,15 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tallerandroid.R;
+import com.example.tallerandroid.event.PersonaRegistradaEvent;
+import com.example.tallerandroid.event.RolSeleccionadoEvent;
 import com.example.tallerandroid.net.RetrofitCliente;
 import com.example.tallerandroid.net.apis.ApiPersonService;
 import com.google.gson.JsonObject;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -43,7 +48,17 @@ public class RegistroPersonaActivity extends AppCompatActivity {
 
     private String rol;
 
-    private ActivityResultLauncher<Intent> registroUsuarioLauncher;
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,40 +73,8 @@ public class RegistroPersonaActivity extends AppCompatActivity {
         etNacimiento = findViewById(R.id.etFechaNacimiento);
         btnRegistrar = findViewById(R.id.btnRegistrar);
 
-        rol = getIntent().getStringExtra("rol");
-
-        // Recuperar datos si existen (al volver atrás)
-        Intent intent = getIntent();
-        if (intent != null) {
-            long id = intent.getLongExtra("personaId", -1);
-            personaId = (id != -1) ? id : null;
-            etNombres.setText(intent.getStringExtra("nombres"));
-            etApellidos.setText(intent.getStringExtra("apellidos"));
-            etDNI.setText(intent.getStringExtra("dni"));
-            etTelefono.setText(intent.getStringExtra("telefono"));
-            etEmail.setText(intent.getStringExtra("email"));
-            etNacimiento.setText(intent.getStringExtra("fechaNacimiento"));
-        }
-
         etNacimiento.setFocusable(false);
         etNacimiento.setOnClickListener(v -> showDatePicker());
-
-        registroUsuarioLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == RESULT_OK && result.getData() != null) {
-                        Intent data = result.getData();
-                        long id = data.getLongExtra("personaId", -1);
-                        personaId = (id != -1) ? id : null;
-                        etNombres.setText(data.getStringExtra("nombres"));
-                        etApellidos.setText(data.getStringExtra("apellidos"));
-                        etDNI.setText(data.getStringExtra("dni"));
-                        etTelefono.setText(data.getStringExtra("telefono"));
-                        etEmail.setText(data.getStringExtra("email"));
-                        etNacimiento.setText(data.getStringExtra("fechaNacimiento"));
-                    }
-                }
-        );
 
         btnRegistrar.setOnClickListener(v -> {
             if (validarCampos()) {
@@ -102,6 +85,25 @@ public class RegistroPersonaActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    //Recibe el rol seleccionado y lo mantiene en memoria
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onRolSeleccionado(RolSeleccionadoEvent event){
+        this.rol = event.rol;
+    }
+
+    //Restaura datos de persona si existen
+    @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
+    public void onPersonaRegistrada(PersonaRegistradaEvent event){
+        this.personaId = event.personaId;
+        etNombres.setText(event.nombres);
+        etApellidos.setText(event.apellidos);
+        etDNI.setText(event.dni);
+        etTelefono.setText(event.telefono);
+        etEmail.setText(event.email);
+        etNacimiento.setText(event.fechaNacimiento);
+        this.rol = event.rol;
     }
 
     private void showDatePicker() {
@@ -190,7 +192,19 @@ public class RegistroPersonaActivity extends AppCompatActivity {
                     Toast.makeText(RegistroPersonaActivity.this, "Persona registrada", Toast.LENGTH_SHORT).show();
                     JsonObject personJson = response.body();
                     personaId = personJson.get("personaId").getAsLong();
-                    irARegistroUsuario(personaId);
+
+                    //Publicar evento para pasar a la siguiente activity
+                    EventBus.getDefault().postSticky(new PersonaRegistradaEvent(
+                            personaId,
+                            etNombres.getText().toString().trim(),
+                            etApellidos.getText().toString().trim(),
+                            etDNI.getText().toString().trim(),
+                            etTelefono.getText().toString().trim(),
+                            etEmail.getText().toString().trim(),
+                            etNacimiento.getText().toString().trim(),
+                            rol
+                    ));
+                    startActivity(new Intent(RegistroPersonaActivity.this, RegistroUsuarioActivity.class));
                 } else {
                     String errorMsg = "Error al registrar";
                     try {
@@ -216,7 +230,18 @@ public class RegistroPersonaActivity extends AppCompatActivity {
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(RegistroPersonaActivity.this, "Datos actualizados", Toast.LENGTH_SHORT).show();
-                    irARegistroUsuario(personaId);
+                    //Publicar evento para pasar a la siguiente activity
+                    EventBus.getDefault().postSticky(new PersonaRegistradaEvent(
+                            personaId,
+                            etNombres.getText().toString().trim(),
+                            etApellidos.getText().toString().trim(),
+                            etDNI.getText().toString().trim(),
+                            etTelefono.getText().toString().trim(),
+                            etEmail.getText().toString().trim(),
+                            etNacimiento.getText().toString().trim(),
+                            rol
+                    ));
+                    startActivity(new Intent(RegistroPersonaActivity.this, RegistroUsuarioActivity.class));
                 } else {
                     String errorMsg = "Error al editar";
                     try {
@@ -232,16 +257,4 @@ public class RegistroPersonaActivity extends AppCompatActivity {
         });
     }
 
-    private void irARegistroUsuario(Long personaId) {
-        Intent intent = new Intent(RegistroPersonaActivity.this, RegistroUsuarioActivity.class);
-        intent.putExtra("personaId", personaId);
-        intent.putExtra("rol", rol);
-        intent.putExtra("nombres", etNombres.getText().toString().trim());
-        intent.putExtra("apellidos", etApellidos.getText().toString().trim());
-        intent.putExtra("dni", etDNI.getText().toString().trim());
-        intent.putExtra("telefono", etTelefono.getText().toString().trim());
-        intent.putExtra("email", etEmail.getText().toString().trim());
-        intent.putExtra("fechaNacimiento", etNacimiento.getText().toString().trim());
-        registroUsuarioLauncher.launch(intent);
-    }
 }

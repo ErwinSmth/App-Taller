@@ -54,4 +54,7 @@ dependencies {
     implementation(libs.retrofit2.gson)
     implementation(libs.okhttp3.logging)
 
+    //Implementacion de EventBus
+    implementation(libs.eventbus)
+
 }

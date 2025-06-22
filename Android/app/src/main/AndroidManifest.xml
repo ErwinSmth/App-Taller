@@ -25,7 +25,7 @@
             android:name=".profesor.ProfesorEspecialidadActivity"
             android:exported="false" />
         <activity
-            android:name=".utilities.RolRegistroActivity"
+            android:name=".auth.RolRegistroActivity"
             android:exported="false" />
         <activity
             android:name=".auth.RegistroUsuarioActivity"
