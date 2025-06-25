@@ -5,6 +5,7 @@ import com.Innovacion.Taller.domain.dto.persona.ProfesorDto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 public class TallerDto {
 
@@ -15,10 +16,11 @@ public class TallerDto {
     private BigDecimal precio;
     private Integer capacidad;
     private LocalDate fechaRegistro;
-    private String imagenUrl;
     private CategoriaDto categoria;
     private ProfesorDto profesor;
     private OrganizadorDto organizador;
+    private List<TallerImagenDto> imagenes;
+
 
     public Long getTallerId() {
         return tallerId;
@@ -76,13 +78,8 @@ public class TallerDto {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public String getImagenUrl() {
-        return imagenUrl;
-    }
-
-    public void setImagenUrl(String imagenUrl) {
-        this.imagenUrl = imagenUrl;
-    }
+    public List<TallerImagenDto> getImagenes() { return imagenes; }
+    public void setImagenes(List<TallerImagenDto> imagenes) { this.imagenes = imagenes; }
 
     public CategoriaDto getCategoria() {
         return categoria;

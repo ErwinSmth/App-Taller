@@ -9,7 +9,7 @@ import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring", uses = {CategoriaMapper.class, ProfesorMapper.class, OrganizadorMapper.class})
+@Mapper(componentModel = "spring", uses = {CategoriaMapper.class, ProfesorMapper.class, OrganizadorMapper.class, TallerImagenMapper.class})
 public interface TallerMapper {
 
     //Mapeo completo
@@ -17,6 +17,7 @@ public interface TallerMapper {
 
     @InheritInverseConfiguration
     @Mapping(source = "categoria.categoriaId", target = "idCategoria")
+    @Mapping(target = "imagenes", source = "imagenes")
     Taller toTaller(TallerDto tallerDto);
 
     // Mapeo del Taller Resumido
@@ -26,6 +27,7 @@ public interface TallerMapper {
     @Mapping(source = "profesor.usuario.persona.nombres", target = "profesorNombre")
     @Mapping(source = "organizador.organizadorId", target = "organizadorId")
     @Mapping(source = "organizador.razonSocial", target = "organizadorNombre")
+    @Mapping(target = "imagenes", source = "imagenes")
     TallerResumenDto toTallerResumenDto(Taller taller);
 
 }

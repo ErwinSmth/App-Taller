@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "taller")
@@ -50,8 +51,8 @@ public class Taller {
     @Column(name = "fecha_creacion", insertable = false, updatable = false)
     private LocalDate fechaRegistro;
 
-    @Column(name = "imagen_url")
-    private String imagenUrl;
+    @OneToMany(mappedBy = "taller", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TallerImagen> imagenes;
 
 
     public Long getTallerId() {
@@ -142,11 +143,7 @@ public class Taller {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public String getImagenUrl() {
-        return imagenUrl;
-    }
+    public List<TallerImagen> getImagenes() { return imagenes; }
 
-    public void setImagenUrl(String imagenUrl) {
-        this.imagenUrl = imagenUrl;
-    }
+    public void setImagenes(List<TallerImagen> imagenes) { this.imagenes = imagenes; }
 }

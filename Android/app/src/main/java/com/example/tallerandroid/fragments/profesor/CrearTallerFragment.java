@@ -1,18 +1,18 @@
-package com.example.tallerandroid.fragments.estudiante;
+package com.example.tallerandroid.fragments.profesor;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.tallerandroid.R;
 
-public class InicioEstudianteFragment extends Fragment {
+
+public class CrearTallerFragment extends Fragment {
+
 
 
     @Override
@@ -23,8 +23,7 @@ public class InicioEstudianteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        return inflater.inflate(R.layout.fragment_inicio_estudiante, container, false);
-
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_crear_taller, container, false);
     }
 }

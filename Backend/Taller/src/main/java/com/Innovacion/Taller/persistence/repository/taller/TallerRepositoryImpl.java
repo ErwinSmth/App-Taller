@@ -25,6 +25,11 @@ public class TallerRepositoryImpl implements ITallerRepository {
     @Override
     public TallerDto save(TallerDto taller) {
         Taller tall = mapper.toTaller(taller);
+
+        if (tall.getImagenes() != null){
+            tall.getImagenes().forEach(img -> img.setTaller(tall));
+        }
+
         return mapper.toTallerDto(tallerCrud.save(tall));
     }
 

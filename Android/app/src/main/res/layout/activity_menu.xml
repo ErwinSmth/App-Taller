@@ -22,17 +22,16 @@
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
         </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- FragmentContainer para cargar los fragmentos -->
+        <!-- FragmentContainer para mostrar los fragments -->
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="?attr/actionBarSize"
+            android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:layout_weight="1"
-            android:layout_gravity="top" />
+            android:layout_marginBottom="56dp"
+        android:layout_marginTop="?attr/actionBarSize" />
 
-        <!-- BottomNavigationView anclado al fondo -->
+        <!-- BottomNavigationView anclado abajo -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"

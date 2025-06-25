@@ -1,17 +1,18 @@
 package com.Innovacion.Taller.domain.dto.taller;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 //Clase pensada a ser usada en una vista donde se muestren todos los talleres
 public class TallerResumenDto {
-//Falta el profesor
+
     private Long tallerId;
     private String titulo;
-    private String imagenUrl;
     private Integer capacidad;
     private BigDecimal precio;
     private Long categoriaId;
     private String categoriaNombre;
+    private List<TallerImagenDto> imagenes;
 
     //Datos para mostrar en front nada mas del profesor y organizador
     private Long profesorId;
@@ -33,14 +34,6 @@ public class TallerResumenDto {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
-    }
-
-    public String getImagenUrl() {
-        return imagenUrl;
-    }
-
-    public void setImagenUrl(String imagenUrl) {
-        this.imagenUrl = imagenUrl;
     }
 
     public Integer getCapacidad() {
@@ -105,5 +98,13 @@ public class TallerResumenDto {
 
     public void setOrganizadorNombre(String organizadorNombre) {
         this.organizadorNombre = organizadorNombre;
+    }
+
+    public List<TallerImagenDto> getImagenes() {
+        return imagenes;
+    }
+
+    public void setImagenes(List<TallerImagenDto> imagenes) {
+        this.imagenes = imagenes;
     }
 }
