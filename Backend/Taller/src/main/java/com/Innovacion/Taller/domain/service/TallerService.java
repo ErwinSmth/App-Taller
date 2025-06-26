@@ -7,11 +7,14 @@ import com.Innovacion.Taller.domain.repositoryInterfaces.persona.IOrganizadorRep
 import com.Innovacion.Taller.domain.repositoryInterfaces.persona.IProfesorRepository;
 import com.Innovacion.Taller.domain.repositoryInterfaces.taller.ITallerRepository;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 
 @Service
 public class TallerService {
@@ -28,31 +31,56 @@ public class TallerService {
     @Autowired
     private IOrganizadorRepository organizadorRepo;
 
+    private static final Logger logger = LoggerFactory.getLogger(TallerService.class);
+
+
     @Transactional
     //crear un taller
     public TallerDto crearTaller(TallerDto tallerDto) {
 
-        // Validaciones básicas
-        if (tallerDto == null)
+        logger.info("Intentando crear taller: {}", tallerDto);
+
+        if (tallerDto == null) {
+            logger.error("Datos del taller incompletos");
             throw new IllegalArgumentException("Datos del taller incompletos");
-        if (tallerDto.getTitulo() == null || tallerDto.getTitulo().isEmpty())
+        }
+        if (tallerDto.getTitulo() == null || tallerDto.getTitulo().isEmpty()) {
+            logger.error("El título es obligatorio");
             throw new IllegalArgumentException("El título es obligatorio");
-        if (tallerDto.getDescripcion() == null || tallerDto.getDescripcion().isEmpty())
+        }
+        if (tallerDto.getDescripcion() == null || tallerDto.getDescripcion().isEmpty()) {
+            logger.error("La descripción es obligatoria");
             throw new IllegalArgumentException("La descripción es obligatoria");
-        if (tallerDto.getPrecio() == null || tallerDto.getPrecio().doubleValue() < 0)
+        }
+        if (tallerDto.getPrecio() == null || tallerDto.getPrecio().doubleValue() < 0) {
+            logger.error("El precio debe ser mayor o igual a 0");
             throw new IllegalArgumentException("El precio debe ser mayor o igual a 0");
-        if (tallerDto.getCapacidad() == null || tallerDto.getCapacidad() <= 0)
+        }
+        if (tallerDto.getCapacidad() == null || tallerDto.getCapacidad() <= 0) {
+            logger.error("La capacidad debe ser mayor a 0");
             throw new IllegalArgumentException("La capacidad debe ser mayor a 0");
-        if (tallerDto.getCategoria() == null || tallerDto.getCategoria().getCategoriaId() == null)
+        }
+        if (tallerDto.getCategoria() == null || tallerDto.getCategoria().getCategoriaId() == null) {
+            logger.error("La categoría es obligatoria");
             throw new IllegalArgumentException("La categoría es obligatoria");
+        }
+
 
         //Validar que al menos profesor o organizador esten presentes
         boolean profesorPresente = tallerDto.getProfesor() != null && tallerDto.getProfesor().getProfesorId() != null;
         boolean organizadorPresente = tallerDto.getOrganizador() != null && tallerDto.getOrganizador().getOrganizadorId() != null;
 
         if (!profesorPresente && !organizadorPresente) {
+            if (!profesorPresente && !organizadorPresente) {
+                logger.error("Debe especificar al menos un profesor o un organizador para el taller");
+                throw new IllegalArgumentException("Debe especificar al menos un profesor o un organizador para el taller");
+            }
+
             throw new IllegalArgumentException("Debe especificar al menos un profesor o un organizador para el taller");
         }
+
+        logger.info("Validaciones básicas pasadas. Continuando con la creación...");
+
         // Validar existencia de categoría
         if (categoriaRepo.findById(tallerDto.getCategoria().getCategoriaId()).isEmpty())
             throw new IllegalArgumentException("La categoría no existe");

@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tallerandroid.R;
 import com.example.tallerandroid.auth.loginActivity;
+import com.example.tallerandroid.event.ProfesorSesionEvent;
 import com.example.tallerandroid.model.Especialidad;
 import com.example.tallerandroid.net.RetrofitCliente;
 import com.example.tallerandroid.net.apis.ApiEspecialidadService;
@@ -20,6 +21,8 @@ import com.example.tallerandroid.net.apis.ApiProfesorService;
 import com.example.tallerandroid.profesor.adapters.EspecialidadAdapter;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +42,23 @@ public class ProfesorEspecialidadActivity extends AppCompatActivity {
     private List<Especialidad> especialidadesSeleccionadas = new ArrayList<>();
 
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
 
+        // Recupera el evento sticky si existe
+        ProfesorSesionEvent event = EventBus.getDefault().getStickyEvent(ProfesorSesionEvent.class);
+        if (event != null) {
+            this.profesorId = event.profesorId;
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,7 +173,7 @@ public class ProfesorEspecialidadActivity extends AppCompatActivity {
 
     private void obtenerDatosUsuario(Long userId) {
         ApiProfesorService api = RetrofitCliente.getCliente().create(ApiProfesorService.class);
-        api.obtenerUsuario(userId).enqueue(new Callback<JsonObject>() {
+        api.obtenerporUsuario(userId).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful() && response.body() != null) {

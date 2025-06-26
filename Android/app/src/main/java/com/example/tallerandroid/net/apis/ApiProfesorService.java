@@ -14,7 +14,7 @@ public interface ApiProfesorService {
     Call<Void> actualizarEspecialidadesyDescripcion(@Body JsonObject body);
 
     @GET("/AppTaller/profesor/usuario/{userId}")
-    Call<JsonObject> obtenerUsuario(@Path("userId") Long userId);
+    Call<JsonObject> obtenerporUsuario(@Path("userId") Long userId);
 
     @POST("/AppTaller/profesor/crear")
     Call<JsonObject> crearProfesor(@Body JsonObject body);

@@ -7,14 +7,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tallerandroid.R;
 import com.example.tallerandroid.event.PersonaRegistradaEvent;
+import com.example.tallerandroid.event.ProfesorSesionEvent;
 import com.example.tallerandroid.event.UsuarioRegistradoEvent;
 import com.example.tallerandroid.net.RetrofitCliente;
 import com.example.tallerandroid.net.apis.ApiProfesorService;
@@ -37,7 +34,7 @@ public class RegistroUsuarioActivity extends AppCompatActivity {
     private Button btnRegistrarUsuario, btnVolverPersona;
     private Long personaId;
     private Long userId;
-    private String rol, nombres, apellidos, dni, telefono, email, fechaNacimiento;
+    private String rol, nombres, apellidos, dni, telefono, email, fechaNacimiento, descripcion;
 
     @Override
     protected void onStart() {
@@ -255,7 +252,7 @@ public class RegistroUsuarioActivity extends AppCompatActivity {
     private void manejarFlujoProfesor(Long userId){
         ApiProfesorService apiProfesor = RetrofitCliente.getCliente().create(ApiProfesorService.class);
         // Verifica si ya existe profesor para este usuario
-        apiProfesor.obtenerUsuario(userId).enqueue(new Callback<JsonObject>() {
+        apiProfesor.obtenerporUsuario(userId).enqueue(new Callback<JsonObject>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (response.isSuccessful() && response.body() != null && response.body().has("profesorId")) {
@@ -271,6 +268,7 @@ public class RegistroUsuarioActivity extends AppCompatActivity {
                         public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                             if (response.isSuccessful() && response.body() != null) {
                                 Long profesorId = response.body().get("profesorId").getAsLong();
+                                EventBus.getDefault().postSticky(new ProfesorSesionEvent(profesorId, userId, descripcion));
                                 irAEspecialidad(userId, profesorId);
                             } else if (response.code() == 409) { // 409 Conflict por duplicidad
                                 Toast.makeText(RegistroUsuarioActivity.this, "El profesor ya existe para este usuario.", Toast.LENGTH_SHORT).show();

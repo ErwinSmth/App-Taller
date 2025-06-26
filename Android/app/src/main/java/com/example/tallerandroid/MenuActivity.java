@@ -15,12 +15,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 
+import com.example.tallerandroid.event.ProfesorSesionEvent;
 import com.example.tallerandroid.fragments.estudiante.CuentaEstudianteFragment;
 import com.example.tallerandroid.fragments.estudiante.InicioEstudianteFragment;
 import com.example.tallerandroid.fragments.estudiante.MisTalleresEstudianteFragment;
 import com.example.tallerandroid.fragments.profesor.CuentaProfesorFragment;
 import com.example.tallerandroid.fragments.profesor.InicioProfesorFragment;
 import com.example.tallerandroid.fragments.profesor.MisTalleresProfesorFragment;
+import com.example.tallerandroid.net.RetrofitCliente;
+import com.example.tallerandroid.net.apis.ApiProfesorService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.gson.JsonArray;
@@ -28,12 +31,64 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import org.greenrobot.eventbus.EventBus;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class MenuActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
     private NavigationView navView;
     private Toolbar toolbar;
+
+    //Variables del usuario
+    private Long profesorId;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // Recupera el profesorId de SharedPreferences o consulta al backend si no existe
+        SharedPreferences prefs = getSharedPreferences("user_session", MODE_PRIVATE);
+        profesorId = prefs.contains("profesorId") ? prefs.getLong("profesorId", -1) : null;
+        long userId = prefs.getLong("userId", -1);
+
+        if ((profesorId == null || profesorId == -1) && userId != -1) {
+            // Consultar al backend el profesorId usando el userId
+            ApiProfesorService apiProfesor = RetrofitCliente.getCliente().create(ApiProfesorService.class);
+            apiProfesor.obtenerporUsuario(userId).enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    if (response.isSuccessful() && response.body() != null && response.body().has("profesorId")) {
+                        long profId = response.body().get("profesorId").getAsLong();
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putLong("profesorId", profId);
+                        editor.apply();
+                        profesorId = profId;
+                        Log.d("MenuActivity", "profesorId recuperado y guardado: " + profId);
+                    } else {
+                        Log.d("MenuActivity", "No se encontró profesorId para este usuario");
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Log.e("MenuActivity", "Error al consultar profesorId", t);
+
+                }
+            });
+        } else {
+            Log.d("MenuActivity", "profesorId recuperado de prefs: " + profesorId);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        // No es necesario EventBus.unregister(this)
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,17 +102,14 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     private void setupToolbarAndDrawer() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navView = findViewById(R.id.nav_view);
+        drawerLayout = findViewById(R.id.drawer_layout);
+        navView = findViewById(R.id.nav_view);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawerLayout, toolbar,
-                R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close
-        );
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
     }
@@ -99,6 +151,30 @@ public class MenuActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("MenuActivity", "Error al parsear permisos: " + e.getMessage());
         }
+
+        navView.setNavigationItemSelectedListener(item -> {
+            String titulo = item.getTitle().toString();
+            Fragment fragment = null;
+
+            // Asocia el nombre del permiso con el fragment correspondiente
+            if (titulo.equalsIgnoreCase("Crear Taller")){
+                fragment = new com.example.tallerandroid.fragments.profesor.CrearTallerFragment();
+            }  else if (titulo.equalsIgnoreCase("Mis Talleres")) {
+                fragment = new com.example.tallerandroid.fragments.profesor.MisTalleresProfesorFragment();
+            } else if (titulo.equalsIgnoreCase("Inscripcion a Taller")) {
+                // fragment = new com.example.tallerandroid.fragments.estudiante.InscripcionTallerFragment();
+            }
+
+            if (fragment != null) {
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .commit();
+                drawerLayout.closeDrawers();
+                return true;
+            }
+            return false;
+        });
     }
 
     private void setupBottomNavigation() {
@@ -143,6 +219,4 @@ public class MenuActivity extends AppCompatActivity {
         // Mostrar fragmento inicial (Inicio)
         bottomNav.setSelectedItemId(R.id.nav_inicio);
     }
-
-
 }

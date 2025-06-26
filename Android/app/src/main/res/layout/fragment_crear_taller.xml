@@ -64,6 +64,13 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"/>
 
+        <ProgressBar
+            android:id="@+id/progressBarCategorias"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone"/>
+
         <!-- Imagen (por ahora solo botón, luego se implementa base64) -->
         <Button
             android:id="@+id/btnSeleccionarImagen"
