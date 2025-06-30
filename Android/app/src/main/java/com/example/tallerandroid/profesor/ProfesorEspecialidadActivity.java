@@ -45,19 +45,11 @@ public class ProfesorEspecialidadActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        EventBus.getDefault().register(this);
-
-        // Recupera el evento sticky si existe
-        ProfesorSesionEvent event = EventBus.getDefault().getStickyEvent(ProfesorSesionEvent.class);
-        if (event != null) {
-            this.profesorId = event.profesorId;
-        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
     }
 
     @Override

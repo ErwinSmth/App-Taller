@@ -1,4 +1,4 @@
-package com.example.tallerandroid.model;
+package com.example.tallerandroid.model.request;
 
 public class TallerImagenRequest {
 

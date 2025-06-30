@@ -1,4 +1,6 @@
-package com.example.tallerandroid.model;
+package com.example.tallerandroid.model.request;
+
+import com.example.tallerandroid.model.Categoria;
 
 import java.util.List;
 

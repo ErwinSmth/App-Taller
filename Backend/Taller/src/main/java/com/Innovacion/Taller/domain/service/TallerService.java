@@ -146,4 +146,40 @@ public class TallerService {
         return tallerRepo.findByTituloContaining(titulo);
 
     }
+
+    public TallerDto editarTaller(Long tallerId, TallerDto tallerDto){
+        if (tallerId == null || tallerDto == null) throw new IllegalArgumentException("Datos inválidos");
+
+        // Buscar el taller original
+        Optional<TallerDto> originalOpt = tallerRepo.findById(tallerId);
+        if (originalOpt.isEmpty()) throw new IllegalArgumentException("El taller no existe");
+
+        TallerDto original = originalOpt.get();
+
+        // Validar que el profesor sea el dueño
+        if (original.getProfesor() == null || tallerDto.getProfesor() == null ||
+                !original.getProfesor().getProfesorId().equals(tallerDto.getProfesor().getProfesorId())) {
+            throw new IllegalArgumentException("No tiene permisos para editar este taller");
+        }
+
+        // Validar título único (excepto el propio taller)
+        List<TallerResumenDto> existentes = tallerRepo.findByTituloContaining(tallerDto.getTitulo());
+        for (TallerResumenDto t : existentes) {
+            if (!t.getTallerId().equals(tallerId)) {
+                throw new IllegalArgumentException("Ya existe un taller con ese título");
+            }
+        }
+
+        // Actualizar campos permitidos
+        original.setTitulo(tallerDto.getTitulo());
+        original.setDescripcion(tallerDto.getDescripcion());
+        original.setDuracionHoras(tallerDto.getDuracionHoras());
+        original.setPrecio(tallerDto.getPrecio());
+        original.setCapacidad(tallerDto.getCapacidad());
+        original.setCategoria(tallerDto.getCategoria());
+        original.setImagenes(tallerDto.getImagenes());
+
+        // Guardar y devolver DTO actualizado
+        return tallerRepo.save(original);
+    }
 }

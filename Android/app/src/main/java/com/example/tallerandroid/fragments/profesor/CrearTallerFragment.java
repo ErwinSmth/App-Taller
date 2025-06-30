@@ -1,15 +1,17 @@
 package com.example.tallerandroid.fragments.profesor;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Base64;
@@ -26,22 +28,17 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.tallerandroid.R;
-import com.example.tallerandroid.event.CategoriasCargadasEvent;
-import com.example.tallerandroid.event.ProfesorSesionEvent;
 import com.example.tallerandroid.model.Categoria;
-import com.example.tallerandroid.model.ProfesorRequest;
-import com.example.tallerandroid.model.TallerCrearRequest;
-import com.example.tallerandroid.model.TallerImagenRequest;
+import com.example.tallerandroid.model.request.ProfesorRequest;
+import com.example.tallerandroid.model.request.TallerCrearRequest;
+import com.example.tallerandroid.model.request.TallerImagenRequest;
 import com.example.tallerandroid.net.RetrofitCliente;
 import com.example.tallerandroid.net.apis.ApiCategoriaService;
-import com.example.tallerandroid.net.apis.ApiProfesorService;
 import com.example.tallerandroid.net.apis.ApiTallerService;
 import com.google.gson.Gson;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
+import android.Manifest;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -66,8 +63,10 @@ public class CrearTallerFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 1;
     private String imagenBase64 = "";
     private ActivityResultLauncher<String> seleccionarImagenLauncher;
-
+    private ActivityResultLauncher<String> permisosGaleriaLauncher;
     private ProgressBar progressBarCategorias;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,6 +91,18 @@ public class CrearTallerFragment extends Fragment {
                     }
                 }
         );
+
+        //Permiso para acceder a la galeria
+        permisosGaleriaLauncher = registerForActivityResult(
+                new ActivityResultContracts.RequestPermission(),
+                isGranted -> {
+                    if (isGranted){
+                        seleccionarImagenLauncher.launch("image/*");
+                    } else {
+                        Toast.makeText(getContext(), "Permiso denegado para acceder a la galería", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
     }
 
     @Override
@@ -113,12 +124,30 @@ public class CrearTallerFragment extends Fragment {
         btnCrearTaller.setOnClickListener(v -> crearTaller());
 
         Button btnSeleccionarImagen = view.findViewById(R.id.btnSeleccionarImagen);
-        btnSeleccionarImagen.setOnClickListener(v -> seleccionarImagenLauncher.launch("image/*"));
+        btnSeleccionarImagen.setOnClickListener(v -> verificarPermisoGaleria());
 
         cargarCategorias();
 
         return view;
     }
+
+    private void verificarPermisoGaleria() {
+        String permiso;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permiso = Manifest.permission.READ_MEDIA_IMAGES;
+        } else {
+            permiso = Manifest.permission.READ_EXTERNAL_STORAGE;
+        }
+
+        if (ContextCompat.checkSelfPermission(requireContext(), permiso)
+                == PackageManager.PERMISSION_GRANTED) {
+            seleccionarImagenLauncher.launch("image/*");
+        } else {
+            permisosGaleriaLauncher.launch(permiso);
+        }
+    }
+
+
 
     private void mostrarImagenYConvertir(Uri uri) {
         try {

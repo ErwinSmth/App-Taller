@@ -77,4 +77,14 @@ public class TallerController {
     public ResponseEntity<List<TallerResumenDto>> buscarPorTitulo(@RequestParam String titulo) {
         return ResponseEntity.ok(tallerService.buscarTalleresPorTitulo(titulo));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TallerDto> editarTaller(@PathVariable Long id, @RequestBody TallerDto tallerDto) {
+        try {
+            TallerDto actualizado = tallerService.editarTaller(id, tallerDto);
+            return ResponseEntity.ok(actualizado);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
 }
