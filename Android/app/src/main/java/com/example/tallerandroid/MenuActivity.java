@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 
 import com.example.tallerandroid.event.ProfesorSesionEvent;
+import com.example.tallerandroid.fragments.BuscarTallerFragment;
 import com.example.tallerandroid.fragments.estudiante.CuentaEstudianteFragment;
 import com.example.tallerandroid.fragments.estudiante.InicioEstudianteFragment;
 import com.example.tallerandroid.fragments.estudiante.MisTalleresEstudianteFragment;
@@ -183,6 +184,13 @@ public class MenuActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("user_session", MODE_PRIVATE);
         long rolActualId = prefs.getLong("rolActualId", -1);
 
+        // Solo mostrar "Buscar" si es estudiante (rolActualId == 1)
+        if(rolActualId != 1){
+            bottomNav.getMenu().findItem(R.id.nav_buscar).setVisible(false);
+        } else {
+            bottomNav.getMenu().findItem(R.id.nav_buscar).setVisible(true);
+        }
+
         bottomNav.setOnItemSelectedListener(item -> {
             Fragment fragment = null;
             int itemId = item.getItemId();
@@ -194,6 +202,8 @@ public class MenuActivity extends AppCompatActivity {
                     fragment = new MisTalleresEstudianteFragment();
                 } else if (itemId == R.id.nav_cuenta) {
                     fragment = new CuentaEstudianteFragment();
+                } else if (itemId == R.id.nav_buscar){
+                    fragment = new BuscarTallerFragment();
                 }
             } else if (rolActualId == 2) { // Profesor
                 if (itemId == R.id.nav_inicio) {

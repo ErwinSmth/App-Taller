@@ -68,7 +68,7 @@
                     android:layout_marginStart="8dp"/>
             </LinearLayout>
         </LinearLayout>
-        
+
         <ImageView
             android:id="@+id/ivTallerImagen"
             android:layout_width="90dp"
