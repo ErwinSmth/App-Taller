@@ -19,4 +19,7 @@ public interface ApiTallerService {
     @GET("/AppTaller/taller/profesor/{profesorId}")
     Call<List<TallerResumen>> listarTalleresPorProfesor(@Path("profesorId") long profesorId);
 
+    @GET("/AppTaller/taller/categoria/{categoriaId}")
+    Call<List<TallerResumen>> listarTallerPorCategoria(@Path("categoriaId") long categoriaId);
+
 }
