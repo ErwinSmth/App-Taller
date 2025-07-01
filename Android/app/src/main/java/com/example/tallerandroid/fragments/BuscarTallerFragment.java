@@ -57,7 +57,18 @@ public class BuscarTallerFragment extends Fragment {
         });
 
         adapter = new CategoriaAdapter(categorias, categoria -> {
-            // TODO: Navegar al fragmento de lista de talleres por categoría
+
+            //Navegar al fragment de lista de taller por categoria
+            Bundle args = new Bundle();
+            args.putLong("categoriaId", categoria.getCategoriaId());
+            ListarTallerCategoriaFragment fragment = new ListarTallerCategoriaFragment();
+            fragment.setArguments(args);
+            requireActivity().getSupportFragmentManager()
+                            .beginTransaction()
+                                    .replace(R.id.fragment_container, fragment)
+                                            .addToBackStack(null)
+                                                    .commit();
+
             Toast.makeText(getContext(), "Seleccionaste: " + categoria.getNombre(), Toast.LENGTH_SHORT).show();
         });
         recyclerView.setAdapter(adapter);

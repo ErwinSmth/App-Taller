@@ -1,81 +1,87 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="120dp"
+    android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:elevation="4dp">
 
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="horizontal"
+android:padding="12dp"
+android:gravity="center_vertical">
+
+<!-- Datos del taller -->
+<LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:orientation="vertical"
+    android:gravity="center_vertical">
+
+    <TextView
+        android:id="@+id/tvTituloTaller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@android:color/black"
+        android:maxLines="1"
+        android:ellipsize="end"/>
+
+    <TextView
+        android:id="@+id/tvCategoriaTaller"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@android:color/darker_gray"
+        android:maxLines="1"
+        android:ellipsize="end"/>
+
+    <TextView
+        android:id="@+id/tvCapacidadPrecio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="@android:color/black"
+        android:layout_marginTop="4dp"/>
+
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:padding="12dp"
-        android:gravity="center_vertical">
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+    android:layout_marginBottom="4dp"> <!-- Espacio abajo -->
 
-        <!-- Datos del taller -->
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center_vertical">
+    <Button
+        android:id="@+id/btnEditar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Editar"
+        android:textSize="12sp"
+        android:minHeight="36dp"
+        android:minWidth="72dp"/>
 
-            <TextView
-                android:id="@+id/tvTituloTaller"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:textColor="@android:color/black"
-                android:maxLines="1"
-                android:ellipsize="end"/>
+    <Button
+        android:id="@+id/btnEliminar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Eliminar"
+        android:textSize="12sp"
+        android:layout_marginStart="12dp"
+        android:minHeight="36dp"
+        android:minWidth="72dp"/>
+</LinearLayout>
+</LinearLayout>
 
-            <TextView
-                android:id="@+id/tvCategoriaTaller"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="@android:color/darker_gray"
-                android:maxLines="1"
-                android:ellipsize="end"/>
 
-            <TextView
-                android:id="@+id/tvCapacidadPrecio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                android:textColor="@android:color/black"
-                android:layout_marginTop="4dp"/>
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp">
-
-                <Button
-                    android:id="@+id/btnEditar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Editar"
-                    android:textSize="12sp"/>
-
-                <Button
-                    android:id="@+id/btnEliminar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Eliminar"
-                    android:textSize="12sp"
-                    android:layout_marginStart="8dp"/>
-            </LinearLayout>
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/ivTallerImagen"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:layout_marginStart="12dp"
-            android:scaleType="centerCrop"
-            android:background="@drawable/bg_image_rounded"
-            android:contentDescription="Imagen del taller"/>
+<ImageView
+android:id="@+id/ivTallerImagen"
+android:layout_width="90dp"
+android:layout_height="90dp"
+android:layout_marginStart="12dp"
+android:scaleType="centerCrop"
+android:background="@drawable/bg_image_rounded"
+android:contentDescription="Imagen del taller"/>
     </LinearLayout>
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
