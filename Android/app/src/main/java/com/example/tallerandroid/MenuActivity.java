@@ -51,37 +51,60 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Recupera el profesorId de SharedPreferences o consulta al backend si no existe
         SharedPreferences prefs = getSharedPreferences("user_session", MODE_PRIVATE);
-        profesorId = prefs.contains("profesorId") ? prefs.getLong("profesorId", -1) : null;
+        long rolActualId = prefs.getLong("rolActualId", -1);
         long userId = prefs.getLong("userId", -1);
 
-        if ((profesorId == null || profesorId == -1) && userId != -1) {
-            // Consultar al backend el profesorId usando el userId
-            ApiProfesorService apiProfesor = RetrofitCliente.getCliente().create(ApiProfesorService.class);
-            apiProfesor.obtenerporUsuario(userId).enqueue(new Callback<JsonObject>() {
-                @Override
-                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-                    if (response.isSuccessful() && response.body() != null && response.body().has("profesorId")) {
-                        long profId = response.body().get("profesorId").getAsLong();
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putLong("profesorId", profId);
-                        editor.apply();
-                        profesorId = profId;
-                        Log.d("MenuActivity", "profesorId recuperado y guardado: " + profId);
-                    } else {
-                        Log.d("MenuActivity", "No se encontró profesorId para este usuario");
+        // PROFESOR: Guarda profesorId si no está en prefs
+        if (rolActualId == 2) { // Profesor
+            long profesorId = prefs.getLong("profesorId", -1);
+            if (profesorId == -1 && userId != -1) {
+                ApiProfesorService apiProfesor = RetrofitCliente.getCliente().create(ApiProfesorService.class);
+                apiProfesor.obtenerporUsuario(userId).enqueue(new retrofit2.Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(retrofit2.Call<com.google.gson.JsonObject> call, retrofit2.Response<com.google.gson.JsonObject> response) {
+                        if (response.isSuccessful() && response.body() != null && response.body().has("profesorId")) {
+                            long profId = response.body().get("profesorId").getAsLong();
+                            prefs.edit().putLong("profesorId", profId).apply();
+                            Log.d("MenuActivity", "profesorId recuperado y guardado: " + profId);
+                        } else {
+                            Log.d("MenuActivity", "No se encontró profesorId para este usuario");
+                        }
                     }
-                }
+                    @Override
+                    public void onFailure(retrofit2.Call<com.google.gson.JsonObject> call, Throwable t) {
+                        Log.e("MenuActivity", "Error al consultar profesorId", t);
+                    }
+                });
+            } else {
+                Log.d("MenuActivity", "profesorId recuperado de prefs: " + profesorId);
+            }
+        }
 
-                @Override
-                public void onFailure(Call<JsonObject> call, Throwable t) {
-                    Log.e("MenuActivity", "Error al consultar profesorId", t);
-
-                }
-            });
-        } else {
-            Log.d("MenuActivity", "profesorId recuperado de prefs: " + profesorId);
+        // ESTUDIANTE: Guarda estudianteId si no está en prefs
+        if (rolActualId == 1) { // Estudiante
+            long estudianteId = prefs.getLong("estudianteId", -1);
+            if (estudianteId == -1 && userId != -1) {
+                com.example.tallerandroid.net.apis.ApiEstudianteService apiEstudiante = RetrofitCliente.getCliente().create(com.example.tallerandroid.net.apis.ApiEstudianteService.class);
+                apiEstudiante.obtenerPorUsuario(userId).enqueue(new retrofit2.Callback<JsonObject>() {
+                    @Override
+                    public void onResponse(retrofit2.Call<com.google.gson.JsonObject> call, retrofit2.Response<com.google.gson.JsonObject> response) {
+                        if (response.isSuccessful() && response.body() != null && response.body().has("estudianteId")) {
+                            long estId = response.body().get("estudianteId").getAsLong();
+                            prefs.edit().putLong("estudianteId", estId).apply();
+                            Log.d("MenuActivity", "estudianteId recuperado y guardado: " + estId);
+                        } else {
+                            Log.d("MenuActivity", "No se encontró estudianteId para este usuario");
+                        }
+                    }
+                    @Override
+                    public void onFailure(retrofit2.Call<com.google.gson.JsonObject> call, Throwable t) {
+                        Log.e("MenuActivity", "Error al consultar estudianteId", t);
+                    }
+                });
+            } else {
+                Log.d("MenuActivity", "estudianteId recuperado de prefs: " + estudianteId);
+            }
         }
     }
 
