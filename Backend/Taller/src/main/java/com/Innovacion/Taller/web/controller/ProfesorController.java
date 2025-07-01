@@ -26,7 +26,7 @@ public class ProfesorController {
 
     @PostMapping("/especialidades")
     public ResponseEntity<Void> actualizarEspecialidadesYDescripcion(@RequestBody ProfesorEspecialidadRequestDto dto) {
-        profesorService.actualizarEspecialidadesYDescripcion(dto);
+        profesorService.actualizarEspecialidadesYDescripcion(dto); 
         return ResponseEntity.ok().build();
     }
 
