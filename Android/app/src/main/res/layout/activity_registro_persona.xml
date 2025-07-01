@@ -2,10 +2,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#A293E9">
+    android:background="@drawable/estudiante"
+    android:alpha="0.9">
     <LinearLayout
         android:orientation="vertical"
-        android:padding="16dp"
+        android:padding="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -14,8 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Nombres"
-            android:background="@android:color/white"
-            android:textColor="#000000"
+            android:background="@drawable/edittext_border"
+            android:textColor="#FFFFFF"
             android:padding="12dp"
             android:textSize="16sp"
             android:fontFamily="sans-serif-medium"
@@ -26,8 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Apellidos"
-            android:background="@android:color/white"
-            android:textColor="#000000"
+            android:background="@drawable/edittext_border"
+            android:textColor="#FFFFFF"
             android:padding="12dp"
             android:textSize="16sp"
             android:fontFamily="sans-serif-medium"
@@ -39,8 +40,8 @@
             android:layout_height="wrap_content"
             android:hint="DNI"
             android:inputType="number"
-            android:background="@android:color/white"
-            android:textColor="#000000"
+            android:background="@drawable/edittext_border"
+            android:textColor="#FFFFFF"
             android:padding="12dp"
             android:textSize="16sp"
             android:fontFamily="sans-serif-medium"
@@ -52,8 +53,8 @@
             android:layout_height="wrap_content"
             android:hint="Teléfono"
             android:inputType="phone"
-            android:background="@android:color/white"
-            android:textColor="#000000"
+            android:background="@drawable/edittext_border"
+            android:textColor="#FFFFFF"
             android:padding="12dp"
             android:textSize="16sp"
             android:fontFamily="sans-serif-medium"
@@ -65,8 +66,8 @@
             android:layout_height="wrap_content"
             android:hint="Email"
             android:inputType="textEmailAddress"
-            android:background="@android:color/white"
-            android:textColor="#000000"
+            android:background="@drawable/edittext_border"
+            android:textColor="#FFFFFF"
             android:padding="12dp"
             android:textSize="16sp"
             android:fontFamily="sans-serif-medium"
@@ -79,8 +80,8 @@
             android:hint="Fecha de nacimiento (YYYY-MM-DD)"
             android:focusable="false"
             android:clickable="true"
-            android:background="@android:color/white"
-            android:textColor="#000000"
+            android:background="@drawable/edittext_border"
+            android:textColor="#FFFFFF"
             android:padding="12dp"
             android:textSize="16sp"
             android:fontFamily="sans-serif-medium"
@@ -101,14 +102,6 @@
             app:layout_constraintTop_toBottomOf="@id/tvBienvenida"
             app:layout_constraintVertical_bias="0.987" />
 
-        <ImageView
-            android:id="@+id/imgLogo"
-            android:layout_width="343dp"
-            android:layout_height="319dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="32dp"
-            android:contentDescription="Logo de la app"
-            android:src="@drawable/joven" />
+
     </LinearLayout>
 </ScrollView>

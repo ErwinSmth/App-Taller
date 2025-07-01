@@ -3,11 +3,21 @@
     android:padding="24dp"
     android:gravity="center"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="match_parent"
+    android:background="#000000">
+    <ImageView
+        android:id="@+id/imgEncima"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/idea"
+        android:contentDescription="Imagen de registro"
+        android:layout_marginBottom="10dp"
+        android:alpha="0.9"/>
     <TextView
-        android:text="Selecciona tu tipo de registro"
+        android:text="TIPO DE REGISTRO"
         android:textSize="20sp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingBottom="24dp"/>
@@ -16,19 +26,34 @@
         android:id="@+id/btnEstudiante"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Registrarse como Estudiante" />
+        android:textStyle="bold"
+        android:text="Registrarse como Estudiante"
+        android:background="@drawable/edittext_border"
+        android:layout_marginTop="16dp"/>
 
     <Button
         android:id="@+id/btnProfesor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:text="Registrarse como Profesor"
+        android:background="@drawable/edittext_border"
         android:layout_marginTop="16dp" />
 
     <Button
         android:id="@+id/btnOrganizador"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:text="Registrarse como Organizador"
+        android:background="@drawable/edittext_border"
         android:layout_marginTop="16dp" />
+    <ImageView
+        android:id="@+id/imgBajo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/libros"
+        android:contentDescription="Imagen de registro"
+        android:layout_marginBottom="5dp"
+        android:alpha="0.9"/>
 </LinearLayout>
