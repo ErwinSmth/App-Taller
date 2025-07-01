@@ -11,7 +11,7 @@
         android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="10dp"
-        android:src="@drawable/brain2" />
+        android:src="@drawable/especilidad" />
 
     <TextView
         android:text="ESPECIALIDADES"
@@ -54,6 +54,6 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
         android:textStyle="bold"
-        android:backgroundTint="#6F0F2F"
-        android:text="GUARDAR"/>
+        android:text="GUARDAR"
+        android:background="@drawable/boton_degradado"/>
 </LinearLayout>
