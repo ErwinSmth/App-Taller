@@ -1,10 +1,12 @@
 package com.Innovacion.Taller.domain.service;
 
 import com.Innovacion.Taller.domain.dto.EspecialidadDto;
+import com.Innovacion.Taller.domain.dto.persona.PersonaDto;
 import com.Innovacion.Taller.domain.dto.persona.ProfesorDto;
 import com.Innovacion.Taller.domain.dto.persona.ProfesorEspecialidadRequestDto;
 import com.Innovacion.Taller.domain.dto.usuario.UsuarioDto;
 import com.Innovacion.Taller.domain.repositoryInterfaces.IEspecialidadRepository;
+import com.Innovacion.Taller.domain.repositoryInterfaces.persona.IPersonaRepository;
 import com.Innovacion.Taller.domain.repositoryInterfaces.persona.IProfesorRepository;
 import com.Innovacion.Taller.domain.repositoryInterfaces.usuario.IUsuarioRepository;
 import jakarta.transaction.Transactional;
@@ -26,6 +28,9 @@ public class ProfesorService {
 
     @Autowired
     private IUsuarioRepository userRepo;
+
+    @Autowired
+    private IPersonaRepository personaRepo;
 
     public Optional<ProfesorDto> buscarPorUsuarioId(Long userId) {
         if (userId == null) throw new IllegalArgumentException("Id de usuario inválido");
@@ -61,6 +66,11 @@ public class ProfesorService {
         ProfesorDto profesor = new ProfesorDto();
         profesor.setUserDto(userDto);
         return profesorRepo.save(profesor);
+    }
+
+    public Optional<PersonaDto> obtenerPersonaPorProfesorId(Long profesorId) {
+        Optional<Long> personaIdOpt = profesorRepo.findPersonaIdByProfesorId(profesorId);
+        return personaIdOpt.flatMap(personaRepo::findById);
     }
 
 }

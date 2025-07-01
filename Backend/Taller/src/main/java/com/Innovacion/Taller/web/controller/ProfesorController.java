@@ -1,5 +1,6 @@
 package com.Innovacion.Taller.web.controller;
 
+import com.Innovacion.Taller.domain.dto.persona.PersonaDto;
 import com.Innovacion.Taller.domain.dto.persona.ProfesorDto;
 import com.Innovacion.Taller.domain.dto.persona.ProfesorEspecialidadRequestDto;
 import com.Innovacion.Taller.domain.service.ProfesorService;
@@ -36,5 +37,11 @@ public class ProfesorController {
         return ResponseEntity.ok(profesor);
     }
 
+    @GetMapping("/{profesorId}/persona/detalle")
+    public ResponseEntity<PersonaDto> obtenerPersonaPorProfesorId(@PathVariable Long profesorId) {
+        return profesorService.obtenerPersonaPorProfesorId(profesorId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 
 }
