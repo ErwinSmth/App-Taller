@@ -68,8 +68,6 @@ public class BuscarTallerFragment extends Fragment {
                                     .replace(R.id.fragment_container, fragment)
                                             .addToBackStack(null)
                                                     .commit();
-
-            Toast.makeText(getContext(), "Seleccionaste: " + categoria.getNombre(), Toast.LENGTH_SHORT).show();
         });
         recyclerView.setAdapter(adapter);
         cargarCategorias();
