@@ -12,5 +12,6 @@ public interface IProfesorRepository {
     Optional<ProfesorDto> findById(Long id);
     Optional<ProfesorDto> findByUsuarioId(Long userId);
     List<ProfesorDto> findByEspecialidad(String especialidad);
+    Optional<Long> findPersonaIdByProfesorId(Long profesorId);
 
 }

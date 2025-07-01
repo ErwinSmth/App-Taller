@@ -1,5 +1,6 @@
 package com.example.tallerandroid.net.apis;
 
+import com.example.tallerandroid.model.Persona;
 import com.google.gson.JsonObject;
 
 import retrofit2.Call;
@@ -18,5 +19,8 @@ public interface ApiProfesorService {
 
     @POST("/AppTaller/profesor/crear")
     Call<JsonObject> crearProfesor(@Body JsonObject body);
+
+    @GET("/AppTaller/profesor/{profesorId}/persona/detalle")
+    Call<Persona> obtenerPersonaPorProfesorId(@Path("profesorId") Long profesorId);
 
 }

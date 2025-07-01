@@ -1,5 +1,6 @@
 package com.example.tallerandroid.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -18,10 +19,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tallerandroid.R;
+import com.example.tallerandroid.model.Persona;
 import com.example.tallerandroid.model.TallerDetalle;
 import com.example.tallerandroid.model.TallerResumen;
 import com.example.tallerandroid.net.RetrofitCliente;
 import com.example.tallerandroid.net.apis.ApiInscripcionService;
+import com.example.tallerandroid.net.apis.ApiProfesorService;
 import com.example.tallerandroid.net.apis.ApiTallerService;
 
 import retrofit2.Call;
@@ -75,7 +78,6 @@ public class DetalleTallerFragment extends Fragment {
                     tvCategoriaTaller.setText("Categoría: " + taller.getCategoria().getNombre());
                     tvDescripcionTaller.setText(taller.getDescripcion());
                     tvCapacidadPrecio.setText("Capacidad: " + taller.getCapacidad() + " | S/ " + taller.getPrecio());
-                    tvProfesor.setText("Profesor: " + taller.getProfesor().getUserDto().getPersona().getNombres());
 
                     // Imagen principal
                     if (taller.getImagenes() != null && !taller.getImagenes().isEmpty()) {
@@ -89,6 +91,13 @@ public class DetalleTallerFragment extends Fragment {
                     } else {
                         ivImagenTaller.setImageResource(R.drawable.ic_launcher_background);
                     }
+
+                    // Obtener y mostrar nombre completo del profesor
+                    if (taller.getProfesor() != null && taller.getProfesor().getProfesorId() != null) {
+                        cargarInfoProfesor(taller.getProfesor().getProfesorId());
+                    } else {
+                        tvProfesor.setText("Profesor: -");
+                    }
                 } else {
                     Toast.makeText(getContext(), "No se pudo cargar el taller", Toast.LENGTH_SHORT).show();
                 }
@@ -97,7 +106,6 @@ public class DetalleTallerFragment extends Fragment {
             @Override
             public void onFailure(Call<TallerDetalle> call, Throwable t) {
                 Toast.makeText(getContext(), "Error de red", Toast.LENGTH_SHORT).show();
-
             }
         });
     }
@@ -126,6 +134,27 @@ public class DetalleTallerFragment extends Fragment {
             public void onFailure(Call<Void> call, Throwable t) {
                 Toast.makeText(getContext(), "Error de red", Toast.LENGTH_SHORT).show();
 
+            }
+        });
+    }
+
+    private void cargarInfoProfesor(Long profesorId){
+        ApiProfesorService api = RetrofitCliente.getCliente().create(ApiProfesorService.class);
+        api.obtenerPersonaPorProfesorId(profesorId).enqueue(new Callback<Persona>() {
+            @Override
+            public void onResponse(Call<Persona> call, Response<Persona> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Persona persona = response.body();
+                    String nombreCompleto = persona.getNombres() + " " + persona.getApellidos();
+                    tvProfesor.setText("Profesor: " + nombreCompleto);
+                } else {
+                    tvProfesor.setText("Profesor: -");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Persona> call, Throwable t) {
+                tvProfesor.setText("Profesor: -");
             }
         });
     }

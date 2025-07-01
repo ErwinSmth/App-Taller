@@ -44,4 +44,16 @@ public class ProfesorRepositoryImpl implements IProfesorRepository {
                 .map(mapper::toProfesorDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Optional<Long> findPersonaIdByProfesorId(Long profesorId) {
+        return profeCrud.findById(profesorId)
+                .map(profesor -> {
+                    if (profesor.getUsuario() != null && profesor.getUsuario().getPersona() != null){
+                        return profesor.getUsuario().getPersona().getPersonaId();
+                    } else {
+                        return null;
+                    }
+                });
+    }
 }
