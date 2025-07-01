@@ -83,6 +83,8 @@ public class loginActivity extends AppCompatActivity {
                     SharedPreferences prefs = getSharedPreferences("user_session", MODE_PRIVATE);
                     SharedPreferences.Editor editor = prefs.edit();
 
+                    editor.clear();
+
                     editor.putLong("userId", body.get("userId").getAsLong());
                     editor.putString("nameUser", body.get("nameUser").getAsString());
 
