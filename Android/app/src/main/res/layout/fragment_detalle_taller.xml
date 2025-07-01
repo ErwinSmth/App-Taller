@@ -1,14 +1,73 @@
-<?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.DetalleTallerFragment">
+    android:fillViewport="true">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:padding="16dp">
 
-</FrameLayout>
+        <!-- Imagen principal del taller -->
+        <ImageView
+            android:id="@+id/ivImagenTaller"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
+            android:scaleType="centerCrop"
+            android:contentDescription="Imagen del taller"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Título -->
+        <TextView
+            android:id="@+id/tvTituloTaller"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="22sp"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Categoría -->
+        <TextView
+            android:id="@+id/tvCategoriaTaller"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Descripción -->
+        <TextView
+            android:id="@+id/tvDescripcionTaller"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginBottom="12dp"/>
+
+        <!-- Capacidad y precio -->
+        <TextView
+            android:id="@+id/tvCapacidadPrecio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Profesor -->
+        <TextView
+            android:id="@+id/tvProfesor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Botón inscribirse -->
+        <Button
+            android:id="@+id/btnInscribirse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Inscribirse"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:layout_marginTop="24dp"/>
+    </LinearLayout>
+</ScrollView>

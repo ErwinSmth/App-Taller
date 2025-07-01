@@ -1,5 +1,6 @@
 package com.example.tallerandroid.net.apis;
 
+import com.example.tallerandroid.model.TallerDetalle;
 import com.example.tallerandroid.model.request.TallerCrearRequest;
 import com.example.tallerandroid.model.TallerResumen;
 
@@ -21,5 +22,8 @@ public interface ApiTallerService {
 
     @GET("/AppTaller/taller/categoria/{categoriaId}")
     Call<List<TallerResumen>> listarTallerPorCategoria(@Path("categoriaId") long categoriaId);
+
+    @GET("/AppTaller/taller/{id}")
+    Call<TallerDetalle> getTallerById(@Path("id") long id);
 
 }
