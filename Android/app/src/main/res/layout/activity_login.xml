@@ -3,55 +3,46 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#A293E9">
-
-    <LinearLayout
+    android:background="#000000">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:weightSum="4"
-        android:background="#D1C4E9">
-
-        <!-- Imagen superior (3/4 de la pantalla) -->
-        <ImageView
+        android:background="#000000"
+        android:gravity="center_horizontal"
+        android:padding="50dp">
+     <ImageView
             android:id="@+id/img_login_top"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="2.9"
-            android:scaleType="centerCrop"
-            android:src="@drawable/inicio"
-            android:contentDescription="Imagen superior de login" />
-
-        <!-- Área de login (1/4 de la pantalla) -->
-
-        <LinearLayout
-            android:layout_width="400dp"
-            android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:src="@drawable/user1"
+            android:contentDescription="Imagen superior de login" />
 
             <EditText
                 android:id="@+id/et_username"
                 android:layout_width="369dp"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:layout_marginBottom="8dp"
                 android:background="#FFFFFF"
                 android:hint="Nombre de usuario"
                 android:inputType="text"
                 android:padding="10dp"
                 android:textColor="#000000"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                />
 
             <EditText
                 android:id="@+id/et_password"
-                android:layout_width="match_parent"
-                android:layout_height="33dp"
+                android:layout_width="369dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
                 android:layout_marginBottom="8dp"
                 android:background="#FFFFFF"
                 android:hint="Contraseña"
                 android:inputType="textPassword"
-                android:padding="8dp"
+                android:padding="10dp"
                 android:textColor="#000000"
                 android:textSize="16sp" />
 
@@ -59,28 +50,26 @@
                 android:id="@+id/btn_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#6F0F2F"
                 android:text="Iniciar sesión"
                 android:textColor="@android:color/white"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvBienvenida"
-                app:layout_constraintVertical_bias="0.987" />
+                android:background="@drawable/edittext_border"
+                app:layout_constraintTop_toBottomOf="@id/tvBienvenida"/>
 
             <!-- Texto de registro -->
-        </LinearLayout>
+
 
         <TextView
             android:id="@+id/tv_no_cuenta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="20dp"
+            android:textStyle="bold"
             android:layout_gravity="center_horizontal"
             android:text="¿No tienes cuenta? Regístrate"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/white" />
+
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
