@@ -1,11 +1,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:padding="24dp"
+    android:padding="50dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <ImageView
+        android:id="@+id/imgEspecialidades"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/brain2" />
 
     <TextView
-        android:text="Selecciona tus especialidades"
+        android:text="ESPECIALIDADES"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
         android:textSize="18sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,10 +26,13 @@
         android:id="@+id/rvEspecialidades"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bordestexto"/>
 
     <TextView
         android:text="Descripción"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
         android:textSize="18sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,11 +45,15 @@
         android:hint="Agrega una descripción sobre ti"
         android:gravity="top"
         android:inputType="textMultiLine"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bordestexto"/>
 
     <Button
         android:id="@+id/btnGuardar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Guardar"/>
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:backgroundTint="#6F0F2F"
+        android:text="GUARDAR"/>
 </LinearLayout>
