@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:text="Registrarse como Estudiante"
-        android:background="@drawable/edittext_border"
+        android:background="@drawable/boton_degradado"
         android:layout_marginTop="16dp"/>
 
     <Button
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:text="Registrarse como Profesor"
-        android:background="@drawable/edittext_border"
+        android:background="@drawable/boton_degradado"
         android:layout_marginTop="16dp" />
 
     <Button
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:text="Registrarse como Organizador"
-        android:background="@drawable/edittext_border"
+        android:background="@drawable/boton_degradado"
         android:layout_marginTop="16dp" />
     <ImageView
         android:id="@+id/imgBajo"

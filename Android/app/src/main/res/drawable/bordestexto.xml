@@ -6,7 +6,7 @@
 
     <stroke
         android:width="2dp"
-        android:color="@android:color/white" /> <!-- Borde blanco -->
+        android:color="#555555" /> <!-- Borde blanco -->
 
     <corners android:radius="8dp" /> <!-- Bordes redondeados -->
 
