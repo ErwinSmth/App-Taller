@@ -1,5 +1,6 @@
 package com.example.tallerandroid.fragments.profesor;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -41,8 +42,12 @@ import com.google.gson.Gson;
 import android.Manifest;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -59,6 +64,8 @@ public class CrearTallerFragment extends Fragment {
     private EditText etTitulo, etDescripcion, etDuracion, etPrecio, etCapacidad;
     private Button btnCrearTaller;
     private ImageView ivPreviewImagen;
+    private EditText etFechaFinalizacion;
+    private String fechaFinalizacionSeleccionada = null;
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private String imagenBase64 = "";
@@ -120,6 +127,24 @@ public class CrearTallerFragment extends Fragment {
         etCapacidad = view.findViewById(R.id.etCapacidad);
         btnCrearTaller = view.findViewById(R.id.btnCrearTaller);
         ivPreviewImagen = view.findViewById(R.id.ivPreviewImagen);
+        etFechaFinalizacion = view.findViewById(R.id.etFechaFinalizacion);
+
+        etFechaFinalizacion.setOnClickListener(v -> {
+            final Calendar calendar = Calendar.getInstance();
+            DatePickerDialog datePickerDialog = new DatePickerDialog(
+                    requireContext(),
+                    (view1, year, month, dayOfMonth) -> {
+                        // Formato yyyy-MM-dd
+                        String fecha = String.format(Locale.US, "%04d-%02d-%02d", year, month + 1, dayOfMonth);
+                        etFechaFinalizacion.setText(fecha);
+                        fechaFinalizacionSeleccionada = fecha;
+                    },
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH)
+            );
+            datePickerDialog.show();
+        });
 
         btnCrearTaller.setOnClickListener(v -> crearTaller());
 
@@ -180,6 +205,29 @@ public class CrearTallerFragment extends Fragment {
             Toast.makeText(getContext(), "Completa todos los campos", Toast.LENGTH_SHORT).show();
             return;
         }
+        if (fechaFinalizacionSeleccionada == null || fechaFinalizacionSeleccionada.isEmpty()) {
+            Toast.makeText(getContext(), "Selecciona la fecha de finalización", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        // Validación robusta de fecha de finalización
+        LocalDate fechaFinal;
+        try {
+            fechaFinal = LocalDate.parse(fechaFinalizacionSeleccionada);
+        } catch (Exception e) {
+            Toast.makeText(getContext(), "Formato de fecha inválido (YYYY-MM-DD)", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        LocalDate hoy = LocalDate.now();
+        long diasDiferencia = ChronoUnit.DAYS.between(hoy, fechaFinal);
+
+        if (fechaFinal.isBefore(hoy)) {
+            Toast.makeText(getContext(), "La fecha de finalización no puede ser anterior a hoy", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (diasDiferencia <= 2) {
+            Toast.makeText(getContext(), "Advertencia: El margen entre hoy y la fecha de finalización es muy corto (" + diasDiferencia + " día(s))", Toast.LENGTH_LONG).show();
+            return;
+        }
 
         int duracion = Integer.parseInt(duracionStr);
         double precio = Double.parseDouble(precioStr);
@@ -202,6 +250,8 @@ public class CrearTallerFragment extends Fragment {
         request.setCapacidad(capacidad);
         request.setCategoria(categoriaSeleccionada);
         request.setImagenes(imagenes);
+        request.setFechaFinalizacion(fechaFinal.toString());
+
 
         Log.d("CrearTallerFragment", "crearTaller: profesorId usado para request: " + profesorId);
 
@@ -243,6 +293,8 @@ public class CrearTallerFragment extends Fragment {
         etPrecio.setText("");
         etCapacidad.setText("");
         spinnerCategoria.setSelection(0);
+        etFechaFinalizacion.setText("");
+        fechaFinalizacionSeleccionada = null;
     }
 
     private void cargarCategorias() {

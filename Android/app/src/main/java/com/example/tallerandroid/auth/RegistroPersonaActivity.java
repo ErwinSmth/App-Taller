@@ -153,18 +153,15 @@ public class RegistroPersonaActivity extends AppCompatActivity {
             Toast.makeText(this, "Seleccione la fecha de nacimiento", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            java.time.LocalDate fecha;
-            try {
-                fecha = java.time.LocalDate.parse(fechaNacimiento);
-                if (fecha.isAfter(java.time.LocalDate.now())) {
-                    Toast.makeText(this, "La fecha de nacimiento no puede ser futura", Toast.LENGTH_SHORT).show();
-                    return false;
-                }
-            } catch (Exception e) {
-                Toast.makeText(this, "Formato de fecha inválido (YYYY-MM-DD)", Toast.LENGTH_SHORT).show();
+        try {
+            java.time.LocalDate fecha = java.time.LocalDate.parse(fechaNacimiento);
+            if (fecha.isAfter(java.time.LocalDate.now())) {
+                Toast.makeText(this, "La fecha de nacimiento no puede ser futura", Toast.LENGTH_SHORT).show();
                 return false;
             }
+        } catch (Exception e) {
+            Toast.makeText(this, "Formato de fecha inválido (YYYY-MM-DD)", Toast.LENGTH_SHORT).show();
+            return false;
         }
         return true;
     }

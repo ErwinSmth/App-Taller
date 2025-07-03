@@ -35,6 +35,15 @@
             android:layout_marginBottom="12dp"/>
 
         <EditText
+            android:id="@+id/etFechaFinalizacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Fecha de finalización"
+            android:focusable="false"
+            android:inputType="date"
+            android:drawableEnd="@drawable/ic_calendar"/>
+
+        <EditText
             android:id="@+id/etDuracionHoras"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

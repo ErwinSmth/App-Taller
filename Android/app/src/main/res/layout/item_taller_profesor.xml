@@ -39,12 +39,20 @@ android:gravity="center_vertical">
         android:ellipsize="end"/>
 
     <TextView
+        android:id="@+id/tvFechaFinalizacion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finaliza: -"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
+
+    <TextView
         android:id="@+id/tvCapacidadPrecio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="14sp"
         android:textColor="@android:color/black"
         android:layout_marginTop="4dp"/>
+
 
     <LinearLayout
         android:orientation="horizontal"

@@ -186,4 +186,12 @@ public class TallerService {
         // Guardar y devolver DTO actualizado
         return tallerRepo.save(original);
     }
+
+    public List<TallerResumenDto> listarTalleresPorCategoriaExcluyendoProfesor(Long categoriaId, Long profesorId) {
+        if (categoriaId == null) throw new IllegalArgumentException("ID de categoria invalido");
+        if (profesorId == null) {
+            return tallerRepo.findByCategoriaId(categoriaId);
+        }
+        return tallerRepo.findByCategoriaIdExcluyendoProfesor(categoriaId, profesorId);
+    }
 }

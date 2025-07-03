@@ -44,6 +44,7 @@ public class TallerExplorarAdapter extends RecyclerView.Adapter<TallerExplorarAd
         holder.tvTitulo.setText(taller.getTitulo());
         holder.tvCategoria.setText(taller.getCategoriaNombre());
         holder.tvCapacidadPrecio.setText("Capacidad: " + taller.getCapacidad() + " | S/ " + taller.getPrecio());
+        holder.tvFechaFinalizacion.setText("Finaliza: " + (taller.getFechaFinalizacion() != null ? taller.getFechaFinalizacion() : "-"));
 
         // Imagen (usa la primera si existe)
         if (taller.getImagenes() != null && !taller.getImagenes().isEmpty()) {
@@ -74,7 +75,7 @@ public class TallerExplorarAdapter extends RecyclerView.Adapter<TallerExplorarAd
 
     public static class TallerViewHolder extends RecyclerView.ViewHolder {
         ImageView ivImagen;
-        TextView tvTitulo, tvCategoria, tvCapacidadPrecio;
+        TextView tvTitulo, tvCategoria, tvCapacidadPrecio, tvFechaFinalizacion;
         View btnEditar, btnEliminar;
 
         public TallerViewHolder(@NonNull View itemView) {
@@ -82,6 +83,7 @@ public class TallerExplorarAdapter extends RecyclerView.Adapter<TallerExplorarAd
             ivImagen = itemView.findViewById(R.id.ivTallerImagen);
             tvTitulo = itemView.findViewById(R.id.tvTituloTaller);
             tvCategoria = itemView.findViewById(R.id.tvCategoriaTaller);
+            tvFechaFinalizacion = itemView.findViewById(R.id.tvFechaFinalizacion);
             tvCapacidadPrecio = itemView.findViewById(R.id.tvCapacidadPrecio);
             btnEditar = itemView.findViewById(R.id.btnEditar);
             btnEliminar = itemView.findViewById(R.id.btnEliminar);

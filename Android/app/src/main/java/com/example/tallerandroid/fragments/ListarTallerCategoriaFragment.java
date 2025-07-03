@@ -1,6 +1,8 @@
 package com.example.tallerandroid.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -67,8 +69,10 @@ public class ListarTallerCategoriaFragment extends Fragment {
     }
 
     private void cargarTalleresPorCategoria(){
+        SharedPreferences prefs = requireContext().getSharedPreferences("user_session", Context.MODE_PRIVATE);
+        long userId = prefs.getLong("userId", -1); // Asegúrate que guardas el userId en el login
         ApiTallerService api = RetrofitCliente.getCliente().create(ApiTallerService.class);
-        api.listarTallerPorCategoria(categoriaId).enqueue(new Callback<List<TallerResumen>>() {
+        api.listarTallerPorCategoria(categoriaId, userId).enqueue(new Callback<List<TallerResumen>>() {
             @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onResponse(Call<List<TallerResumen>> call, Response<List<TallerResumen>> response) {

@@ -2,6 +2,7 @@ package com.example.tallerandroid.model.request;
 
 import com.example.tallerandroid.model.Categoria;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class TallerCrearRequest {
@@ -14,6 +15,7 @@ public class TallerCrearRequest {
     private Categoria categoria;
     private ProfesorRequest profesor;
     private List<TallerImagenRequest> imagenes;
+    private String fechaFinalizacion;
 
     public String getTitulo() {
         return titulo;
@@ -77,5 +79,13 @@ public class TallerCrearRequest {
 
     public void setImagenes(List<TallerImagenRequest> imagenes) {
         this.imagenes = imagenes;
+    }
+
+    public String getFechaFinalizacion() {
+        return fechaFinalizacion;
+    }
+
+    public void setFechaFinalizacion(String fechaFinalizacion) {
+        this.fechaFinalizacion = fechaFinalizacion;
     }
 }

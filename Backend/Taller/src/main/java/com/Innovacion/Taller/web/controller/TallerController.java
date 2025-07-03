@@ -54,10 +54,12 @@ public class TallerController {
         return ResponseEntity.ok(tallerService.listarTalleres());
     }
 
-    // Listar talleres por categoría
     @GetMapping("/categoria/{categoriaId}")
-    public ResponseEntity<List<TallerResumenDto>> listarPorCategoria(@PathVariable Long categoriaId) {
-        return ResponseEntity.ok(tallerService.listarTalleresPorCategoria(categoriaId));
+    public ResponseEntity<List<TallerResumenDto>> listarPorCategoria(
+            @PathVariable Long categoriaId,
+            @RequestParam(required = false) Long userId
+    ) {
+        return ResponseEntity.ok(tallerService.listarTalleresPorCategoriaExcluyendoProfesor(categoriaId, userId));
     }
 
     // Listar talleres por profesor

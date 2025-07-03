@@ -123,6 +123,7 @@ public class MenuActivity extends AppCompatActivity {
         setupToolbarAndDrawer();
         setupUserInfoInDrawer();
         setupDynamicDrawerMenu();
+        setupBottomNavigation();
         TextView tvLogout = findViewById(R.id.tvLogout);
         tvLogout.setOnClickListener(v -> logout());
 

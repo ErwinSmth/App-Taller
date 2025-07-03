@@ -11,6 +11,7 @@ public class TallerResumen {
     private Long categoriaId;
     private String categoriaNombre;
     private List<TallerImagen> imagenes;
+    private String fechaFinalizacion;
 
     public Long getTallerId() {
         return tallerId;
@@ -62,6 +63,14 @@ public class TallerResumen {
 
     public List<TallerImagen> getImagenes() {
         return imagenes;
+    }
+
+    public String getFechaFinalizacion() {
+        return fechaFinalizacion;
+    }
+
+    public void setFechaFinalizacion(String fechaFinalizacion) {
+        this.fechaFinalizacion = fechaFinalizacion;
     }
 
     public void setImagenes(List<TallerImagen> imagenes) {

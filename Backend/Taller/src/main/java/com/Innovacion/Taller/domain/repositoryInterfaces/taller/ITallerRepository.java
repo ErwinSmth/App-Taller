@@ -18,5 +18,7 @@ public interface ITallerRepository {
     List<TallerResumenDto> findProfesorId(Long profesorId);
     List<TallerResumenDto> findByOrganizadorId(Long organizadorId);
     List<TallerResumenDto> findByTituloContaining(String titulo);
+    List<TallerResumenDto> findByCategoriaIdExcluyendoProfesor(Long categoriaId, Long profesorId);
+
 
 }

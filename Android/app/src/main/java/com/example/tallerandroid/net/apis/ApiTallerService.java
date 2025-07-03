@@ -11,6 +11,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiTallerService {
 
@@ -20,8 +21,12 @@ public interface ApiTallerService {
     @GET("/AppTaller/taller/profesor/{profesorId}")
     Call<List<TallerResumen>> listarTalleresPorProfesor(@Path("profesorId") long profesorId);
 
+    // ApiTallerService.java
     @GET("/AppTaller/taller/categoria/{categoriaId}")
-    Call<List<TallerResumen>> listarTallerPorCategoria(@Path("categoriaId") long categoriaId);
+    Call<List<TallerResumen>> listarTallerPorCategoria(
+            @Path("categoriaId") long categoriaId,
+            @Query("userId") long userId
+    );
 
     @GET("/AppTaller/taller/{id}")
     Call<TallerDetalle> getTallerById(@Path("id") long id);

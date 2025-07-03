@@ -77,4 +77,14 @@ public class TallerRepositoryImpl implements ITallerRepository {
                 .map(mapper::toTallerResumenDto)
                 .collect(Collectors.toList());
     }
+
+    // ...existing code...
+    @Override
+    public List<TallerResumenDto> findByCategoriaIdExcluyendoProfesor(Long categoriaId, Long profesorId) {
+        return tallerCrud.findByIdCategoria(categoriaId).stream()
+                .map(mapper::toTallerResumenDto)
+                .filter(dto -> profesorId == null || !profesorId.equals(dto.getProfesorId()))
+                .collect(Collectors.toList());
+    }
+// ...existing code...
 }
