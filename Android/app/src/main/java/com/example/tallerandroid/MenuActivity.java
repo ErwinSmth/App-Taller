@@ -181,6 +181,11 @@ public class MenuActivity extends AppCompatActivity {
             cantidadRoles = arr.size();
         } catch (Exception ignored) {}
 
+        if (cantidadRoles > 1) {
+            menu.add(Menu.NONE, R.id.menu_cambiar_rol, Menu.NONE, "Cambiar de rol")
+                    .setIcon(R.drawable.ic_cambiar_rol); // Usa un icono apropiado
+        }
+
         if (cantidadRoles == 1) {
             if (rolActualId == 1) { // Estudiante
                 menu.add(Menu.NONE, R.id.menu_registrar_profesor, Menu.NONE, "Registrarse como Profesor")
@@ -193,10 +198,34 @@ public class MenuActivity extends AppCompatActivity {
 
 
 
+
+
         navView.setNavigationItemSelectedListener(item -> {
             int itemId = item.getItemId();
             String titulo = item.getTitle().toString();
             Fragment fragment = null;
+
+            if (itemId == R.id.menu_cambiar_rol) {
+                long userId = prefs.getLong("userId", -1);
+
+                // Encuentra el otro rol
+                try {
+                    JsonArray arr = com.google.gson.JsonParser.parseString(rolesJson).getAsJsonArray();
+                    for (int i = 0; i < arr.size(); i++) {
+                        JsonObject rolObj = arr.get(i).getAsJsonObject();
+                        long rolId = rolObj.get("rolId").getAsLong();
+                        String rolName = rolObj.get("rolName").getAsString();
+                        if (rolId != rolActualId) {
+                            // Cambia el rol actual y refresca todo
+                            SesionUtils.actualizarRolesYPermisosYRecargarMenu(MenuActivity.this, userId, rolId, rolName);
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(this, "Error al cambiar de rol", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+            }
 
             // Asocia el nombre del permiso con el fragment correspondiente
             if (titulo.equalsIgnoreCase("Crear Taller")){
