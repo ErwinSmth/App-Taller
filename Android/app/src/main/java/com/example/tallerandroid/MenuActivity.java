@@ -1,5 +1,6 @@
 package com.example.tallerandroid;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -122,7 +123,9 @@ public class MenuActivity extends AppCompatActivity {
         setupToolbarAndDrawer();
         setupUserInfoInDrawer();
         setupDynamicDrawerMenu();
-        setupBottomNavigation();
+        TextView tvLogout = findViewById(R.id.tvLogout);
+        tvLogout.setOnClickListener(v -> logout());
+
     }
 
     private void setupToolbarAndDrawer() {
@@ -189,6 +192,7 @@ public class MenuActivity extends AppCompatActivity {
                 // fragment = new com.example.tallerandroid.fragments.estudiante.InscripcionTallerFragment();
             }
 
+
             if (fragment != null) {
                 getSupportFragmentManager()
                         .beginTransaction()
@@ -251,5 +255,14 @@ public class MenuActivity extends AppCompatActivity {
 
         // Mostrar fragmento inicial (Inicio)
         bottomNav.setSelectedItemId(R.id.nav_inicio);
+    }
+    private void logout() {
+        // Borra SharedPreferences
+        SharedPreferences prefs = getSharedPreferences("user_session", MODE_PRIVATE);
+        prefs.edit().clear().apply();
+        Intent intent = new Intent(this, com.example.tallerandroid.auth.loginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 }

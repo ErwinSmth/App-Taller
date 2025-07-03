@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ public class MisTalleresProfesorFragment extends Fragment {
     private RecyclerView recyclerView;
     private TallerProfesorAdapter adapter;
     private List<TallerResumen> talleres = new ArrayList<>();
+    private ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class MisTalleresProfesorFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_mis_talleres_profesor, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerTalleresProfesor);
+        progressBar = view.findViewById(R.id.progressBarTalleres);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Inicializa el adapter con una lista vacía
@@ -67,6 +70,9 @@ public class MisTalleresProfesorFragment extends Fragment {
     }
 
     private void cargarTalleres() {
+        progressBar.setVisibility(View.VISIBLE); // Mostrar ProgressBar
+        recyclerView.setVisibility(View.GONE);
+
         SharedPreferences prefs = requireContext().getSharedPreferences("user_session", Context.MODE_PRIVATE);
         long profesorId = prefs.getLong("profesorId", -1);
 
@@ -75,6 +81,10 @@ public class MisTalleresProfesorFragment extends Fragment {
             @Override
             public void onResponse(Call<List<TallerResumen>> call, Response<List<TallerResumen>> response) {
                 if (response.isSuccessful() && response.body() != null) {
+
+                    progressBar.setVisibility(View.GONE); // Ocultar ProgressBar
+                    recyclerView.setVisibility(View.VISIBLE); // Mostrar lista
+
                     talleres.clear();
                     talleres.addAll(response.body());
                     adapter.notifyDataSetChanged();
@@ -85,6 +95,10 @@ public class MisTalleresProfesorFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<TallerResumen>> call, Throwable t) {
+
+                progressBar.setVisibility(View.GONE); // Ocultar ProgressBar
+                recyclerView.setVisibility(View.VISIBLE); // Mostrar lista (aunque esté vacía)
+
                 Toast.makeText(getContext(), "Error de red", Toast.LENGTH_SHORT).show();
 
             }
