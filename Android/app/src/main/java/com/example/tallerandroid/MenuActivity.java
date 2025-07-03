@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -160,6 +161,7 @@ public class MenuActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("user_session", MODE_PRIVATE);
         long rolActualId = prefs.getLong("rolActualId", -1);
         String permisosJson = prefs.getString("permisos", "{}");
+        String rolesJson = prefs.getString("roles", "[]");
 
         NavigationView navView = findViewById(R.id.nav_view);
         Menu menu = navView.getMenu();
@@ -180,7 +182,26 @@ public class MenuActivity extends AppCompatActivity {
             Log.e("MenuActivity", "Error al parsear permisos: " + e.getMessage());
         }
 
+        int cantidadRoles = 0;
+        try {
+            JsonArray arr = JsonParser.parseString(rolesJson).getAsJsonArray();
+            cantidadRoles = arr.size();
+        } catch (Exception ignored) {}
+
+        if (cantidadRoles == 1) {
+            if (rolActualId == 1) { // Estudiante
+                menu.add(Menu.NONE, R.id.menu_registrar_profesor, Menu.NONE, "Registrarse como Profesor")
+                        .setIcon(R.drawable.ic_profesor);
+            } else if (rolActualId == 2) { // Profesor
+                menu.add(Menu.NONE, R.id.menu_registrar_estudiante, Menu.NONE, "Registrarse como Estudiante")
+                        .setIcon(R.drawable.ic_estudiante);
+            }
+        }
+
+
+
         navView.setNavigationItemSelectedListener(item -> {
+            int itemId = item.getItemId();
             String titulo = item.getTitle().toString();
             Fragment fragment = null;
 
@@ -191,6 +212,20 @@ public class MenuActivity extends AppCompatActivity {
                 fragment = new com.example.tallerandroid.fragments.profesor.MisTalleresProfesorFragment();
             } else if (titulo.equalsIgnoreCase("Inscripcion a Taller")) {
                 // fragment = new com.example.tallerandroid.fragments.estudiante.InscripcionTallerFragment();
+            }
+
+            // Opción registrar como profesor
+            if (itemId == R.id.menu_registrar_profesor) {
+                Intent intent = new Intent(this, com.example.tallerandroid.profesor.ProfesorEspecialidadActivity.class);
+                intent.putExtra("userId", prefs.getLong("userId", -1));
+                intent.putExtra("registroDesdeDrawer", true);
+                startActivity(intent);
+                return true;
+            }
+            // Opción registrar como estudiante
+            if (itemId == R.id.menu_registrar_estudiante) {
+                registrarEstudianteDesdeDrawer();
+                return true;
             }
 
 
@@ -265,5 +300,47 @@ public class MenuActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+
+    private void registrarEstudianteDesdeDrawer() {
+        SharedPreferences prefs = getSharedPreferences("user_session", MODE_PRIVATE);
+        long userId = prefs.getLong("userId", -1);
+
+        com.google.gson.JsonObject json = new com.google.gson.JsonObject();
+        json.addProperty("userId", userId);
+
+        // Llama al endpoint para registrar estudiante
+        com.example.tallerandroid.net.apis.ApiEstudianteService apiEstudiante =
+                com.example.tallerandroid.net.RetrofitCliente.getCliente()
+                        .create(com.example.tallerandroid.net.apis.ApiEstudianteService.class);
+
+        apiEstudiante.registrarDesdeUsuario(json).enqueue(new retrofit2.Callback<com.google.gson.JsonObject>() {
+            @Override
+            public void onResponse(retrofit2.Call<com.google.gson.JsonObject> call, retrofit2.Response<com.google.gson.JsonObject> response) {
+                if (response.isSuccessful()) {
+                    // Cambia el rol actual a estudiante y recarga MenuActivity
+                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putLong("rolActualId", 1);
+                    editor.putString("rolActualName", "ESTUDIANTE");
+                    editor.apply();
+
+                    // Opcional: limpiar profesorId/estudianteId si quieres forzar recarga
+                    editor.remove("profesorId");
+                    editor.remove("estudianteId");
+                    editor.apply();
+
+                    Intent intent = new Intent(MenuActivity.this, MenuActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(MenuActivity.this, "No se pudo registrar como estudiante", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(retrofit2.Call<com.google.gson.JsonObject> call, Throwable t) {
+                Toast.makeText(MenuActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

@@ -1,0 +1,4 @@
+<resources>
+    <item name="menu_registrar_profesor" type="id"/>
+    <item name="menu_registrar_estudiante" type="id"/>
+</resources>

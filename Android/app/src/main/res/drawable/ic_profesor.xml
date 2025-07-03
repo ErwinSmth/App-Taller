@@ -1,0 +1,21 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Cabeza -->
+    <path
+        android:fillColor="#FF6F00"
+        android:pathData="M12 2a4 4 0 1 0 0 8 4 4 0 1 0 0 -8" />
+
+    <!-- Cuerpo (hombros) -->
+    <path
+        android:fillColor="#FF6F00"
+        android:pathData="M6 18v4h12v-4c0 -2.2 -3.6 -4 -6 -4s-6 1.8 -6 4" />
+
+    <!-- Corbata -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M12 12l-1.5 3h3L12 12" />
+</vector>

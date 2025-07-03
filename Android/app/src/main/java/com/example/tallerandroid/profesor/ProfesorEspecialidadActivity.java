@@ -1,6 +1,7 @@
 package com.example.tallerandroid.profesor;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -11,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.tallerandroid.MenuActivity;
 import com.example.tallerandroid.R;
 import com.example.tallerandroid.auth.loginActivity;
 import com.example.tallerandroid.event.ProfesorSesionEvent;
@@ -128,39 +130,84 @@ public class ProfesorEspecialidadActivity extends AppCompatActivity {
             return;
         }
 
-        JsonObject json = new JsonObject();
-        json.addProperty("profesorId", profesorId);
-        json.addProperty("descripcion", descripcion);
-
-        JsonArray especialidadesArray = new JsonArray();
-        for (Especialidad esp : especialidadesSeleccionadas) {
-            especialidadesArray.add(esp.getEspecialidadId());
-        }
-        json.add("especialidades", especialidadesArray);
-
-        // Log para depuración
-        Log.d("ProfesorEspecialidad", "JSON enviado: " + json.toString());
+        boolean registroDesdeDrawer = getIntent().getBooleanExtra("registroDesdeDrawer", false);
+        long userId = getIntent().getLongExtra("userId", -1);
 
         ApiProfesorService apiProfesor = RetrofitCliente.getCliente().create(ApiProfesorService.class);
-        apiProfesor.actualizarEspecialidadesyDescripcion(json).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Intent intent = new Intent(ProfesorEspecialidadActivity.this, loginActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    Toast.makeText(ProfesorEspecialidadActivity.this, "Datos guardados correctamente", Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    Toast.makeText(ProfesorEspecialidadActivity.this, "Error al guardar datos", Toast.LENGTH_SHORT).show();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(ProfesorEspecialidadActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
+        if (profesorId != null && profesorId > 0) {
+            // FLUJO REGISTRO INICIAL: Ya existe profesorId, solo actualiza especialidades y descripción
+            JsonObject json = new JsonObject();
+            json.addProperty("profesorId", profesorId);
+            json.addProperty("descripcion", descripcion);
+
+            JsonArray especialidadesArray = new JsonArray();
+            for (Especialidad esp : especialidadesSeleccionadas) {
+                especialidadesArray.add(esp.getEspecialidadId());
             }
-        });
+            json.add("especialidades", especialidadesArray);
+
+            apiProfesor.actualizarEspecialidadesyDescripcion(json).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        // Registro inicial: vuelve al login
+                        Intent intent = new Intent(ProfesorEspecialidadActivity.this, loginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        Toast.makeText(ProfesorEspecialidadActivity.this, "Datos guardados correctamente", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(ProfesorEspecialidadActivity.this, "Error al guardar datos", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(ProfesorEspecialidadActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else {
+            // FLUJO DESDE DRAWER: No existe profesorId, crea profesor y asigna especialidades y descripción
+            JsonObject json = new JsonObject();
+            json.addProperty("userId", userId);
+            json.addProperty("descripcion", descripcion);
+
+            JsonArray especialidadesArray = new JsonArray();
+            for (Especialidad esp : especialidadesSeleccionadas) {
+                especialidadesArray.add(esp.getEspecialidadId());
+            }
+            json.add("especialidadesR", especialidadesArray);
+
+            apiProfesor.registrarProfesorDesdeUsuario(json).enqueue(new Callback<JsonObject>() {
+                @Override
+                public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+                    if (response.isSuccessful()) {
+                        // Cambia el rol actual a profesor y vuelve al MenuActivity
+                        SharedPreferences prefs = getSharedPreferences("user_session", MODE_PRIVATE);
+                        SharedPreferences.Editor editor = prefs.edit();
+                        editor.putLong("rolActualId", 2);
+                        editor.putString("rolActualName", "PROFESOR");
+                        editor.apply();
+
+                        editor.remove("profesorId");
+                        editor.remove("estudianteId");
+                        editor.apply();
+
+                        Intent intent = new Intent(ProfesorEspecialidadActivity.this, MenuActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        Toast.makeText(ProfesorEspecialidadActivity.this, "¡Ahora eres profesor!", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(ProfesorEspecialidadActivity.this, "Error al registrar profesor", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                @Override
+                public void onFailure(Call<JsonObject> call, Throwable t) {
+                    Toast.makeText(ProfesorEspecialidadActivity.this, "Error de red", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     private void obtenerDatosUsuario(Long userId) {

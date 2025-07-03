@@ -23,4 +23,7 @@ public interface ApiProfesorService {
     @GET("/AppTaller/profesor/{profesorId}/persona/detalle")
     Call<Persona> obtenerPersonaPorProfesorId(@Path("profesorId") Long profesorId);
 
+    @POST("/AppTaller/profesor/registrar-desde-usuario")
+    Call<JsonObject> registrarProfesorDesdeUsuario(@Body JsonObject body);
+
 }
