@@ -16,6 +16,7 @@ public class TallerDto {
     private BigDecimal precio;
     private Integer capacidad;
     private LocalDate fechaRegistro;
+    private LocalDate fechaFinalizacion;
     private CategoriaDto categoria;
     private ProfesorDto profesor;
     private OrganizadorDto organizador;
@@ -103,5 +104,13 @@ public class TallerDto {
 
     public void setOrganizador(OrganizadorDto organizador) {
         this.organizador = organizador;
+    }
+
+    public LocalDate getFechaFinalizacion() {
+        return fechaFinalizacion;
+    }
+
+    public void setFechaFinalizacion(LocalDate fechaFinalizacion) {
+        this.fechaFinalizacion = fechaFinalizacion;
     }
 }

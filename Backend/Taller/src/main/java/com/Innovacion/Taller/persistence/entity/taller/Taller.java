@@ -51,6 +51,9 @@ public class Taller {
     @Column(name = "fecha_creacion", insertable = false, updatable = false)
     private LocalDate fechaRegistro;
 
+    @Column(name = "fecha_finalizacion", nullable = false)
+    private LocalDate fechaFinalizacion;
+
     @OneToMany(mappedBy = "taller", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TallerImagen> imagenes;
 
@@ -146,4 +149,13 @@ public class Taller {
     public List<TallerImagen> getImagenes() { return imagenes; }
 
     public void setImagenes(List<TallerImagen> imagenes) { this.imagenes = imagenes; }
+
+    public LocalDate getFechaFinalizacion() {
+        return fechaFinalizacion;
+    }
+
+    public void setFechaFinalizacion(LocalDate fechaFinalizacion) {
+        this.fechaFinalizacion = fechaFinalizacion;
+    }
 }
+

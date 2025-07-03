@@ -1,6 +1,9 @@
 package com.Innovacion.Taller.domain.dto.taller;
 
+import org.springframework.cglib.core.Local;
+
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 //Clase pensada a ser usada en una vista donde se muestren todos los talleres
@@ -13,6 +16,7 @@ public class TallerResumenDto {
     private Long categoriaId;
     private String categoriaNombre;
     private List<TallerImagenDto> imagenes;
+    private LocalDate fechaFinalizacion;
 
     //Datos para mostrar en front nada mas del profesor y organizador
     private Long profesorId;
@@ -106,5 +110,13 @@ public class TallerResumenDto {
 
     public void setImagenes(List<TallerImagenDto> imagenes) {
         this.imagenes = imagenes;
+    }
+
+    public LocalDate getFechaFinalizacion() {
+        return fechaFinalizacion;
+    }
+
+    public void setFechaFinalizacion(LocalDate fechaFinalizacion) {
+        this.fechaFinalizacion = fechaFinalizacion;
     }
 }

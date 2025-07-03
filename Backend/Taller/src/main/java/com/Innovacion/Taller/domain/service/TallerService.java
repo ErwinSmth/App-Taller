@@ -64,6 +64,9 @@ public class TallerService {
             logger.error("La categoría es obligatoria");
             throw new IllegalArgumentException("La categoría es obligatoria");
         }
+        if (tallerDto.getFechaFinalizacion() == null) {
+            throw new IllegalArgumentException("La fecha de finalización es obligatoria");
+        }
 
 
         //Validar que al menos profesor o organizador esten presentes
@@ -178,6 +181,7 @@ public class TallerService {
         original.setCapacidad(tallerDto.getCapacidad());
         original.setCategoria(tallerDto.getCategoria());
         original.setImagenes(tallerDto.getImagenes());
+        original.setFechaFinalizacion(tallerDto.getFechaFinalizacion());
 
         // Guardar y devolver DTO actualizado
         return tallerRepo.save(original);

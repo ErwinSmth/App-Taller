@@ -13,11 +13,13 @@ import org.mapstruct.Mapping;
 public interface TallerMapper {
 
     //Mapeo completo
+    @Mapping(target = "fechaFinalizacion", source = "fechaFinalizacion")
     TallerDto toTallerDto(Taller taller);
 
     @InheritInverseConfiguration
     @Mapping(source = "categoria.categoriaId", target = "idCategoria")
     @Mapping(target = "imagenes", source = "imagenes")
+    @Mapping(target = "fechaFinalizacion", source = "fechaFinalizacion")
     Taller toTaller(TallerDto tallerDto);
 
     // Mapeo del Taller Resumido
@@ -28,6 +30,7 @@ public interface TallerMapper {
     @Mapping(source = "organizador.organizadorId", target = "organizadorId")
     @Mapping(source = "organizador.razonSocial", target = "organizadorNombre")
     @Mapping(target = "imagenes", source = "imagenes")
+    @Mapping(target = "fechaFinalizacion", source = "fechaFinalizacion")
     TallerResumenDto toTallerResumenDto(Taller taller);
 
 }

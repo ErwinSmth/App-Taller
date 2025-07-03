@@ -30,5 +30,5 @@ public class InscripcionController {
         List<InscripcionDto> inscripciones = service.listarInscripcionesPorEstudiante(estudianteId);
         return ResponseEntity.ok(inscripciones);
     }
-    
+
 }
