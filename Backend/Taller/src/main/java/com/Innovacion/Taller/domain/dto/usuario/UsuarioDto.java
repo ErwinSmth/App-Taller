@@ -4,6 +4,7 @@ package com.Innovacion.Taller.domain.dto.usuario;
 import com.Innovacion.Taller.domain.dto.persona.PersonaDto;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -81,4 +82,5 @@ public class UsuarioDto {
     public void setPermisos(Map<Long, List<PermisoDto>> permisos) {
         this.permisos = permisos;
     }
+
 }

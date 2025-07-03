@@ -17,7 +17,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
 
-import com.example.tallerandroid.event.ProfesorSesionEvent;
 import com.example.tallerandroid.fragments.BuscarTallerFragment;
 import com.example.tallerandroid.fragments.estudiante.CuentaEstudianteFragment;
 import com.example.tallerandroid.fragments.estudiante.InicioEstudianteFragment;
@@ -33,12 +32,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
-import org.greenrobot.eventbus.EventBus;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class MenuActivity extends AppCompatActivity {
@@ -318,21 +311,8 @@ public class MenuActivity extends AppCompatActivity {
             @Override
             public void onResponse(retrofit2.Call<com.google.gson.JsonObject> call, retrofit2.Response<com.google.gson.JsonObject> response) {
                 if (response.isSuccessful()) {
-                    // Cambia el rol actual a estudiante y recarga MenuActivity
-                    SharedPreferences.Editor editor = prefs.edit();
-                    editor.putLong("rolActualId", 1);
-                    editor.putString("rolActualName", "ESTUDIANTE");
-                    editor.apply();
-
-                    // Opcional: limpiar profesorId/estudianteId si quieres forzar recarga
-                    editor.remove("profesorId");
-                    editor.remove("estudianteId");
-                    editor.apply();
-
-                    Intent intent = new Intent(MenuActivity.this, MenuActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
+                    SesionUtils.actualizarRolesYPermisosYRecargarMenu(MenuActivity.this, userId, 1, "ESTUDIANTE");
+                    return;
                 } else {
                     Toast.makeText(MenuActivity.this, "No se pudo registrar como estudiante", Toast.LENGTH_SHORT).show();
                 }
@@ -343,4 +323,6 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

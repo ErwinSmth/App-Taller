@@ -13,7 +13,7 @@ public interface ApiEstudianteService {
     @GET("/AppTaller/estudiante/usuario/{userId}")
     Call<JsonObject> obtenerPorUsuario(@Path("userId") long userId);
 
-    @POST("estudiante/registrar-desde-usuario")
+    @POST("/AppTaller/estudiante/registrar-desde-usuario")
     Call<JsonObject> registrarDesdeUsuario(@Body JsonObject json);
 
 }

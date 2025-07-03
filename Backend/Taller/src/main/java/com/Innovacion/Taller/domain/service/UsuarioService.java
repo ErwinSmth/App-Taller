@@ -174,4 +174,20 @@ public class UsuarioService {
         return userRepo.save(usuario);
     }
 
+    public Map<Long, List<PermisoDto>> obtenerPermisosPorRol(List<RolesDto> roles) {
+        Map<Long, List<PermisoDto>> permisosPorRol = new HashMap<>();
+        if (roles != null) {
+            for (RolesDto rol : roles) {
+                List<Long> rolIdList = List.of(rol.getRolId());
+                List<PermisoDto> permisos = permisoRepo.findByRoles_RolIdIn(rolIdList);
+                permisosPorRol.put(rol.getRolId(), permisos);
+            }
+        }
+        return permisosPorRol;
+    }
+
+    public Optional<UsuarioDto> buscarPorId(Long userId) {
+        return userRepo.findById(userId);
+    }
+
 }

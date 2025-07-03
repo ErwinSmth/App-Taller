@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tallerandroid.MenuActivity;
 import com.example.tallerandroid.R;
+import com.example.tallerandroid.SesionUtils;
 import com.example.tallerandroid.auth.loginActivity;
 import com.example.tallerandroid.event.ProfesorSesionEvent;
 import com.example.tallerandroid.model.Especialidad;
@@ -182,22 +183,10 @@ public class ProfesorEspecialidadActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                     if (response.isSuccessful()) {
-                        // Cambia el rol actual a profesor y vuelve al MenuActivity
                         SharedPreferences prefs = getSharedPreferences("user_session", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = prefs.edit();
-                        editor.putLong("rolActualId", 2);
-                        editor.putString("rolActualName", "PROFESOR");
-                        editor.apply();
-
-                        editor.remove("profesorId");
-                        editor.remove("estudianteId");
-                        editor.apply();
-
-                        Intent intent = new Intent(ProfesorEspecialidadActivity.this, MenuActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        startActivity(intent);
-                        Toast.makeText(ProfesorEspecialidadActivity.this, "¡Ahora eres profesor!", Toast.LENGTH_SHORT).show();
-                        finish();
+                        long userId = prefs.getLong("userId", -1);
+                        SesionUtils.actualizarRolesYPermisosYRecargarMenu(ProfesorEspecialidadActivity.this, userId, 2, "PROFESOR");
+                        return;
                     } else {
                         Toast.makeText(ProfesorEspecialidadActivity.this, "Error al registrar profesor", Toast.LENGTH_SHORT).show();
                     }

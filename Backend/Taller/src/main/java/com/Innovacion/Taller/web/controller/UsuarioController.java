@@ -1,5 +1,6 @@
 package com.Innovacion.Taller.web.controller;
 
+import com.Innovacion.Taller.domain.dto.usuario.PermisoDto;
 import com.Innovacion.Taller.domain.dto.usuario.UsuarioDto;
 import com.Innovacion.Taller.domain.dto.usuario.UsuarioRegistroDto;
 import com.Innovacion.Taller.domain.service.UsuarioService;
@@ -8,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -47,6 +51,24 @@ public class UsuarioController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @GetMapping("/info/{userId}")
+    public ResponseEntity<?> obtenerInfoUsuario(@PathVariable Long userId) {
+        Optional<UsuarioDto> usuarioOpt = userService.buscarPorId(userId);
+        if (usuarioOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        UsuarioDto usuario = usuarioOpt.get();
+
+        Map<String, Object> respuesta = new HashMap<>();
+        respuesta.put("roles", usuario.getRoles());
+
+        // Obtener permisos por rol usando el servicio
+        Map<Long, List<PermisoDto>> permisosPorRol = userService.obtenerPermisosPorRol(usuario.getRoles());
+        respuesta.put("permisos", permisosPorRol);
+
+        return ResponseEntity.ok(respuesta);
     }
 }
 
