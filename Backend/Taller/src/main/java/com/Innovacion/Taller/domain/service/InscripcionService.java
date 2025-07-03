@@ -5,6 +5,8 @@ import com.Innovacion.Taller.domain.repositoryInterfaces.taller.IInscripcionRepo
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class InscripcionService {
 
@@ -22,6 +24,10 @@ public class InscripcionService {
         dto.setEstudianteId(estudianteId);
         dto.setEstado("activo");
         return repo.save(dto);
+    }
+
+    public List<InscripcionDto> listarInscripcionesPorEstudiante(Long estudianteId) {
+        return repo.findByEstudianteId(estudianteId);
     }
 
 }

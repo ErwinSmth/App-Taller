@@ -4,10 +4,9 @@ import com.Innovacion.Taller.domain.dto.taller.InscripcionDto;
 import com.Innovacion.Taller.domain.service.InscripcionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/inscripcion")
@@ -26,4 +25,10 @@ public class InscripcionController {
         }
     }
 
+    @GetMapping("/estudiante/{estudianteId}")
+    public ResponseEntity<List<InscripcionDto>> listarInscripcionesPorEstudiante(@PathVariable Long estudianteId) {
+        List<InscripcionDto> inscripciones = service.listarInscripcionesPorEstudiante(estudianteId);
+        return ResponseEntity.ok(inscripciones);
+    }
+    
 }

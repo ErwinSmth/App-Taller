@@ -12,6 +12,7 @@ import com.Innovacion.Taller.persistence.mapper.taller.InscripcionMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -46,5 +47,13 @@ public class InscripcionRepositoryImpl implements IInscripcionRepository {
         entity.setEstado(dto.getEstado());
         Inscripcion saved = crud.save(entity);
         return mapper.toInscripcionDto(saved);
+    }
+
+    @Override
+    public List<InscripcionDto> findByEstudianteId(Long estudianteId) {
+        return crud.findByEstudianteEstudianteId(estudianteId)
+                .stream()
+                .map(mapper::toInscripcionDto)
+                .toList();
     }
 }
