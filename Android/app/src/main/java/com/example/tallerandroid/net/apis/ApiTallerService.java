@@ -10,6 +10,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -30,5 +31,8 @@ public interface ApiTallerService {
 
     @GET("/AppTaller/taller/{id}")
     Call<TallerDetalle> getTallerById(@Path("id") long id);
+
+    @PUT("/AppTaller/taller/{tallerId}/completar")
+    Call<Void> completarTaller(@Path("tallerId") long tallerId);
 
 }

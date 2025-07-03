@@ -58,8 +58,8 @@ public class MisTalleresProfesorFragment extends Fragment {
                 // Acción editar
             }
             @Override
-            public void onEliminar(TallerResumen taller) {
-                // Acción eliminar
+            public void onCompletar(TallerResumen taller) {
+                completarTaller(taller.getTallerId());
             }
         });
         recyclerView.setAdapter(adapter);
@@ -101,6 +101,25 @@ public class MisTalleresProfesorFragment extends Fragment {
 
                 Toast.makeText(getContext(), "Error de red", Toast.LENGTH_SHORT).show();
 
+            }
+        });
+    }
+
+    private void completarTaller(Long tallerId) {
+        ApiTallerService api = RetrofitCliente.getCliente().create(ApiTallerService.class);
+        api.completarTaller(tallerId).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Taller completado correctamente", Toast.LENGTH_SHORT).show();
+                    cargarTalleres(); // Refresca la lista
+                } else {
+                    Toast.makeText(getContext(), "No se pudo completar el taller", Toast.LENGTH_SHORT).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(getContext(), "Error de red", Toast.LENGTH_SHORT).show();
             }
         });
     }

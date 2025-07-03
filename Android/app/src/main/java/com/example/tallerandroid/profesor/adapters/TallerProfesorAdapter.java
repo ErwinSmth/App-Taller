@@ -23,7 +23,7 @@ public class TallerProfesorAdapter extends RecyclerView.Adapter<TallerProfesorAd
 
     public interface onTallerActionListener{
         void onEditar(TallerResumen taller);
-        void onEliminar(TallerResumen taller);
+        void onCompletar(TallerResumen taller); // Cambia el nombre aquí
     }
 
     private List<TallerResumen> talleres;
@@ -62,7 +62,9 @@ public class TallerProfesorAdapter extends RecyclerView.Adapter<TallerProfesorAd
         }
 
         holder.btnEditar.setOnClickListener(v -> listener.onEditar(taller));
-        holder.btnEliminar.setOnClickListener(v -> listener.onEliminar(taller));
+        holder.btnEliminar.setOnClickListener(v -> {
+            if (listener != null) listener.onCompletar(taller);
+        });
     }
 
     @Override

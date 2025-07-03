@@ -67,9 +67,21 @@ public class InscripcionRepositoryImpl implements IInscripcionRepository {
 
     @Override
     public void saveAll(List<InscripcionDto> inscripciones) {
-        List<Inscripcion> entities = inscripciones.stream()
-                .map(mapper::toInscripcion)
-                .toList();
+        List<Inscripcion> entities = inscripciones.stream().map(dto -> {
+            Inscripcion entity = mapper.toInscripcion(dto);
+
+            // Asegura que los objetos no sean null
+            if (dto.getTallerId() != null) {
+                Taller taller = tallerCrud.findById(dto.getTallerId()).orElseThrow();
+                entity.setTaller(taller);
+            }
+            if (dto.getEstudianteId() != null) {
+                Estudiante estudiante = estudianteCrud.findById(dto.getEstudianteId()).orElseThrow();
+                entity.setEstudiante(estudiante);
+            }
+            entity.setEstado(dto.getEstado());
+            return entity;
+        }).toList();
         crud.saveAll(entities);
     }
 }

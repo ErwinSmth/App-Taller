@@ -61,6 +61,8 @@ android:gravity="center_vertical">
         android:layout_marginTop="12dp"
     android:layout_marginBottom="4dp"> <!-- Espacio abajo -->
 
+
+
     <Button
         android:id="@+id/btnEditar"
         android:layout_width="wrap_content"
@@ -74,11 +76,14 @@ android:gravity="center_vertical">
         android:id="@+id/btnEliminar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Eliminar"
+        android:text="Dar por Completado"
         android:textSize="12sp"
         android:layout_marginStart="12dp"
         android:minHeight="36dp"
         android:minWidth="72dp"/>
+
+
+
 </LinearLayout>
 </LinearLayout>
 
