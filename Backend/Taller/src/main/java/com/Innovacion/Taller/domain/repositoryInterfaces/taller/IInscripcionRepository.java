@@ -9,5 +9,7 @@ public interface IInscripcionRepository {
     Optional<InscripcionDto> findByTallerIdAndEstudianteId(Long tallerId, Long estudianteId);
     InscripcionDto save(InscripcionDto inscripcionDto);
     List<InscripcionDto> findByEstudianteId(Long estudianteId);
+    List<InscripcionDto> findByTallerIdAndEstado(Long tallerId, String estado);
+    void saveAll(List<InscripcionDto> inscripciones);
 
 }

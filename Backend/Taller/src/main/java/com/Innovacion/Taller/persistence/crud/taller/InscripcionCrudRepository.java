@@ -9,6 +9,7 @@ import java.util.Optional;
 public interface InscripcionCrudRepository extends JpaRepository<Inscripcion, Long> {
     Optional<Inscripcion> findByTallerTallerIdAndEstudianteEstudianteId(Long tallerId, Long estudianteId);
     List<Inscripcion> findByEstudianteEstudianteId(Long estudianteId);
-
+    List<Inscripcion> findByTallerTallerIdAndEstadoIgnoreCase(Long tallerId, String estado);
+    void saveAll(List<Inscripcion> inscripciones);
 
 }

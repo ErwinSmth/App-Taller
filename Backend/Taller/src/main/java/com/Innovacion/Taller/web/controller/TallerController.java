@@ -89,4 +89,13 @@ public class TallerController {
             return ResponseEntity.badRequest().build();
         }
     }
+
+    @PutMapping("/{tallerId}/completar")
+    public ResponseEntity<?> completarTaller(@PathVariable Long tallerId) {
+        int cantidad = tallerService.completarTaller(tallerId);
+        if (cantidad == 0) {
+            return ResponseEntity.badRequest().body("No hay inscripciones activas para este taller");
+        }
+        return ResponseEntity.ok("Se completaron " + cantidad + " inscripciones");
+    }
 }

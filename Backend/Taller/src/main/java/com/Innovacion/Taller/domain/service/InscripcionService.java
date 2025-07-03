@@ -30,4 +30,14 @@ public class InscripcionService {
         return repo.findByEstudianteId(estudianteId);
     }
 
+    public int completarInscripcionesPorTaller(Long tallerId) {
+        List<InscripcionDto> activas = repo.findByTallerIdAndEstado(tallerId, "ACTIVO");
+        if (activas.isEmpty()) return 0;
+        for (InscripcionDto insc : activas) {
+            insc.setEstado("COMPLETADO");
+        }
+        repo.saveAll(activas);
+        return activas.size();
+    }
+
 }

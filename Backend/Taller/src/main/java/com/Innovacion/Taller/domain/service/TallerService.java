@@ -31,6 +31,9 @@ public class TallerService {
     @Autowired
     private IOrganizadorRepository organizadorRepo;
 
+    @Autowired
+    private InscripcionService inscripcionService;
+
     private static final Logger logger = LoggerFactory.getLogger(TallerService.class);
 
 
@@ -193,5 +196,18 @@ public class TallerService {
             return tallerRepo.findByCategoriaId(categoriaId);
         }
         return tallerRepo.findByCategoriaIdExcluyendoProfesor(categoriaId, profesorId);
+    }
+
+    @Transactional
+    public int completarTaller(Long tallerId) {
+        /*
+        Optional<TallerDto> tallerOpt = tallerRepo.findById(tallerId);
+        if (tallerOpt.isEmpty()) throw new IllegalArgumentException("Taller no encontrado");
+        TallerDto taller = tallerOpt.get();
+        if (taller.getFechaFinalizacion() != null && taller.getFechaFinalizacion().isAfter(LocalDate.now())) {
+        throw new IllegalArgumentException("No puedes completar el taller antes de la fecha de finalización");
+        }
+         */
+        return inscripcionService.completarInscripcionesPorTaller(tallerId);
     }
 }

@@ -56,4 +56,20 @@ public class InscripcionRepositoryImpl implements IInscripcionRepository {
                 .map(mapper::toInscripcionDto)
                 .toList();
     }
+
+    @Override
+    public List<InscripcionDto> findByTallerIdAndEstado(Long tallerId, String estado) {
+        return crud.findByTallerTallerIdAndEstadoIgnoreCase(tallerId, estado)
+                .stream()
+                .map(mapper::toInscripcionDto)
+                .toList();
+    }
+
+    @Override
+    public void saveAll(List<InscripcionDto> inscripciones) {
+        List<Inscripcion> entities = inscripciones.stream()
+                .map(mapper::toInscripcion)
+                .toList();
+        crud.saveAll(entities);
+    }
 }
