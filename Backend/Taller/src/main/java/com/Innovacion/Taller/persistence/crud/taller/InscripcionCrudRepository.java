@@ -10,6 +10,4 @@ public interface InscripcionCrudRepository extends JpaRepository<Inscripcion, Lo
     Optional<Inscripcion> findByTallerTallerIdAndEstudianteEstudianteId(Long tallerId, Long estudianteId);
     List<Inscripcion> findByEstudianteEstudianteId(Long estudianteId);
     List<Inscripcion> findByTallerTallerIdAndEstadoIgnoreCase(Long tallerId, String estado);
-    void saveAll(List<Inscripcion> inscripciones);
-
 }
