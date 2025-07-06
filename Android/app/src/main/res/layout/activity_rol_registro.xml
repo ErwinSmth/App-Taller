@@ -40,14 +40,14 @@
         android:background="@drawable/boton_degradado"
         android:layout_marginTop="16dp" />
 
-    <Button
+    <!--<Button
         android:id="@+id/btnOrganizador"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:text="Registrarse como Organizador"
         android:background="@drawable/boton_degradado"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp" /> -->
     <ImageView
         android:id="@+id/imgBajo"
         android:layout_width="150dp"

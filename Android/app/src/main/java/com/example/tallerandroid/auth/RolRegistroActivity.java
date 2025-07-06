@@ -20,7 +20,7 @@ public class RolRegistroActivity extends AppCompatActivity {
 
         Button btnEstudiante = findViewById(R.id.btnEstudiante);
         Button btnProfesor = findViewById(R.id.btnProfesor);
-        Button btnOrganizador = findViewById(R.id.btnOrganizador);
+        //Button btnOrganizador = findViewById(R.id.btnOrganizador);
 
         btnEstudiante.setOnClickListener(v -> {
             EventBus.getDefault().postSticky(new RolSeleccionadoEvent("ESTUDIANTE"));
